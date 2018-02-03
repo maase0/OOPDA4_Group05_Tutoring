@@ -1,9 +1,9 @@
 /**
  * 
  * @author Erich Maas
- * @author 
- * @author 
- * @author
+ * @author Angela Gaudio
+ * @author Brannon Perna
+ * @author Tyler Roman
  */
 public class Student {
 
@@ -11,6 +11,10 @@ public class Student {
 	
 	public Student(String name) {
 		this.name = name;
+	}
+	
+	public String getName() {
+		return name;
 	}
 	
 }

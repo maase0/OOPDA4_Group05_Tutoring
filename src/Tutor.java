@@ -8,5 +8,13 @@ public class Tutor {
 		this.name = name;
 		this.year = year;
 	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public String getYear() {
+		return year;
+	}
 
 }

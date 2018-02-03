@@ -1,12 +1,17 @@
 import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Scheduler {
 
-	HashMap<Day, HashMap<Integer, Pair>> schedule;
+	public static final int DAYS = 5;
+	public static final int BLOCK_LENGTH = 15;
+	public static final int NUM_BLOCKS = 32; // 1000 to 1800: 8 hours, 4 fifteen min blocks per hour
+	
+	private Pair[][] schedule;
 	
 	public Scheduler() {
-		schedule = new HashMap<Day, HashMap<Integer, Pair>>();
+		schedule = new Pair[DAYS][NUM_BLOCKS];
 		initializeSchedule();
 	}
 	
@@ -14,64 +19,35 @@ public class Scheduler {
 	 * Returns the entire schedule
 	 * @return The schedule
 	 */
-	public HashMap<Day, HashMap<Integer, Pair>> getSchedule() {
+	private Pair[][] getSchedule() {
 		return schedule;
 	}
 	
-	public void getScheduleAsArray() {
-		Pair[][] scheduleArray = new Pair[5][(1745 - 1000) % 15];
-		
-		int dayCount = 0;
-		for(Day day : Day.values()) {
-			int timeCount = 0;
-			for(Integer i : schedule.get(day).keySet()) {
-				scheduleArray[dayCount][timeCount] = schedule.get(day).get(timeCount + 1000);
-				
-			}
-		}
-	}
 	
-	/**
-	 * Returns the timetable for a given day
-	 * @param day The day to get the timetable for
-	 * @return The time-pair hashmap timetable for a given day
-	 */
-	public HashMap<Integer, Pair> getTimetable(Day day) {
-		return schedule.get(day);
-	}
 	
 	/**
 	 * Checks if any tutor available for a given time, day, and duration.
 	 * @param day The day to check
 	 * @param startTime The start time to check
 	 * @param duration The duration of the appointment
-	 * @return true if there is a tutor available
+	 * @return true if there is a tutor available for the given time and duration
 	 */
 	public boolean checkAvailability(Day day, int startTime, int duration) {
 		boolean available = false;
-		HashMap<Integer, Pair> timetable = schedule.get(day);
 		
-		if(timetable.get(startTime) != null) {
+		Tutor t = schedule[day.value()][timeToArrayIndex(startTime)].getTutor();
+		if(t != null) {
 			available = true;
-			
-			Tutor t = timetable.get(startTime).getTutor();
-			for(int i = startTime + 15; i < startTime + duration; i += 15) {
-				if(!(timetable.get(i) != null && timetable.get(i).getTutor().equals(t))) {
+			for(int i = 15; i < duration; i += 15) {
+				if(! t.equals((schedule[day.value()][timeToArrayIndex(startTime)].getTutor())) && available) {
 					available = false;
 				}
 			}
 		}
-		
 		return available;
 	}
 	
-	public boolean findAvailability(Tutor tutor, int duration) {
-		boolean availability = false;
-		ArrayList<>
-		
-		
-		return availability;
-	}
+	
 	
 	/**
 	 * Adds a tutor to a given time and day only if there is not already a tutor
@@ -81,8 +57,8 @@ public class Scheduler {
 	 * @param tutor The tutor to schedule
 	 */
 	public void addTutor(Day day, int time, Tutor tutor) {
-		if(schedule.get(day).get(time) == null) {
-			schedule.get(day).put(time, new Pair(tutor));
+		if(schedule[day.value()][timeToArrayIndex(time)].getTutor() == null) {
+			schedule[day.value()][timeToArrayIndex(time)].setTutor(tutor);
 		}
 	}
 	
@@ -92,25 +68,46 @@ public class Scheduler {
 	 * @param day The day to add the student
 	 * @param time The time to add the student
 	 * @param student The student to be added
-	 * @return true if the student was successfully added
 	 */
-	public boolean addStudent(Day day, int time, Student student) {
-		boolean set = false;
-		HashMap<Integer, Pair> timetable = schedule.get(day);
-		if(timetable != null && timetable.get(time) != null) {
-			timetable.get(time).setStudent(student);
-			set = true;
-		}
-		return set;
+	public void addStudent(Day day, int time, Student student) {
+		schedule[day.value()][timeToArrayIndex(time)].setStudent(student);
 	}
 	
 	/**
-	 * Initializes the schedule of all possible days
+	 * Converts the time from 24 hour HHMM format to a value from 0 to 31
+	 * @param time The time to convert
+	 * @return An array index for the schedule array
+	 */
+	private int timeToArrayIndex(int time) {
+		return (((int) time / 100) - 10) * 4 + ((time % 100) / 15);
+	}
+	
+	/**
+	 * Initializes the schedule to all null
+	 * Maybe not needed
 	 */
 	private void initializeSchedule() {
-		for(Day day : Day.values()) {
-			schedule.put(day, new HashMap<Integer, Pair>());
+		for(int i = 0; i < DAYS; i++) {
+			for(int j = 0; j < NUM_BLOCKS; j++) {
+				schedule[i][j] = new Pair();
+			}
 		}
+	}
+	
+	public String[] convertToStringArray() {
+		String[] rows = new String[Scheduler.NUM_BLOCKS];
+		Arrays.fill(rows, "");
+		
+		for(int i = 0; i < Scheduler.DAYS; i++) {
+			for(int j = 0; j < Scheduler.NUM_BLOCKS; j++) {
+				rows[j] += schedule[i][j].getTutor() == null ? "NONE" : schedule[i][j].getTutor().getName();
+				rows[j] += ": ";
+				rows[j] += schedule[i][j].getStudent() == null ? "NONE" : schedule[i][j].getStudent().getName();
+				rows[j] += "   ";
+			}
+		}
+		
+		return rows;
 	}
 	
 	
