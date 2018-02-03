@@ -1,12 +1,8 @@
-import java.util.HashMap;
-import java.util.ArrayList;
-import java.util.Arrays;
-
 public class Scheduler {
 
 	public static final int DAYS = 5;
 	public static final int BLOCK_LENGTH = 15;
-	public static final int NUM_BLOCKS = 32; // 1000 to 1800: 8 hours, 4 fifteen min blocks per hour
+	public static final int NUM_BLOCKS = 32; // 1000 to 1800: 8 hours * 4 fifteen min blocks per hour
 	
 	private Pair[][] schedule;
 	
