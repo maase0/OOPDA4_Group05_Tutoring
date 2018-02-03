@@ -5,8 +5,8 @@ ideas
 	 1015
 	 1030
 	 ....
+	 1730
 	 1745
-	 1800
   
   - each slot can hold one student and one tutor
    
