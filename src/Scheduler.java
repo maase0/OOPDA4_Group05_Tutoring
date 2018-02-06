@@ -90,6 +90,10 @@ public class Scheduler {
 		}
 	}
 	
+	/**
+	 * Converts the schedule to an array of strings where each row is an element
+	 * of the array and columns are separated by a space
+	 */
 	public String[] convertToStringArray() {
 		String[] rows = new String[Scheduler.NUM_BLOCKS];
 		Arrays.fill(rows, "");
@@ -99,7 +103,7 @@ public class Scheduler {
 				rows[j] += schedule[i][j].getTutor() == null ? "NONE" : schedule[i][j].getTutor().getName();
 				rows[j] += ": ";
 				rows[j] += schedule[i][j].getStudent() == null ? "NONE" : schedule[i][j].getStudent().getName();
-				rows[j] += "   ";
+				rows[j] += " ";
 			}
 		}
 		
