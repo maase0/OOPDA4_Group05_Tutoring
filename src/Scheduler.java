@@ -23,15 +23,25 @@ public class Scheduler {
 		return schedule;
 	}
 
+	/**
+	 * Returns an array list of starting times a given tutor
+	 * is available for an appointment of a given length on
+	 * a given day
+	 * @param tutor The tutor to check
+	 * @param day The day of the appointment
+	 * @param duration The duration of the appointment
+	 * @return An array list of valid starting times
+	 */
 	public ArrayList<Integer> checkAvailabilityByTutor(Tutor tutor, Day day, int duration ) {
 		ArrayList<Integer> availableTimes = new ArrayList<Integer>();
+		int blockOffset = duration / BLOCK_LENGTH;
 		
-			for(int time = 0; time < NUM_BLOCKS - duration % BLOCK_LENGTH; time++) {
+			for(int time = 0; time < NUM_BLOCKS - blockOffset; time++) {
 				boolean available = true;
-				for(int i = 0; i < duration / BLOCK_LENGTH && available; i++) {
-					if((!tutor.equals(schedule[day.value()][i].getTutor())) || 
+				for(int i = time; (i - time) < blockOffset && available; i++) {
+					if(! tutor.equals(schedule[day.value()][i].getTutor()) || 
 							schedule[day.value()][i].getStudent() != null ) {
-						available = false;
+						available = false;						
 					}
 				}
 				if(available) {
