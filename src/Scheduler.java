@@ -131,20 +131,30 @@ public class Scheduler {
 	 * Converts the schedule to an array of strings where each row is an element of
 	 * the array and columns are separated by a space
 	 */
-	public String[] convertToStringArray() {
-		String[] rows = new String[Scheduler.NUM_BLOCKS];
-		Arrays.fill(rows, "");
-
-		for (int i = 0; i < Scheduler.DAYS; i++) {
-			for (int j = 0; j < Scheduler.NUM_BLOCKS; j++) {
-				rows[j] += schedule[i][j].getTutor() == null ? "NONE" : schedule[i][j].getTutor().getName();
-				rows[j] += ": ";
-				rows[j] += schedule[i][j].getStudent() == null ? "NONE" : schedule[i][j].getStudent().getName();
-				rows[j] += " ";
+	public String toString() {
+		
+		String returnString = "";
+		returnString += String.format("%6s|", "");
+		returnString += String.format("%20s|", "MONDAY");
+		returnString += String.format("%20s|", "TUESDAY");
+		returnString += String.format("%20s|", "WEDNESDAY");
+		returnString += String.format("%20s|", "THURSDAY");
+		returnString += String.format("%20s|", "FRIDAY");
+		returnString += "\n---------------------------------------------------------"
+				+ "-------------------------------------------------------\n";
+		for(int i = 1000; i < 1600; i += 15) {
+			returnString += String.format("%6d|", i);
+			for(int day = 0; day < 5; day++) {
+				returnString += String.format("%10s%10s|", schedule[day][timeToArrayIndex(i)].getTutor(), 
+						schedule[day][timeToArrayIndex(i)].getStudent());
 			}
+			returnString += "\n";
+			//returnString += "\n---------------------------------------------------------"
+			//		+ "-------------------------------------------------------\n";
 		}
+		
 
-		return rows;
+		return returnString;
 	}
 
 }
