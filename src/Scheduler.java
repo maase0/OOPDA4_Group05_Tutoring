@@ -56,6 +56,50 @@ public class Scheduler {
 	}
 
 	/**
+	 * Checks if a two hour block is available at the given day and starting time.
+	 * Only checks if there is no tutor.
+	 * @param day The day to check
+	 * @param startTime The start of the block
+	 * @return True if 8 consecutive 15 minute blocks are free
+	 */
+	public boolean checkBlockAvailablity(Day day, int startTime) {
+		boolean available = true;
+		int index = timeToArrayIndex(startTime);
+		if(index <= NUM_BLOCKS - 8) {
+			for(int i = index; i < index + 8 && available; i++) {
+				if(schedule[day.value()][i].getTutor() != null) {
+					available = false;
+				}
+			}
+		} else {
+			available = false;
+		}
+		
+		return available;
+	}
+	
+	/**
+	 * Adds a tutor to a two hour block of time on given day and start time
+	 * @param t The tutor to schedule
+	 * @param day The day to schedule the tutor
+	 * @param startTime The beginning of the tutors scheduled block
+	 * @return true if the tutor was successfully scheduled
+	 */
+	public boolean scheduleTutor(Tutor t, Day day, int startTime) {
+		boolean successful = true;
+		int index = timeToArrayIndex(startTime);
+		if(index <= NUM_BLOCKS - 8) {
+			for(int i = index; i < index + 8; i++) {
+				schedule[day.value()][i].setTutor(t);
+			}
+		} else {
+			successful = false;
+		}
+		
+		return successful;
+	}
+	
+	/**
 	 * Checks if any tutor available for a given time, day, and duration.
 	 * 
 	 * @param day
@@ -154,7 +198,7 @@ public class Scheduler {
 		returnString += String.format("%20s|", "FRIDAY");
 		returnString += "\n---------------------------------------------------------"
 				+ "-------------------------------------------------------\n";
-		for (int i = 1000; i < 1600; i += 100) {
+		for (int i = 1000; i < 1800; i += 100) {
 			for (int j = 0; j < 60; j += 15) {
 				returnString += String.format("%6d|", (i+j));
 				for (int day = 0; day < 5; day++) {
@@ -162,11 +206,9 @@ public class Scheduler {
 							schedule[day][timeToArrayIndex(i+j)].getStudent());
 				}
 				returnString += "\n";
-				// returnString += "\n---------------------------------------------------------"
-				// + "-------------------------------------------------------\n";
 			}
 		}
-
+		
 		return returnString;
 	}
 
