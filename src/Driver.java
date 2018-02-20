@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 public class Driver {
 
@@ -8,6 +9,8 @@ public class Driver {
 
 	public static void main(String[] args){
 		Scheduler sh = new Scheduler();
+		ArrayList<Tutor> tutors = new ArrayList<Tutor>();
+		ArrayList<Student> students = new ArrayList<Students>();
 
 		boolean running = true;
 
@@ -70,12 +73,18 @@ public class Driver {
 			case 4: time = 1600; break;
 			default: time = -1; break;
 			}
+
+
+			//TODO: Add existing tutor or make new tutor
+
 			if(scheduler.checkBlockAvailablity(intToDay(day), time)) {
 				System.out.print("Enter tutor's name: ");
 				String name = getString();
 				System.out.print("Enter tutor's year: ");
 				String year = getString();
-				scheduler.scheduleTutor(new Tutor(name, year), intToDay(day), time);
+				Tutor t = new Tutor(name, year);
+				tutors.add(t);
+				scheduler.scheduleTutor(t, intToDay(day), time);
 			} else {
 				System.out.println("Block not available");
 			}
