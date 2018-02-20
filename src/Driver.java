@@ -7,10 +7,11 @@ public class Driver {
 
 	static BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
 
+	static ArrayList<Tutor> tutors = new ArrayList<Tutor>();
+	static ArrayList<Student> students = new ArrayList<Student>();
+
 	public static void main(String[] args){
 		Scheduler sh = new Scheduler();
-		ArrayList<Tutor> tutors = new ArrayList<Tutor>();
-		ArrayList<Student> students = new ArrayList<Students>();
 
 		boolean running = true;
 
@@ -38,6 +39,16 @@ public class Driver {
 				running = false;
 				break;
 			}
+
+		System.out.print("Current Tutors: ");
+		if(tutors.isEmpty()){
+			System.out.println("None");	
+		} else {
+			for(Tutor t : tutors) {
+				System.out.print(t + ", ");	
+			}	
+		}
+
 		}
 
 	}
@@ -56,6 +67,11 @@ public class Driver {
 		System.out.print("    Day:");
 		day = getInt();
 		
+		if(day == 0) {
+			System.out.println("\nCancelling 'Schedule tutor'");
+			return;
+		}
+		
 		System.out.println("\n What time do you want to start?");
 		System.out.println("1. 10:00");
 		System.out.println("2. 12:00");
@@ -65,33 +81,67 @@ public class Driver {
 		System.out.print("    Time: ");
 		time = getInt();
 		
+		if(time == 0) {
+			System.out.println("\nCancelling 'Schedule tutor'");
+			return;
+		}	
+
 		if(day >= 1 && day <= 5 && time >= 1 && time <= 4) {
 			switch(time) {
-			case 1: time = 1000; break;
-			case 2: time = 1200; break;
-			case 3: time = 1400; break;
-			case 4: time = 1600; break;
-			default: time = -1; break;
+				case 1: time = 1000; break;
+				case 2: time = 1200; break;
+				case 3: time = 1400; break;
+				case 4: time = 1600; break;
+				default: time = -1; break; //not needed
 			}
 
+			
 
 			//TODO: Add existing tutor or make new tutor
 
 			if(scheduler.checkBlockAvailablity(intToDay(day), time)) {
-				System.out.print("Enter tutor's name: ");
-				String name = getString();
-				System.out.print("Enter tutor's year: ");
-				String year = getString();
-				Tutor t = new Tutor(name, year);
-				tutors.add(t);
-				scheduler.scheduleTutor(t, intToDay(day), time);
+
+
+				System.out.print("Do you want to add a previously added tutor? (y/N) ");
+				if(getString().trim().toUpperCase().equals("Y")){
+					System.out.println("Please select the tutor");
+					displayTutors();
+					System.out.print("Enter your selection: ");
+					int option = getInt();
+					if(option == 0) {
+						System.out.println("Cancelling 'Schedule tutor'");	
+					} else if(option > 0 && option <= tutors.size()) {
+						scheduler.scheduleTutor(tutors.get(option - 1), intToDay(day), time);
+					} else {
+						System.out.println("Error: Invalid option");	
+					}
+
+				} else {
+					System.out.println("Adding a new tutor.");
+					System.out.print("Enter tutor's name: ");
+					String name = getString();
+	
+					System.out.print("Enter tutor's year: ");
+					String year = getString();
+
+					Tutor t = new Tutor(name, year);
+					tutors.add(t);
+					scheduler.scheduleTutor(t, intToDay(day), time);
+				}
 			} else {
 				System.out.println("Block not available");
 			}
 		} else {
-			System.out.println("Tutor not added");
+			System.out.println("Invalid time or day! Tutor not added!");
 		}
 		
+	}
+
+	public static void displayTutors() {
+		System.out.println("0. Cancel");
+		for(int i = 1; i <= tutors.size(); i++) {
+			System.out.println(i + ". " + tutors.get(i-1));
+		}	
 	}
 
 	public static int getInt(){
