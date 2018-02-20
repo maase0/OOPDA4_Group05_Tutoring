@@ -16,5 +16,9 @@ public class Tutor {
 	public String getYear() {
 		return year;
 	}
+	
+	public String toString() {
+		return name;
+	}
 
 }
