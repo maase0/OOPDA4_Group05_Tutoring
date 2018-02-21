@@ -1,17 +1,14 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.io.*;
 
 public class Driver {
 
 	static BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
 
-	static ArrayList<Tutor> tutors = new ArrayList<Tutor>();
-	static ArrayList<Student> students = new ArrayList<Student>();
-
-	public static void main(String[] args){
+	public static void main(String[] args) throws IOException {
 		Scheduler sh = new Scheduler();
+		ArrayList<Tutor> tutors = new ArrayList<Tutor>();
+		ArrayList<Student> students = new ArrayList<Student>();
 
 		boolean running = true;
 
@@ -24,13 +21,17 @@ public class Driver {
 			switch (option) {
 
 			case 1:
-				scheduleTutor(sh);
+				scheduleTutor(sh, tutors);
 				break;
 
 			case 2:
 				System.out.println(sh.toString());
 				break;
 
+			case 3:
+				saveSchedule(sh, tutors, students);
+				break;
+				
 			default:
 				System.out.println("Something went very wrong ...");
 
@@ -53,7 +54,21 @@ public class Driver {
 
 	}
 
-	public static void scheduleTutor(Scheduler scheduler) {
+	public static void saveSchedule(Scheduler sh, ArrayList<Tutor> tutors, ArrayList<Student> students) throws IOException {
+		File file = new File("schedule.dat");
+		ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(file));
+
+		os.writeObject(sh);
+		os.writeObject(tutors);
+		os.writeObject(students);
+	
+		os.close();
+	}
+	public static void loadSchedule(Scheduler sh, ArrayList<Tutor> tutors, ArrayList<Student> students) {
+	
+	}
+
+	public static void scheduleTutor(Scheduler scheduler, ArrayList<Tutor> tutors) {
 		int day;
 		int time;
 		
@@ -105,7 +120,7 @@ public class Driver {
 				System.out.print("Do you want to add a previously added tutor? (y/N) ");
 				if(getString().trim().toUpperCase().equals("Y")){
 					System.out.println("Please select the tutor");
-					displayTutors();
+					displayTutors(tutors);
 					System.out.print("Enter your selection: ");
 					int option = getInt();
 					if(option == 0) {
@@ -137,7 +152,7 @@ public class Driver {
 		
 	}
 
-	public static void displayTutors() {
+	public static void displayTutors(ArrayList<Tutor> tutors) {
 		System.out.println("0. Cancel");
 		for(int i = 1; i <= tutors.size(); i++) {
 			System.out.println(i + ". " + tutors.get(i-1));

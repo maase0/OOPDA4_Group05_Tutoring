@@ -1,7 +1,8 @@
 import java.util.Arrays;
 import java.util.ArrayList;
+import java.io.Serializable;
 
-public class Scheduler {
+public class Scheduler implements Serializable {
 
 	public static final int DAYS = 5;
 	public static final int BLOCK_LENGTH = 15;
