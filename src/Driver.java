@@ -29,7 +29,11 @@ public class Driver {
 				break;
 
 			case 3:
-				saveSchedule(sh, tutors, students);
+				saveSchedule("schedule.dat", sh, tutors, students);
+				break;
+
+			case 4:
+				loadSchedule("schedule.dat", sh, tutors, students);
 				break;
 				
 			default:
@@ -54,17 +58,30 @@ public class Driver {
 
 	}
 
-	public static void saveSchedule(Scheduler sh, ArrayList<Tutor> tutors, ArrayList<Student> students) throws IOException {
-		File file = new File("schedule.dat");
-		ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(file));
+	public static void saveSchedule(String filename, Scheduler sh, ArrayList<Tutor> tutors, ArrayList<Student> students) throws IOException {
+		try{
+			File file = new File("schedule.dat");
+			ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(file));
 
-		os.writeObject(sh);
-		os.writeObject(tutors);
-		os.writeObject(students);
+			os.writeObject(sh);
+			os.writeObject(tutors);
+			os.writeObject(students);
 	
-		os.close();
+			os.close();
+		} catch(Exception e) {
+			System.out.println("NO");	
+		}
 	}
-	public static void loadSchedule(Scheduler sh, ArrayList<Tutor> tutors, ArrayList<Student> students) {
+	public static void loadSchedule(String filename, Scheduler sh, ArrayList<Tutor> tutors, ArrayList<Student> students) throws IOException{
+		try{
+			ObjectInputStream is = new ObjectInputStream(new FileInputStream(filename));
+
+			sh = (Scheduler) is.readObject(); //Won't work
+			tutors = (ArrayList<Tutor>) is.readObject();
+			students = (ArrayList<Student>) is.readObject();
+		} catch(Exception e) {
+			System.out.println("NO");	
+		}
 	
 	}
 
