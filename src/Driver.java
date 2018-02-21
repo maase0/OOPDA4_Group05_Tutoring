@@ -77,8 +77,8 @@ public class Driver {
 			ObjectInputStream is = new ObjectInputStream(new FileInputStream(filename));
 
 			sh = (Scheduler) is.readObject(); //Won't work
-			tutors = (ArrayList<Tutor>) is.readObject();
-			students = (ArrayList<Student>) is.readObject();
+			tutors = (ArrayList<Tutor>) is.readObject(); //reassigns local objects
+			students = (ArrayList<Student>) is.readObject(); //not the ones in main
 		} catch(Exception e) {
 			System.out.println("NO");	
 		}
