@@ -11,14 +11,15 @@ public class GUI extends Frame{
 	private Button button;
 	
 	public GUI() {
-		int c = 6;
-		int r = 33;
+		//int c = 6;
+		//int r = 33;
 		
 		setLayout(new GridLayout(0, 6));
 		setTitle("Test Title");
 
 		
 		add(new Label(""));
+		//add(new Button("Quit"));
 		add(new Label("Monday"));
 		add(new Label("Tuesday"));
 		add(new Label("Wednesday"));

@@ -77,6 +77,7 @@ public class Driver {
 		}
 		return value.trim().toUpperCase();
 	}
+
 	public static void printOptions() {
 
 		System.out.println("1. Schedule tutor");
