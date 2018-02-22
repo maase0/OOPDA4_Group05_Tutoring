@@ -28,7 +28,6 @@ public class GUI extends Frame{
 		for(int i = 1000; i < 1600; i += 100) {
 			for(int j = 0; j < 60; j += 15) {
 				add(new Label((i + j) + ""));
-				System.out.println(i + j);
 				for(int x = 0; x < 5; x++) {
 					add(new Label("PEOPLE"));
 				}
