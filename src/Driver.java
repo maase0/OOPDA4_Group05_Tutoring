@@ -86,18 +86,4 @@ public class Driver {
 
 	}
 	
-	public static Day intToDay(int day) {
-		Day d;
-		switch(day) {
-		case 1: d = Day.MONDAY; break;
-		case 2: d = Day.TUESDAY; break;
-		case 3: d = Day.WEDNESDAY; break;
-		case 4: d = Day.THURSDAY; break;
-		case 5: d = Day.FRIDAY; break;
-		default: d = Day.INVALID; break;
-		}
-		
-		return d;
-	}
-
 }
