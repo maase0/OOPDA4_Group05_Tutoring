@@ -36,12 +36,6 @@ public class GUI extends Frame{
 		}
 		
 		
-		
-		
-		
-		
-		
-		
 		setVisible(true);
 	}
 	
