@@ -1,17 +1,14 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.io.*;
 
 public class Driver {
 
 	static BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
-
+	static Scheduler sh = new Scheduler();
 	static ArrayList<Tutor> tutors = new ArrayList<Tutor>();
 	static ArrayList<Student> students = new ArrayList<Student>();
 
-	public static void main(String[] args){
-		Scheduler sh = new Scheduler();
+	public static void main(String[] args) throws IOException {
 
 		boolean running = true;
 
@@ -24,13 +21,21 @@ public class Driver {
 			switch (option) {
 
 			case 1:
-				scheduleTutor(sh);
+				scheduleTutor();
 				break;
 
 			case 2:
 				System.out.println(sh.toString());
 				break;
 
+			case 3:
+				saveSchedule("schedule.dat");
+				break;
+
+			case 4:
+				loadSchedule("schedule.dat");
+				break;
+				
 			default:
 				System.out.println("Something went very wrong ...");
 
@@ -53,7 +58,34 @@ public class Driver {
 
 	}
 
-	public static void scheduleTutor(Scheduler scheduler) {
+	public static void saveSchedule(String filename) throws IOException {
+		try{
+			File file = new File("schedule.dat");
+			ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(file));
+
+			os.writeObject(sh);
+			os.writeObject(tutors);
+			os.writeObject(students);
+	
+			os.close();
+		} catch(Exception e) {
+			System.out.println("NO");	
+		}
+	}
+	public static void loadSchedule(String filename) throws IOException{
+		try{
+			ObjectInputStream is = new ObjectInputStream(new FileInputStream(filename));
+
+			sh = (Scheduler) is.readObject(); 
+			tutors = (ArrayList<Tutor>) is.readObject(); 
+			students = (ArrayList<Student>) is.readObject(); 
+		} catch(Exception e) {
+			System.out.println("NO");	
+		}
+	
+	}
+
+	public static void scheduleTutor() {
 		int day;
 		int time;
 		
@@ -99,7 +131,7 @@ public class Driver {
 
 			//TODO: Add existing tutor or make new tutor
 
-			if(scheduler.checkBlockAvailablity(intToDay(day), time)) {
+			if(sh.checkBlockAvailablity(intToDay(day), time)) {
 
 
 				System.out.print("Do you want to add a previously added tutor? (y/N) ");
@@ -108,10 +140,11 @@ public class Driver {
 					displayTutors();
 					System.out.print("Enter your selection: ");
 					int option = getInt();
+
 					if(option == 0) {
 						System.out.println("Cancelling 'Schedule tutor'");	
 					} else if(option > 0 && option <= tutors.size()) {
-						scheduler.scheduleTutor(tutors.get(option - 1), intToDay(day), time);
+						sh.scheduleTutor(tutors.get(option - 1), intToDay(day), time);
 					} else {
 						System.out.println("Error: Invalid option");	
 					}
@@ -126,7 +159,7 @@ public class Driver {
 
 					Tutor t = new Tutor(name, year);
 					tutors.add(t);
-					scheduler.scheduleTutor(t, intToDay(day), time);
+					sh.scheduleTutor(t, intToDay(day), time);
 				}
 			} else {
 				System.out.println("Block not available");

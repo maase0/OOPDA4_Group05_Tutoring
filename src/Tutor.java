@@ -1,5 +1,6 @@
+import java.io.Serializable;
 
-public class Tutor {
+public class Tutor implements Serializable {
 	
 	private String name;
 	private String year;
