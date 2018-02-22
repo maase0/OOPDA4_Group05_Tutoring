@@ -4,11 +4,11 @@ import java.io.*;
 public class Driver {
 
 	static BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
+	static Scheduler sh = new Scheduler();
+	static ArrayList<Tutor> tutors = new ArrayList<Tutor>();
+	static ArrayList<Student> students = new ArrayList<Student>();
 
 	public static void main(String[] args) throws IOException {
-		Scheduler sh = new Scheduler();
-		ArrayList<Tutor> tutors = new ArrayList<Tutor>();
-		ArrayList<Student> students = new ArrayList<Student>();
 
 		boolean running = true;
 
@@ -21,7 +21,7 @@ public class Driver {
 			switch (option) {
 
 			case 1:
-				scheduleTutor(sh, tutors);
+				scheduleTutor();
 				break;
 
 			case 2:
@@ -29,11 +29,11 @@ public class Driver {
 				break;
 
 			case 3:
-				saveSchedule("schedule.dat", sh, tutors, students);
+				saveSchedule("schedule.dat");
 				break;
 
 			case 4:
-				loadSchedule("schedule.dat", sh, tutors, students);
+				loadSchedule("schedule.dat");
 				break;
 				
 			default:
@@ -58,7 +58,7 @@ public class Driver {
 
 	}
 
-	public static void saveSchedule(String filename, Scheduler sh, ArrayList<Tutor> tutors, ArrayList<Student> students) throws IOException {
+	public static void saveSchedule(String filename) throws IOException {
 		try{
 			File file = new File("schedule.dat");
 			ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(file));
@@ -72,20 +72,20 @@ public class Driver {
 			System.out.println("NO");	
 		}
 	}
-	public static void loadSchedule(String filename, Scheduler sh, ArrayList<Tutor> tutors, ArrayList<Student> students) throws IOException{
+	public static void loadSchedule(String filename) throws IOException{
 		try{
 			ObjectInputStream is = new ObjectInputStream(new FileInputStream(filename));
 
-			sh = (Scheduler) is.readObject(); //Won't work
-			tutors = (ArrayList<Tutor>) is.readObject(); //reassigns local objects
-			students = (ArrayList<Student>) is.readObject(); //not the ones in main
+			sh = (Scheduler) is.readObject(); 
+			tutors = (ArrayList<Tutor>) is.readObject(); 
+			students = (ArrayList<Student>) is.readObject(); 
 		} catch(Exception e) {
 			System.out.println("NO");	
 		}
 	
 	}
 
-	public static void scheduleTutor(Scheduler scheduler, ArrayList<Tutor> tutors) {
+	public static void scheduleTutor() {
 		int day;
 		int time;
 		
@@ -131,19 +131,20 @@ public class Driver {
 
 			//TODO: Add existing tutor or make new tutor
 
-			if(scheduler.checkBlockAvailablity(intToDay(day), time)) {
+			if(sh.checkBlockAvailablity(intToDay(day), time)) {
 
 
 				System.out.print("Do you want to add a previously added tutor? (y/N) ");
 				if(getString().trim().toUpperCase().equals("Y")){
 					System.out.println("Please select the tutor");
-					displayTutors(tutors);
+					displayTutors();
 					System.out.print("Enter your selection: ");
 					int option = getInt();
+
 					if(option == 0) {
 						System.out.println("Cancelling 'Schedule tutor'");	
 					} else if(option > 0 && option <= tutors.size()) {
-						scheduler.scheduleTutor(tutors.get(option - 1), intToDay(day), time);
+						sh.scheduleTutor(tutors.get(option - 1), intToDay(day), time);
 					} else {
 						System.out.println("Error: Invalid option");	
 					}
@@ -158,7 +159,7 @@ public class Driver {
 
 					Tutor t = new Tutor(name, year);
 					tutors.add(t);
-					scheduler.scheduleTutor(t, intToDay(day), time);
+					sh.scheduleTutor(t, intToDay(day), time);
 				}
 			} else {
 				System.out.println("Block not available");
@@ -169,7 +170,7 @@ public class Driver {
 		
 	}
 
-	public static void displayTutors(ArrayList<Tutor> tutors) {
+	public static void displayTutors() {
 		System.out.println("0. Cancel");
 		for(int i = 1; i <= tutors.size(); i++) {
 			System.out.println(i + ". " + tutors.get(i-1));
