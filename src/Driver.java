@@ -38,6 +38,7 @@ public class Driver {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public static void loadSchedule(String filename) throws IOException{
 		try{
 			ObjectInputStream is = new ObjectInputStream(new FileInputStream(filename));
