@@ -20,7 +20,7 @@ public class Scheduler implements Serializable {
 	 * 
 	 * @return The schedule
 	 */
-	private Pair[][] getSchedule() {
+	public Pair[][] getSchedule() {
 		return schedule;
 	}
 
