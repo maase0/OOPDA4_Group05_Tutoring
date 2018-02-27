@@ -17,12 +17,8 @@ public class GUI extends Frame{
 		setTitle("Test Title");
 
 		quit = new Button("Quit");
-		quit.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e)
-			{
-				dispose();	
-			}
-		});
+		//quit.addActionListener((ActionEvent ev) -> dispose());
+		quit.addActionListener(e -> dispose());
 		
 		add(quit);
 		//add(new Label(""));
@@ -38,16 +34,17 @@ public class GUI extends Frame{
 			for(int j = 0; j < 60; j += 15) {
 				add(new Label((i + j) + ""));
 				for(int x = 0; x < 5; x++) {
-					add(new Label(schedule[x][count].getTutor() + ": " + schedule[x][count].getStudent()));
+					add(new Label(schedule[x][count].getTutor() + ": " + 
+					    schedule[x][count].getStudent()));
 				}
 				count++;
 			}
 		}
+		pack();
 		
 		
 		setVisible(true);
-	}
-	
+	}	
 	
 	
 }
