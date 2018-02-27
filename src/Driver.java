@@ -11,7 +11,11 @@ public class Driver {
 	public static void main(String[] args) throws IOException {
 
 		boolean running = true;
-		GUI gui = new GUI();
+
+
+		loadSchedule("schedule.dat");
+
+		GUI gui = new GUI(sh.getSchedule());
 
 		while (running) {
 
@@ -34,10 +38,11 @@ public class Driver {
 	
 			os.close();
 		} catch(Exception e) {
-			System.out.println("NO");	
+			System.out.println(e.getStackTrace());
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public static void loadSchedule(String filename) throws IOException{
 		try{
 			ObjectInputStream is = new ObjectInputStream(new FileInputStream(filename));
@@ -46,7 +51,7 @@ public class Driver {
 			tutors = (ArrayList<Tutor>) is.readObject(); 
 			students = (ArrayList<Student>) is.readObject(); 
 		} catch(Exception e) {
-			System.out.println("NO");	
+			System.out.println(e);
 		}
 	
 	}
