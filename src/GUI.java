@@ -1,24 +1,31 @@
-import java.awt.Button;
-import java.awt.FlowLayout;
-import java.awt.Frame;
-import java.awt.GridLayout;
-import java.awt.Label;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
 
 
 public class GUI extends Frame{
 
 	private Label label;
-	private Button button;
+	private Button quit;
 	
 	public GUI(Pair[][] schedule) {
 		//int c = 6;
 		//int r = 33;
 		
+		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(new GridLayout(0, 6));
 		setTitle("Test Title");
 
+		quit = new Button("Quit");
+		quit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e)
+			{
+				dispose();	
+			}
+		});
 		
-		add(new Label(""));
+		add(quit);
+		//add(new Label(""));
 		//add(new Button("Quit"));
 		add(new Label("Monday"));
 		add(new Label("Tuesday"));
