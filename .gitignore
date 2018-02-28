@@ -5,3 +5,4 @@ CommitMessage
 *.dat
 .classpath
 .project
+.settings
