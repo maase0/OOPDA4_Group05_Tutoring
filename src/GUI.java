@@ -3,16 +3,13 @@ import java.awt.event.*;
 import javax.swing.*;
 
 
-public class GUI extends Frame{
+public class GUI extends JFrame{
 
-	private Label label;
 	private Button quit;
 	
 	public GUI(Pair[][] schedule) {
-		//int c = 6;
-		//int r = 33;
 		
-		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(new GridLayout(0, 6));
 		setTitle("Test Title");
 
