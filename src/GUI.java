@@ -64,13 +64,13 @@ public class GUI{
 		try
 		{
 			File file = new File(fileName);	
-			ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(file));
+			ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file));
 
-			os.writeObject(scheduler);
+			oos.writeObject(scheduler);
 
 			System.out.println("File successfully saved to " + fileName);
 
-			os.close();
+			oos.close();
 		}
 		catch(IOException e)
 		{
@@ -93,6 +93,10 @@ public class GUI{
 				fileName = chooser.getSelectedFile().getAbsolutePath();
 				save();
 			}
+			else
+			{
+				System.out.println("Error: Invalid file"); //TODO: Add poput
+			}
 		}
 		catch(Exception e)
 		{
@@ -103,6 +107,37 @@ public class GUI{
 
 	private void open()
 	{
+		try
+		{
+
+			JFileChooser chooser = new JFileChooser("../save/");
+			FileNameExtensionFilter filter = new FileNameExtensionFilter(
+				"Save files", "sav");
+			chooser.setFileFilter(filter);
+			int returnValue = chooser.showOpenDialog(frame);
+			if(returnValue == JFileChooser.APPROVE_OPTION)
+			{
+				fileName = chooser.getSelectedFile().getAbsolutePath();
+				File file = new File(fileName);
+
+				ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fileName));
+				scheduler = (Scheduler) ois.readObject();
+			}
+			else
+			{
+				System.out.println("Error: Invalid file"); //TODO: Add popup
+			}
+		}
+		catch(ClassNotFoundException e)
+		{
+			System.out.println("Error: Error on open");
+			System.out.println(e);
+		}
+		catch(IOException e)
+		{
+			System.out.println("Error: Corrupt or invalid save file!");
+			System.out.println(e);
+		}
 	
 	}
 
