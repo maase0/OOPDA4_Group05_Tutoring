@@ -122,6 +122,9 @@ public class GUI{
 
 				ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fileName));
 				scheduler = (Scheduler) ois.readObject();
+
+
+				System.out.println("Successfully opened " + fileName);
 			}
 			else
 			{
