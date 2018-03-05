@@ -1,72 +1,169 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import java.io.*;
+import javax.swing.filechooser.FileNameExtensionFilter; 
 
 
-public class GUI extends JFrame{
+public class GUI{
 
-	private JButton quit;
-	private JButton switchButtonSV;
-	private JButton switchButtonTest;
-	private JPanel sv; //the schedule view
-	private JPanel test;
-	boolean view = true;
+	//Frame components
+	private JFrame frame;
+	private BorderLayout layout;
+
+	//Menu Components
+	private JMenuBar menuBar;
+	
+	private JMenu fileMenu;
+	private JMenuItem openItem;
+	private JMenuItem saveItem;
+	private JMenuItem saveAsItem;
+	private JMenuItem quitItem;
+
+	private JMenu helpMenu;
+	private JMenuItem aboutItem;
+	private JMenuItem helpItem;
+
+	private Container scheduleView;
+
+
+	private Scheduler scheduler;
+	
+	private String fileName;
+
 	
 	
-	public GUI(Pair[][] schedule) {
+	public GUI(Scheduler scheduler) {
+		this.scheduler = scheduler;
+		fileName = System.getProperty("user.dir") + "schedule.sav";
 		
-		setTitle("Schedule View");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame = new JFrame("Group 5 Tutoring Scheduler");
 
-		quit = new JButton("Quit");
-		switchButtonSV = new JButton("Switch");
-		switchButtonTest = new JButton("Switch");
+		layout = new BorderLayout();
 
-		quit.addActionListener(e -> dispose());
+		makeMenu();	
 
-		switchButtonSV.addActionListener(e -> {setContentPane(test); pack();});
-		switchButtonTest.addActionListener(e -> {setContentPane(sv); pack();});
+		makeScheduleView();
 
 
-			
-		sv = new JPanel(new GridLayout(0, 6));
-		sv.add(switchButtonSV);
-		sv.add(quit);
-	//	addScheduleView(schedule);
 
-		test = new JPanel(new GridLayout(0, 6));
-		test.add(switchButtonTest);
-
-
-		
-		setContentPane(sv);
-		pack();
-		
-		
-		setVisible(true);
+		frame.setLayout(layout);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.pack();
+		frame.setVisible(true);
 	}	
 
-	private void addScheduleView(Pair[][] schedule) {
-		sv.add(quit);
-		sv.add(new Label("Monday"));
-		sv.add(new Label("Tuesday"));
-		sv.add(new Label("Wednesday"));
-		sv.add(new Label("Thursday"));
-		sv.add(new Label("Friday"));
 
-		int count = 0;
-		for(int i = 1000; i < 1600; i += 100) {
-			for(int j = 0; j < 60; j += 15) {
-				sv.add(new Label((i + j) + ""));
-				for(int x = 0; x < 5; x++) {
-					sv.add(new Label(schedule[x][count].getTutor() + ": " + 
-					    schedule[x][count].getStudent()));
-				}
-				count++;
+	private void quit()
+	{
+		frame.dispose();	
+	}
+
+	private void save()
+	{
+		try
+		{
+			File file = new File(fileName);	
+			ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(file));
+
+			os.writeObject(scheduler);
+
+			os.close();
+		}
+		catch(IOException e)
+		{
+			System.out.println("Error: Error saving file to " + fileName);
+			System.out.println(e);
+		}
+	}
+
+	private void saveAs()
+	{
+		try
+		{
+			JFileChooser chooser = new JFileChooser();
+			FileNameExtensionFilter filter = new FileNameExtensionFilter(
+				"Save files", "sav");
+			chooser.setFileFilter(filter);
+			int returnValue = chooser.showOpenDialog(frame);
+			if(returnValue == JFileChooser.APPROVE_OPTION)
+			{
+				fileName = chooser.getSelectedFile().getName();
+				save();
 			}
 		}
+		catch(Exception e)
+		{
+			System.out.println("Error: Error on save as");
+			System.out.println(e);
+		}
+	}
+
+	private void open()
+	{
 	
 	}
+
+	private void help()
+	{
 	
+	}
+
+	private void about()
+	{
 	
+	}
+
+	private void makeScheduleView()
+	{
+		scheduleView = new Container();
+
+		layout.addLayoutComponent(scheduleView, BorderLayout.CENTER);
+	}
+
+	private void makeMenu()
+	{
+		//Initialize menu components
+		menuBar = new JMenuBar();
+
+		//file menu
+		fileMenu = new JMenu("File");
+
+		openItem = new JMenuItem("Open");
+		openItem.addActionListener(e -> open());
+		fileMenu.add(openItem);
+
+		saveItem = new JMenuItem("Save");
+		saveItem.addActionListener(e -> save());
+		fileMenu.add(saveItem);
+
+		saveAsItem = new JMenuItem("Save As");
+		saveAsItem.addActionListener(e -> saveAs());
+		fileMenu.add(saveAsItem);
+
+		quitItem = new JMenuItem("Quit");
+		quitItem.addActionListener(e -> quit());
+		fileMenu.add(quitItem);
+
+		//help menu
+		helpMenu = new JMenu("Help");
+
+		helpItem = new JMenuItem("Help");
+		helpItem.addActionListener(e -> help());
+		helpMenu.add(helpItem);
+
+		aboutItem = new JMenuItem("About");
+		aboutItem.addActionListener(e -> about());
+		helpMenu.add(aboutItem);
+
+
+		//Create menu
+		menuBar.add(fileMenu);
+		menuBar.add(helpMenu);
+
+
+		frame.setJMenuBar(menuBar);
+	}
+
+
 }
