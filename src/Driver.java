@@ -12,35 +12,10 @@ public class Driver {
 
 		boolean running = true;
 
-
-		loadSchedule("schedule.dat");
-
-		GUI gui = new GUI(sh.getSchedule());
-
-		while (running) {
-
-
-
-			running = false;
-
-		}
+		GUI gui = new GUI(sh);
 
 	}
 
-	public static void saveSchedule(String filename) throws IOException {
-		try{
-			File file = new File("schedule.dat");
-			ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(file));
-
-			os.writeObject(sh);
-			os.writeObject(tutors);
-			os.writeObject(students);
-	
-			os.close();
-		} catch(Exception e) {
-			System.out.println(e.getStackTrace());
-		}
-	}
 
 	@SuppressWarnings("unchecked")
 	public static void loadSchedule(String filename) throws IOException{
