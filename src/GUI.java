@@ -35,7 +35,7 @@ public class GUI{
 	
 	public GUI(Scheduler scheduler) {
 		this.scheduler = scheduler;
-		fileName = System.getProperty("user.dir") + "schedule.sav";
+		fileName = "../save/schedule.sav";
 		
 		frame = new JFrame("Group 5 Tutoring Scheduler");
 
@@ -68,6 +68,8 @@ public class GUI{
 
 			os.writeObject(scheduler);
 
+			System.out.println("File successfully saved to " + fileName);
+
 			os.close();
 		}
 		catch(IOException e)
@@ -81,14 +83,14 @@ public class GUI{
 	{
 		try
 		{
-			JFileChooser chooser = new JFileChooser();
+			JFileChooser chooser = new JFileChooser("../save/");
 			FileNameExtensionFilter filter = new FileNameExtensionFilter(
 				"Save files", "sav");
 			chooser.setFileFilter(filter);
 			int returnValue = chooser.showOpenDialog(frame);
 			if(returnValue == JFileChooser.APPROVE_OPTION)
 			{
-				fileName = chooser.getSelectedFile().getName();
+				fileName = chooser.getSelectedFile().getAbsolutePath();
 				save();
 			}
 		}
