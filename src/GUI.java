@@ -24,7 +24,9 @@ public class GUI{
 	private JMenuItem aboutItem;
 	private JMenuItem helpItem;
 
-	private Container scheduleView;
+	//Schedule View
+	private JPanel scheduleView;
+	private JLabel[][] scheduleLabels;
 
 
 	private Scheduler scheduler;
@@ -37,18 +39,22 @@ public class GUI{
 		this.scheduler = scheduler;
 		fileName = "../save/schedule.sav";
 		
-		frame = new JFrame("Group 5 Tutoring Scheduler");
-
 		layout = new BorderLayout();
+		
+		frame = new JFrame("Group 5 Tutoring Scheduler");
+		frame.setLayout(layout);
+
+
 
 		makeMenu();	
 
 		makeScheduleView();
 
 
+		frame.add(new JButton("TEST"), BorderLayout.EAST);
 
-		frame.setLayout(layout);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
 		frame.pack();
 		frame.setVisible(true);
 	}	
@@ -59,7 +65,7 @@ public class GUI{
 		frame.dispose();	
 	}
 
-	private void save()
+	private void save() //{{{
 	{
 		try
 		{
@@ -77,9 +83,9 @@ public class GUI{
 			System.out.println("Error: Error saving file to " + fileName);
 			System.out.println(e);
 		}
-	}
-
-	private void saveAs()
+	} //}}}
+	
+	private void saveAs() //{{{
 	{
 		try
 		{
@@ -103,9 +109,9 @@ public class GUI{
 			System.out.println("Error: Error on save as");
 			System.out.println(e);
 		}
-	}
+	} //}}}
 
-	private void open()
+	private void open() //{{{
 	{
 		try
 		{
@@ -142,7 +148,7 @@ public class GUI{
 			System.out.println(e);
 		}
 	
-	}
+	} //}}}
 
 	private void help()
 	{
@@ -156,12 +162,56 @@ public class GUI{
 
 	private void makeScheduleView()
 	{
-		scheduleView = new Container();
+		scheduleView = new JPanel();
+		scheduleView.setLayout(new GridLayout(0,6));
+		//scheduleView.setLayout(new FlowLayout());
 
-		layout.addLayoutComponent(scheduleView, BorderLayout.CENTER);
+		
+		initializeScheduleView();
+		updateSchedule();
+
+		frame.add(scheduleView, BorderLayout.CENTER);
 	}
 
-	private void makeMenu()
+	private void updateSchedule()
+	{
+		scheduleView.removeAll();
+		for(int i = 0; i < 6; i ++)
+		{
+			for(int j = 0; j < 33; j++)
+			{
+				scheduleView.add(scheduleLabels[i][j]);
+			}
+		}
+	}
+	private void initializeScheduleView()
+	{
+		scheduleLabels = new JLabel[6][33];	
+		for(int i = 0; i < 6; i++)
+		{
+			for(int j = 0; j < 33; j++)
+			{
+				scheduleLabels[i][j] = new JLabel(i + ", " + j);	
+			}
+		}
+
+		scheduleLabels[1][0].setText("Monday");
+		scheduleLabels[2][0].setText("Tuesday");
+		scheduleLabels[3][0].setText("Wednesday");
+		scheduleLabels[4][0].setText("Thursday");
+		scheduleLabels[5][0].setText("Friday");
+
+		for(int i = 10, count = 1; i < 18; i+= 1)
+		{
+			for(int j = 0; j < 60; j+= 15, count++)
+			{
+				scheduleLabels[0][count].setText(i + ":" + (j == 0 ? "00" : j));
+			}
+		}
+	
+	}
+
+	private void makeMenu() ///{{{
 	{
 		//Initialize menu components
 		menuBar = new JMenuBar();
@@ -203,7 +253,7 @@ public class GUI{
 
 
 		frame.setJMenuBar(menuBar);
-	}
+	} //}}}
 
 
 }
