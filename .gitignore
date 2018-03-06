@@ -1,8 +1,12 @@
 *.class
 *.log
-/bin/
+bin/
 CommitMessage
 *.dat
 .classpath
 .project
 .settings
+save/
+log/
+*.sav
+*.log
