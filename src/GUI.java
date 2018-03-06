@@ -90,7 +90,7 @@ public class GUI{
 
 	private void switchToAddStudent()
 	{
-			
+		
 	}
 
 	private void switchToAddTutor()
