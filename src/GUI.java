@@ -31,17 +31,31 @@ public class GUI{
 
 	private Scheduler scheduler;
 	
+
+	//File name and path
 	private String fileName;
+	private String savePath;
 
 	
 	
+	/**
+	 * Creates a new scheduler GUI.
+	 *
+	 * @input scheduler The scheduler to create a gui for
+	 */
 	public GUI(Scheduler scheduler) {
+		
 		this.scheduler = scheduler;
-		fileName = "../save/schedule.sav";
+
+		//Default filename and save path
+		fileName = "schedule.sav";
+		savePath = "../save/";
 		
-		layout = new BorderLayout();
 		
+		//General frame setup
 		frame = new JFrame("Group 5 Tutoring Scheduler");
+
+		layout = new BorderLayout();
 		frame.setLayout(layout);
 
 
@@ -58,43 +72,62 @@ public class GUI{
 	}	
 
 
+	/**
+	 * Disposes the main frame, exiting the program.
+	 */
 	private void quit()
 	{
 		frame.dispose();	
 	}
 
-	private void save() //{{{
+	/**
+	 * Saves the current state of the scheduler to a file
+	 * named 'fileName' in the 'savePath' directory. 
+	 * Errors are currently printed to standard out.
+	 */
+	private void save()
 	{
 		try
 		{
-			File file = new File(fileName);	
+			
+			File file = new File(savePath + fileName);	
+
 			ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file));
 
 			oos.writeObject(scheduler);
 
-			System.out.println("File successfully saved to " + fileName);
-
+			System.out.println("File successfully saved to " + savePath + fileName);
 			oos.close();
 		}
 		catch(IOException e)
 		{
-			System.out.println("Error: Error saving file to " + fileName);
+			System.out.println("Error: Error saving file to " + savePath + fileName);
 			System.out.println(e);
 		}
-	} //}}}
+	} 
 	
-	private void saveAs() //{{{
+	/**
+	 * Creates a file chooser to select a new fileName and
+	 * savePath, the calls the save() function.
+	 */
+	private void saveAs()
 	{
 		try
 		{
-			JFileChooser chooser = new JFileChooser("../save/");
+			
+			JFileChooser chooser = new JFileChooser(savePath);
+
+			//Filters to only show .sav files
 			FileNameExtensionFilter filter = new FileNameExtensionFilter(
 				"Save files", "sav");
 			chooser.setFileFilter(filter);
-			int returnValue = chooser.showOpenDialog(frame);
+
+			int returnValue = chooser.showOpenDialog(frame); //TODO: change to showSaveDialog
 			if(returnValue == JFileChooser.APPROVE_OPTION)
 			{
-				fileName = chooser.getSelectedFile().getAbsolutePath();
+				fileName = chooser.getSelectedFile().getName(); //Get name of file
+				savePath = chooser.getSelectedFile().getParentFile().getAbsolutePath() + "/"; //get parent directory
+
 				save();
 			}
 			else
@@ -107,28 +140,36 @@ public class GUI{
 			System.out.println("Error: Error on save as");
 			System.out.println(e);
 		}
-	} //}}}
+	} 
 
-	private void open() //{{{
+	/**
+	 * Creates a file chooser to select a new filename and
+	 * savePath, then attempts to open the selected file.
+	 */
+	private void open() 
 	{
 		try
 		{
+			JFileChooser chooser = new JFileChooser(savePath);
 
-			JFileChooser chooser = new JFileChooser("../save/");
+			//Only open .sav files
 			FileNameExtensionFilter filter = new FileNameExtensionFilter(
 				"Save files", "sav");
 			chooser.setFileFilter(filter);
+
+
 			int returnValue = chooser.showOpenDialog(frame);
 			if(returnValue == JFileChooser.APPROVE_OPTION)
 			{
-				fileName = chooser.getSelectedFile().getAbsolutePath();
-				File file = new File(fileName);
+				fileName = chooser.getSelectedFile().getName(); //Get name of file
+				savePath = chooser.getSelectedFile().getParentFile().getAbsolutePath(); //get parent directory
+				File file = new File(savePath + fileName);
 
 				ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fileName));
 				scheduler = (Scheduler) ois.readObject();
 
 
-				System.out.println("Successfully opened " + fileName);
+				System.out.println("Successfully opened " + savePath + fileName);
 			}
 			else
 			{
@@ -146,18 +187,30 @@ public class GUI{
 			System.out.println(e);
 		}
 	
-	} //}}}
+	} 
 
+	/**
+	 * Creates a help popup window with instructions
+	 * on how to use the program
+	 */
 	private void help()
 	{
 	
 	}
 
+	/**
+	 * Creates an about popup window with information
+	 * about the program
+	 */
 	private void about()
 	{
 	
 	}
 
+	/**
+	 * Initailizes the schedule view of the program.
+	 * Shows all Tutor-Student pairings
+	 */
 	private void makeScheduleView()
 	{
 		scheduleView = new JPanel();
@@ -171,6 +224,10 @@ public class GUI{
 		frame.add(scheduleView, BorderLayout.CENTER);
 	}
 
+	/**
+	 * Updates the schedule view to the current
+	 * information in the scheduler
+	 */
 	private void updateSchedule()
 	{
 		scheduleView.removeAll();
@@ -182,6 +239,11 @@ public class GUI{
 			}
 		}
 	}
+
+	/**
+	 * Initailizes all of the labels used
+	 * to display information in the schedule view
+	 */
 	private void initializeScheduleView()
 	{
 		scheduleLabels = new JLabel[6][33];	
@@ -209,7 +271,10 @@ public class GUI{
 	
 	}
 
-	private void makeMenu() ///{{{
+	/**
+	 * Creates and adds components to the menu bar
+	 */
+	private void makeMenu()
 	{
 		//Initialize menu components
 		menuBar = new JMenuBar();
@@ -251,7 +316,25 @@ public class GUI{
 
 
 		frame.setJMenuBar(menuBar);
-	} //}}}
+	}
 
-
+	/**
+	 * Creates a default save directory if it
+	 * does not already exist
+	 */
+	private void makeSaveDirectory()
+	{
+		try
+		{
+			File dir = new File(savePath);
+			if(!dir.exists())
+			{
+				dir.mkdir();
+			}
+		}
+		catch(SecurityException e)
+		{
+			System.out.println(e);
+		}
+	}
 }
