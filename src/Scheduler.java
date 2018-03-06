@@ -100,12 +100,9 @@ public class Scheduler implements Serializable {
 	/**
 	 * Checks if any tutor available for a given time, day, and duration.
 	 * 
-	 * @param day
-	 *            The day to check
-	 * @param startTime
-	 *            The start time to check
-	 * @param duration
-	 *            The duration of the appointment
+	 * @param day The day to check
+	 * @param startTime The start time to check
+	 * @param duration The duration of the appointment
 	 * @return true if there is a tutor available for the given time and duration
 	 */
 	public boolean checkAvailability(int day, int startTime, int duration) {
