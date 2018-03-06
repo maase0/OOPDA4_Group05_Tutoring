@@ -30,7 +30,7 @@ public class GUI{
 	private JLabel[][] scheduleLabels;
 
 	//Scheduling panel
-	private JPanel addPanel;
+	private JPanel sidePanel;
 	private JButton addTutorButton;
 	private JButton addStudentButton;
 	private JButton quitButton;
@@ -249,23 +249,23 @@ public class GUI{
 	 */
 	private void makeAddPanel()
 	{
-		addPanel = new JPanel();
-		addPanel.setLayout(new GridLayout(0,1));
+		sidePanel = new JPanel();
+		sidePanel.setLayout(new GridLayout(0,1));
 
 		addTutorButton = new JButton("Schedule A Tutor");
 		addTutorButton.addActionListener(e -> addTutor());
-		addPanel.add(addTutorButton);
+		sidePanel.add(addTutorButton);
 
 		addStudentButton = new JButton("Schedule A Student");
 		addStudentButton.addActionListener(e -> addStudent());
-		addPanel.add(addStudentButton);
+		sidePanel.add(addStudentButton);
 
 		quitButton = new JButton("Quit");
 		quitButton.addActionListener(e -> quit());
-		addPanel.add(quitButton);
+		sidePanel.add(quitButton);
 
 		
-		frame.add(addPanel, BorderLayout.WEST);
+		frame.add(sidePanel, BorderLayout.WEST);
 	}	
 
 	/**
