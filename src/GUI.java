@@ -33,6 +33,7 @@ public class GUI{
 	private JPanel addPanel;
 	private JButton addTutorButton;
 	private JButton addStudentButton;
+	private JButton quitButton;
 
 	//Scheduler, students, and tutors
 	private Scheduler scheduler;
@@ -258,6 +259,10 @@ public class GUI{
 		addStudentButton = new JButton("Schedule A Student");
 		addStudentButton.addActionListener(e -> addStudent());
 		addPanel.add(addStudentButton);
+
+		quitButton = new JButton("Quit");
+		quitButton.addActionListener(e -> quit());
+		addPanel.add(quitButton);
 
 		
 		frame.add(addPanel, BorderLayout.WEST);
