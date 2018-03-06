@@ -3,6 +3,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import java.io.*;
 import javax.swing.filechooser.FileNameExtensionFilter; 
+import java.util.ArrayList;
 
 
 public class GUI{
@@ -28,8 +29,15 @@ public class GUI{
 	private JPanel scheduleView;
 	private JLabel[][] scheduleLabels;
 
+	//Scheduling panel
+	private JPanel addPanel;
+	private JButton addTutorButton;
+	private JButton addStudentButton;
 
+	//Scheduler, students, and tutors
 	private Scheduler scheduler;
+	private ArrayList<Student> students; //Maybe use hashmap
+	private ArrayList<Tutor> tutors;     //Lookup by student id
 	
 
 	//File name and path
@@ -64,6 +72,8 @@ public class GUI{
 
 		makeMenu();	
 
+		makeAddPanel();
+
 		makeScheduleView();
 
 
@@ -73,6 +83,29 @@ public class GUI{
 		frame.setVisible(true);
 	}	
 
+
+	//TODO TODO TODO
+	//Create new classes, TutorAdd, StudentAdd
+	//that extend JFrame and create them from these
+	//methods. Pass in the scheduler, students, and tutors
+	//fields
+	private void addStudent()
+	{
+		JFrame test = new JFrame("Test");
+		test.setLayout(new FlowLayout());
+		test.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		JButton b = new JButton("PUSH");
+		b.addActionListener(e -> test.dispose());
+		test.add(b);
+		test.pack();
+		test.setVisible(true);
+	}
+
+	private void addTutor()
+	{
+	
+	}
+	
 
 	/**
 	 * Disposes the main frame, exiting the program.
@@ -208,6 +241,27 @@ public class GUI{
 	{
 	
 	}
+
+	/**
+	 * Initailizes all of the components used to schedule
+	 * a student or tutor.
+	 */
+	private void makeAddPanel()
+	{
+		addPanel = new JPanel();
+		addPanel.setLayout(new GridLayout(0,1));
+
+		addTutorButton = new JButton("Schedule A Tutor");
+		addTutorButton.addActionListener(e -> addTutor());
+		addPanel.add(addTutorButton);
+
+		addStudentButton = new JButton("Schedule A Student");
+		addStudentButton.addActionListener(e -> addStudent());
+		addPanel.add(addStudentButton);
+
+		
+		frame.add(addPanel, BorderLayout.WEST);
+	}	
 
 	/**
 	 * Initailizes the schedule view of the program.
