@@ -31,9 +31,12 @@ public class GUI{
 
 	//Scheduling panel
 	private JPanel sidePanel;
+	private JButton scheduleViewButton;
 	private JButton addTutorButton;
 	private JButton addStudentButton;
 	private JButton quitButton;
+
+	private AddTutorPanel addTutorPanel;
 
 	//Scheduler, students, and tutors
 	private Scheduler scheduler;
@@ -69,11 +72,11 @@ public class GUI{
 		layout = new BorderLayout();
 		frame.setLayout(layout);
 
-
+		addTutorPanel = new AddTutorPanel(scheduler, tutors);
 
 		makeMenu();	
 
-		makeAddPanel();
+		makeSidePanel();
 
 		makeScheduleView();
 
@@ -85,28 +88,28 @@ public class GUI{
 	}	
 
 
-	//TODO TODO TODO
-	//Create new classes, TutorAdd, StudentAdd
-	//that extend JFrame and create them from these
-	//methods. Pass in the scheduler, students, and tutors
-	//fields
-	private void addStudent()
+	private void switchToAddStudent()
 	{
-		JFrame test = new JFrame("Test");
-		test.setLayout(new FlowLayout());
-		test.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		JButton b = new JButton("PUSH");
-		b.addActionListener(e -> test.dispose());
-		test.add(b);
-		test.pack();
-		test.setVisible(true);
+			
 	}
 
-	private void addTutor()
+	private void switchToAddTutor()
 	{
-	
+		layout.removeLayoutComponent(layout.getLayoutComponent(BorderLayout.CENTER));
+		frame.add(addTutorPanel, BorderLayout.CENTER);
+		addTutorPanel.repaint();
+		frame.validate();
 	}
 	
+
+	private void switchToScheduleView()
+	{
+		layout.removeLayoutComponent(layout.getLayoutComponent(BorderLayout.CENTER));
+		updateSchedule();
+		frame.add(scheduleView, BorderLayout.CENTER);
+		scheduleView.repaint();
+		frame.validate();
+	}
 
 	/**
 	 * Disposes the main frame, exiting the program.
@@ -247,17 +250,21 @@ public class GUI{
 	 * Initailizes all of the components used to schedule
 	 * a student or tutor.
 	 */
-	private void makeAddPanel()
+	private void makeSidePanel()
 	{
 		sidePanel = new JPanel();
-		sidePanel.setLayout(new GridLayout(0,1));
+		sidePanel.setLayout(new GridLayout(0, 1, 1, 10));
+
+		scheduleViewButton = new JButton("View Schedule");
+		scheduleViewButton.addActionListener(e -> switchToScheduleView());
+		sidePanel.add(scheduleViewButton);
 
 		addTutorButton = new JButton("Schedule A Tutor");
-		addTutorButton.addActionListener(e -> addTutor());
+		addTutorButton.addActionListener(e -> switchToAddTutor());
 		sidePanel.add(addTutorButton);
 
 		addStudentButton = new JButton("Schedule A Student");
-		addStudentButton.addActionListener(e -> addStudent());
+		addStudentButton.addActionListener(e -> switchToAddStudent());
 		sidePanel.add(addStudentButton);
 
 		quitButton = new JButton("Quit");
