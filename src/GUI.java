@@ -24,7 +24,9 @@ public class GUI{
 	private JMenuItem aboutItem;
 	private JMenuItem helpItem;
 
-	private Container scheduleView;
+	//Schedule View
+	private JPanel scheduleView;
+	private JLabel[][] scheduleLabels;
 
 
 	private Scheduler scheduler;
@@ -35,20 +37,22 @@ public class GUI{
 	
 	public GUI(Scheduler scheduler) {
 		this.scheduler = scheduler;
-		fileName = System.getProperty("user.dir") + "schedule.sav";
+		fileName = "../save/schedule.sav";
+		
+		layout = new BorderLayout();
 		
 		frame = new JFrame("Group 5 Tutoring Scheduler");
+		frame.setLayout(layout);
 
-		layout = new BorderLayout();
+
 
 		makeMenu();	
 
 		makeScheduleView();
 
 
-
-		frame.setLayout(layout);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
 		frame.pack();
 		frame.setVisible(true);
 	}	
@@ -59,37 +63,43 @@ public class GUI{
 		frame.dispose();	
 	}
 
-	private void save()
+	private void save() //{{{
 	{
 		try
 		{
 			File file = new File(fileName);	
-			ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(file));
+			ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file));
 
-			os.writeObject(scheduler);
+			oos.writeObject(scheduler);
 
-			os.close();
+			System.out.println("File successfully saved to " + fileName);
+
+			oos.close();
 		}
 		catch(IOException e)
 		{
 			System.out.println("Error: Error saving file to " + fileName);
 			System.out.println(e);
 		}
-	}
-
-	private void saveAs()
+	} //}}}
+	
+	private void saveAs() //{{{
 	{
 		try
 		{
-			JFileChooser chooser = new JFileChooser();
+			JFileChooser chooser = new JFileChooser("../save/");
 			FileNameExtensionFilter filter = new FileNameExtensionFilter(
 				"Save files", "sav");
 			chooser.setFileFilter(filter);
 			int returnValue = chooser.showOpenDialog(frame);
 			if(returnValue == JFileChooser.APPROVE_OPTION)
 			{
-				fileName = chooser.getSelectedFile().getName();
+				fileName = chooser.getSelectedFile().getAbsolutePath();
 				save();
+			}
+			else
+			{
+				System.out.println("Error: Invalid file"); //TODO: Add poput
 			}
 		}
 		catch(Exception e)
@@ -97,12 +107,46 @@ public class GUI{
 			System.out.println("Error: Error on save as");
 			System.out.println(e);
 		}
-	}
+	} //}}}
 
-	private void open()
+	private void open() //{{{
 	{
+		try
+		{
+
+			JFileChooser chooser = new JFileChooser("../save/");
+			FileNameExtensionFilter filter = new FileNameExtensionFilter(
+				"Save files", "sav");
+			chooser.setFileFilter(filter);
+			int returnValue = chooser.showOpenDialog(frame);
+			if(returnValue == JFileChooser.APPROVE_OPTION)
+			{
+				fileName = chooser.getSelectedFile().getAbsolutePath();
+				File file = new File(fileName);
+
+				ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fileName));
+				scheduler = (Scheduler) ois.readObject();
+
+
+				System.out.println("Successfully opened " + fileName);
+			}
+			else
+			{
+				System.out.println("Error: Invalid file"); //TODO: Add popup
+			}
+		}
+		catch(ClassNotFoundException e)
+		{
+			System.out.println("Error: Error on open");
+			System.out.println(e);
+		}
+		catch(IOException e)
+		{
+			System.out.println("Error: Corrupt or invalid save file!");
+			System.out.println(e);
+		}
 	
-	}
+	} //}}}
 
 	private void help()
 	{
@@ -116,12 +160,56 @@ public class GUI{
 
 	private void makeScheduleView()
 	{
-		scheduleView = new Container();
+		scheduleView = new JPanel();
+		scheduleView.setLayout(new GridLayout(0,6));
+		//scheduleView.setLayout(new FlowLayout());
 
-		layout.addLayoutComponent(scheduleView, BorderLayout.CENTER);
+		
+		initializeScheduleView();
+		updateSchedule();
+
+		frame.add(scheduleView, BorderLayout.CENTER);
 	}
 
-	private void makeMenu()
+	private void updateSchedule()
+	{
+		scheduleView.removeAll();
+		for(int i = 0; i < 33; i ++)
+		{
+			for(int j = 0; j < 6; j++)
+			{
+				scheduleView.add(scheduleLabels[j][i]);
+			}
+		}
+	}
+	private void initializeScheduleView()
+	{
+		scheduleLabels = new JLabel[6][33];	
+		for(int i = 0; i < 6; i++)
+		{
+			for(int j = 0; j < 33; j++)
+			{
+				scheduleLabels[i][j] = new JLabel(i + ", " + j);	
+			}
+		}
+
+		scheduleLabels[1][0].setText("Monday");
+		scheduleLabels[2][0].setText("Tuesday");
+		scheduleLabels[3][0].setText("Wednesday");
+		scheduleLabels[4][0].setText("Thursday");
+		scheduleLabels[5][0].setText("Friday");
+
+		for(int i = 10, count = 1; i < 18; i+= 1)
+		{
+			for(int j = 0; j < 60; j+= 15, count++)
+			{
+				scheduleLabels[0][count].setText(i + ":" + (j == 0 ? "00" : j));
+			}
+		}
+	
+	}
+
+	private void makeMenu() ///{{{
 	{
 		//Initialize menu components
 		menuBar = new JMenuBar();
@@ -163,7 +251,7 @@ public class GUI{
 
 
 		frame.setJMenuBar(menuBar);
-	}
+	} //}}}
 
 
 }
