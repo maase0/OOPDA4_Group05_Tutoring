@@ -32,12 +32,15 @@ public class GUI{
 	private Scheduler scheduler;
 	
 	private String fileName;
+	private String savePath;
 
 	
 	
 	public GUI(Scheduler scheduler) {
+		
 		this.scheduler = scheduler;
-		fileName = "../save/schedule.sav";
+		fileName = "schedule.sav";
+		savePath = "../save/";
 		
 		layout = new BorderLayout();
 		
@@ -63,38 +66,41 @@ public class GUI{
 		frame.dispose();	
 	}
 
-	private void save() //{{{
+	private void save()
 	{
 		try
 		{
-			File file = new File(fileName);	
+			
+			File file = new File(savePath + fileName);	
+
 			ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file));
 
 			oos.writeObject(scheduler);
 
-			System.out.println("File successfully saved to " + fileName);
-
-			oos.close();
+			System.out.println("File successfully saved to " + savePath + fileName);
+oos.close();
 		}
 		catch(IOException e)
 		{
-			System.out.println("Error: Error saving file to " + fileName);
+			System.out.println("Error: Error saving file to " + savePath + fileName);
 			System.out.println(e);
 		}
-	} //}}}
+	} 
 	
-	private void saveAs() //{{{
+	private void saveAs()
 	{
 		try
 		{
-			JFileChooser chooser = new JFileChooser("../save/");
+			JFileChooser chooser = new JFileChooser(savePath);
 			FileNameExtensionFilter filter = new FileNameExtensionFilter(
 				"Save files", "sav");
 			chooser.setFileFilter(filter);
 			int returnValue = chooser.showOpenDialog(frame);
 			if(returnValue == JFileChooser.APPROVE_OPTION)
 			{
-				fileName = chooser.getSelectedFile().getAbsolutePath();
+				fileName = chooser.getSelectedFile().getName(); //Get name of file
+				savePath = chooser.getSelectedFile().getParentFile().getAbsolutePath() + "/"; //get parent directory
+
 				save();
 			}
 			else
@@ -107,28 +113,29 @@ public class GUI{
 			System.out.println("Error: Error on save as");
 			System.out.println(e);
 		}
-	} //}}}
+	} 
 
-	private void open() //{{{
+	private void open() 
 	{
 		try
 		{
 
-			JFileChooser chooser = new JFileChooser("../save/");
+			JFileChooser chooser = new JFileChooser(savePath);
 			FileNameExtensionFilter filter = new FileNameExtensionFilter(
 				"Save files", "sav");
 			chooser.setFileFilter(filter);
 			int returnValue = chooser.showOpenDialog(frame);
 			if(returnValue == JFileChooser.APPROVE_OPTION)
 			{
-				fileName = chooser.getSelectedFile().getAbsolutePath();
-				File file = new File(fileName);
+				fileName = chooser.getSelectedFile().getName(); //Get name of file
+				savePath = chooser.getSelectedFile().getParentFile().getAbsolutePath(); //get parent directory
+				File file = new File(savePath + fileName);
 
 				ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fileName));
 				scheduler = (Scheduler) ois.readObject();
 
 
-				System.out.println("Successfully opened " + fileName);
+				System.out.println("Successfully opened " + savePath + fileName);
 			}
 			else
 			{
@@ -146,7 +153,7 @@ public class GUI{
 			System.out.println(e);
 		}
 	
-	} //}}}
+	} 
 
 	private void help()
 	{
@@ -209,7 +216,7 @@ public class GUI{
 	
 	}
 
-	private void makeMenu() ///{{{
+	private void makeMenu()
 	{
 		//Initialize menu components
 		menuBar = new JMenuBar();
@@ -251,7 +258,23 @@ public class GUI{
 
 
 		frame.setJMenuBar(menuBar);
-	} //}}}
+	}
+
+	private void makeSaveDirectory()
+	{
+		try
+		{
+			File dir = new File(savePath);
+			if(!dir.exists())
+			{
+				dir.mkdir();
+			}
+		}
+		catch(SecurityException e)
+		{
+			System.out.println(e);
+		}
+	}
 
 
 }
