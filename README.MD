@@ -8,3 +8,4 @@ A GUI java program to schedule students and tutors for one week of tutoring.
 - Add way to schedule students
 - Add tracking to see if program is currently saved
 - Make better display for appointments
+- Add logging to track program (operation, time, date, etc)
