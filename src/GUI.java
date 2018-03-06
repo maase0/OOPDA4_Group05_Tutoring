@@ -45,11 +45,13 @@ public class GUI{
 	 */
 	public GUI(Scheduler scheduler) {
 		
+
 		this.scheduler = scheduler;
 
 		//Default filename and save path
 		fileName = "schedule.sav";
 		savePath = "../save/";
+		makeSaveDirectory();
 		
 		
 		//General frame setup
@@ -335,6 +337,10 @@ public class GUI{
 		catch(SecurityException e)
 		{
 			System.out.println(e);
+		}
+		catch(Exception e)
+		{
+			System.out.println(e);	
 		}
 	}
 }
