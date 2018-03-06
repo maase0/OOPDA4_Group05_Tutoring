@@ -51,8 +51,6 @@ public class GUI{
 		makeScheduleView();
 
 
-		frame.add(new JButton("TEST"), BorderLayout.EAST);
-
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		frame.pack();
@@ -176,11 +174,11 @@ public class GUI{
 	private void updateSchedule()
 	{
 		scheduleView.removeAll();
-		for(int i = 0; i < 6; i ++)
+		for(int i = 0; i < 33; i ++)
 		{
-			for(int j = 0; j < 33; j++)
+			for(int j = 0; j < 6; j++)
 			{
-				scheduleView.add(scheduleLabels[i][j]);
+				scheduleView.add(scheduleLabels[j][i]);
 			}
 		}
 	}
