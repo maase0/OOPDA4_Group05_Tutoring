@@ -31,6 +31,7 @@ public class GUI{
 
 	//Scheduling panel
 	private JPanel sidePanel;
+	private GridBagLayout sidePanelLayout;
 	private JButton scheduleViewButton;
 	private JButton addTutorButton;
 	private JButton addStudentButton;
@@ -253,24 +254,49 @@ public class GUI{
 	private void makeSidePanel()
 	{
 		sidePanel = new JPanel();
-		sidePanel.setLayout(new GridLayout(0, 1, 1, 10));
+		sidePanelLayout = new GridBagLayout();
+
+		sidePanel.setLayout(sidePanelLayout);
+
+		GridBagConstraints c = new GridBagConstraints();
+
+		//c.fill = GridBagConstraints.BOTH;
+		//c.weigthx = 1.0;
+		//c.weighty = 1.0;
+		
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.weighty = 0.5;
+		c.weightx = 0.3;
+
+
+		c.gridx = 0;
+		c.gridy = 0;
 
 		scheduleViewButton = new JButton("View Schedule");
 		scheduleViewButton.addActionListener(e -> switchToScheduleView());
-		sidePanel.add(scheduleViewButton);
+		sidePanel.add(scheduleViewButton, c);
+
+		c.gridx = 0;
+		c.gridy = 1;
 
 		addTutorButton = new JButton("Schedule A Tutor");
 		addTutorButton.addActionListener(e -> switchToAddTutor());
-		sidePanel.add(addTutorButton);
+		sidePanel.add(addTutorButton, c);
+
+		c.gridx = 0;
+		c.gridy = 2;
 
 		addStudentButton = new JButton("Schedule A Student");
 		addStudentButton.addActionListener(e -> switchToAddStudent());
-		sidePanel.add(addStudentButton);
+		sidePanel.add(addStudentButton, c);
+
+		c.gridx = 0;
+		c.gridy = 3;
 
 		quitButton = new JButton("Quit");
 		quitButton.addActionListener(e -> quit());
-		sidePanel.add(quitButton);
-
+		sidePanel.add(quitButton, c);
+		
 		
 		frame.add(sidePanel, BorderLayout.WEST);
 	}	
