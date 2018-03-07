@@ -138,11 +138,11 @@ public class Scheduler implements Serializable {
 	 * Sets the student of an existing tutor-student pair on the given day and time
 	 * Currently allow overwriting a current student
 	 * 
+	 * @param student The student to be added
 	 * @param day The day to add the student
 	 * @param time The time to add the student
-	 * @param student The student to be added
 	 */
-	public void addStudent(int day, int time, Student student) {
+	public void addStudent(Student student, int day, int time) {
 		schedule[day][timeToArrayIndex(time)].setStudent(student);
 	}
 

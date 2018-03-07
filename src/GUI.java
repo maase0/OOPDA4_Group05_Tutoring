@@ -326,20 +326,46 @@ public class GUI{
 	 */
 	private void updateSchedule()
 	{
+		Pair[][] schedule = scheduler.getSchedule();
+
+
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH;
 		c.weightx = 1.0;
 		c.weighty = 1.0;
 
-		for(int x = 1; x < 6; x++)
+		for(int x = 0; x < 5; x++)
 		{
-			c.gridx = x;
-			for(int y = 1; y < 33; y++)
+			//c.gridx = x;
+
+			for(int i = 0; i < 4; i++) //4 2-hour blocks
 			{
-				c.gridy = y;
-				scheduleLabels[x-1][y-1].setText("NONE");
-				scheduleLabels[x-1][y-1].setHorizontalAlignment(SwingConstants.CENTER);
+				if(schedule[x][i*8].getTutor() == null)
+				{
+					scheduleLabels[x][i * 8].setText("NONE");
+
+					for(int j = 0; j < 8; j++)
+					{
+						scheduleLabels[x][i * 8 + j].setBackground(Color.WHITE); //TODO: Refactor to remove
+					}															 //      these redundant loops
+				}
+				else
+				{
+					scheduleLabels[x][i * 8].setText(schedule[x][i * 8].getTutor().getName());
+					for(int j = 0; j < 8; j++) //8 15-minute blocks per 1 2-hour blockk
+					{
+						if(schedule[x][i * 8 + j].getStudent() == null)
+						{
+							scheduleLabels[x][i * 8 + j].setBackground(Color.GREEN);
+						}
+						else
+						{
+							scheduleLabels[x][i * 8 + j].setBackground(Color.RED);	
+						}
+					}
+				}
 			}
+
 		}
 			
 	}
@@ -363,7 +389,7 @@ public class GUI{
 			for(int j = 0; j < 60; j += 15, count++)
 			{
 				c.gridy = count;
-				scheduleView.add(new JLabel(i + ":" + (j == 0 ? "00" : ""+j)), c);
+				scheduleView.add(new JLabel(i + ":" + (j == 0 ? "00" : j + "  ")), c);
 			}
 		}
 
@@ -394,7 +420,9 @@ public class GUI{
 			for(int y = 0; y < 32; y++)
 			{
 				c.gridy = y+1;
-				scheduleLabels[x][y] = new JLabel();	
+				scheduleLabels[x][y] = new JLabel();
+				scheduleLabels[x][y].setHorizontalAlignment(SwingConstants.HORIZONTAL);
+				scheduleLabels[x][y].setOpaque(true);
 				scheduleView.add(scheduleLabels[x][y], c);
 			}
 		}
