@@ -331,19 +331,17 @@ public class GUI{
 		c.weightx = 1.0;
 		c.weighty = 1.0;
 
-		/*
-		scheduleView.removeAll();
-		for(int i = 0; i < 33; i ++)
+		for(int x = 1; x < 6; x++)
 		{
-			for(int j = 0; j < 6; j++)
+			c.gridx = x;
+			for(int y = 1; y < 33; y++)
 			{
-				c.gridx = j;
-				c.gridy = i;
-
-				//scheduleView.add(scheduleLabels[j][i], c);
+				c.gridy = y;
+				scheduleLabels[x-1][y-1].setText("NONE");
+				scheduleLabels[x-1][y-1].setHorizontalAlignment(SwingConstants.CENTER);
 			}
 		}
-		*/
+			
 	}
 
 	/**
@@ -357,44 +355,49 @@ public class GUI{
 		c.weightx = 0.0;
 		c.weighty = 1.0;
 
+		c.gridx = 0;
 		int count = 1;
 		for(int i = 10; i < 18; i++)
 		{
-			c.gridy = count++;
-			scheduleView.add(new JSeparator(SwingConstants.HORIZONTAL), c);
 
 			for(int j = 0; j < 60; j += 15, count++)
 			{
-				System.out.println(count);
 				c.gridy = count;
-				scheduleView.add(new JLabel(i + ":" + (j == 0 ? "00" : "" + j)), c);
+				scheduleView.add(new JLabel(i + ":" + (j == 0 ? "00" : ""+j)), c);
 			}
-		}
-
-		c.gridx = 1;
-		for(int i = 0; i < count; i++)
-		{
-			c.gridy = i;
-			scheduleView.add(new JSeparator(SwingConstants.VERTICAL), c);
 		}
 
 		c.weightx = 1.0;
 
 		c.gridy = 0;
+		c.gridx = 1;
+		scheduleView.add(new JLabel("MONDAY", SwingConstants.CENTER), c);
+
 		c.gridx = 2;
-		scheduleView.add(new JLabel("MONDAY"), c);
+		scheduleView.add(new JLabel("TUESDAY", SwingConstants.CENTER), c);
 
 		c.gridx = 3;
-		scheduleView.add(new JLabel("TUESDAY"), c);
+		scheduleView.add(new JLabel("WEDNESDAY", SwingConstants.CENTER), c);
 
 		c.gridx = 4;
-		scheduleView.add(new JLabel("WEDNESDAY"), c);
+		scheduleView.add(new JLabel("THURSDAY", SwingConstants.CENTER), c);
 
 		c.gridx = 5;
-		scheduleView.add(new JLabel("THURSDAY"), c);
+		scheduleView.add(new JLabel("FRIDAY", SwingConstants.CENTER), c);
 
-		c.gridx = 6;
-		scheduleView.add(new JLabel("FRIDAY"), c);
+
+		scheduleLabels = new JLabel[5][32];
+
+		for(int x = 0; x < 5; x++)
+		{
+			c.gridx = x+1;
+			for(int y = 0; y < 32; y++)
+			{
+				c.gridy = y+1;
+				scheduleLabels[x][y] = new JLabel();	
+				scheduleView.add(scheduleLabels[x][y], c);
+			}
+		}
 	}
 
 	/**
