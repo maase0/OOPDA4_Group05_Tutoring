@@ -331,6 +331,7 @@ public class GUI{
 		c.weightx = 1.0;
 		c.weighty = 1.0;
 
+		/*
 		scheduleView.removeAll();
 		for(int i = 0; i < 33; i ++)
 		{
@@ -339,9 +340,10 @@ public class GUI{
 				c.gridx = j;
 				c.gridy = i;
 
-				scheduleView.add(scheduleLabels[j][i], c);
+				//scheduleView.add(scheduleLabels[j][i], c);
 			}
 		}
+		*/
 	}
 
 	/**
@@ -350,29 +352,49 @@ public class GUI{
 	 */
 	private void initializeScheduleView()
 	{
-		scheduleLabels = new JLabel[6][33];	
-		for(int i = 0; i < 6; i++)
+		GridBagConstraints c = new GridBagConstraints();
+		c.fill = GridBagConstraints.BOTH;
+		c.weightx = 0.0;
+		c.weighty = 1.0;
+
+		int count = 1;
+		for(int i = 10; i < 18; i++)
 		{
-			for(int j = 0; j < 33; j++)
+			c.gridy = count++;
+			scheduleView.add(new JSeparator(SwingConstants.HORIZONTAL), c);
+
+			for(int j = 0; j < 60; j += 15, count++)
 			{
-				scheduleLabels[i][j] = new JLabel(i + ", " + j);	
+				System.out.println(count);
+				c.gridy = count;
+				scheduleView.add(new JLabel(i + ":" + (j == 0 ? "00" : "" + j)), c);
 			}
 		}
 
-		scheduleLabels[1][0].setText("Monday");
-		scheduleLabels[2][0].setText("Tuesday");
-		scheduleLabels[3][0].setText("Wednesday");
-		scheduleLabels[4][0].setText("Thursday");
-		scheduleLabels[5][0].setText("Friday");
-
-		for(int i = 10, count = 1; i < 18; i+= 1)
+		c.gridx = 1;
+		for(int i = 0; i < count; i++)
 		{
-			for(int j = 0; j < 60; j+= 15, count++)
-			{
-				scheduleLabels[0][count].setText(i + ":" + (j == 0 ? "00" : j));
-			}
+			c.gridy = i;
+			scheduleView.add(new JSeparator(SwingConstants.VERTICAL), c);
 		}
-	
+
+		c.weightx = 1.0;
+
+		c.gridy = 0;
+		c.gridx = 2;
+		scheduleView.add(new JLabel("MONDAY"), c);
+
+		c.gridx = 3;
+		scheduleView.add(new JLabel("TUESDAY"), c);
+
+		c.gridx = 4;
+		scheduleView.add(new JLabel("WEDNESDAY"), c);
+
+		c.gridx = 5;
+		scheduleView.add(new JLabel("THURSDAY"), c);
+
+		c.gridx = 6;
+		scheduleView.add(new JLabel("FRIDAY"), c);
 	}
 
 	/**
