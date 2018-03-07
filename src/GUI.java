@@ -3,6 +3,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import java.io.*;
 import javax.swing.filechooser.FileNameExtensionFilter; 
+import java.util.ArrayList;
 
 
 public class GUI{
@@ -28,8 +29,20 @@ public class GUI{
 	private JPanel scheduleView;
 	private JLabel[][] scheduleLabels;
 
+	//Scheduling panel
+	private JPanel sidePanel;
+	private GridBagLayout sidePanelLayout;
+	private JButton scheduleViewButton;
+	private JButton addTutorButton;
+	private JButton addStudentButton;
+	private JButton quitButton;
 
+	private AddTutorPanel addTutorPanel;
+
+	//Scheduler, students, and tutors
 	private Scheduler scheduler;
+	private ArrayList<Student> students; //Maybe use hashmap
+	private ArrayList<Tutor> tutors;     //Lookup by student id
 	
 
 	//File name and path
@@ -60,9 +73,11 @@ public class GUI{
 		layout = new BorderLayout();
 		frame.setLayout(layout);
 
-
+		addTutorPanel = new AddTutorPanel(scheduler, tutors);
 
 		makeMenu();	
+
+		makeSidePanel();
 
 		makeScheduleView();
 
@@ -73,6 +88,29 @@ public class GUI{
 		frame.setVisible(true);
 	}	
 
+
+	private void switchToAddStudent()
+	{
+		
+	}
+
+	private void switchToAddTutor()
+	{
+		layout.removeLayoutComponent(layout.getLayoutComponent(BorderLayout.CENTER));
+		frame.add(addTutorPanel, BorderLayout.CENTER);
+		addTutorPanel.repaint();
+		frame.validate();
+	}
+	
+
+	private void switchToScheduleView()
+	{
+		layout.removeLayoutComponent(layout.getLayoutComponent(BorderLayout.CENTER));
+		updateSchedule();
+		frame.add(scheduleView, BorderLayout.CENTER);
+		scheduleView.repaint();
+		frame.validate();
+	}
 
 	/**
 	 * Disposes the main frame, exiting the program.
@@ -208,6 +246,60 @@ public class GUI{
 	{
 	
 	}
+
+	/**
+	 * Initailizes all of the components used to schedule
+	 * a student or tutor.
+	 */
+	private void makeSidePanel()
+	{
+		sidePanel = new JPanel();
+		sidePanelLayout = new GridBagLayout();
+
+		sidePanel.setLayout(sidePanelLayout);
+
+		GridBagConstraints c = new GridBagConstraints();
+
+		//c.fill = GridBagConstraints.BOTH;
+		//c.weigthx = 1.0;
+		//c.weighty = 1.0;
+		
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.weighty = 0.5;
+		c.weightx = 0.3;
+
+
+		c.gridx = 0;
+		c.gridy = 0;
+
+		scheduleViewButton = new JButton("View Schedule");
+		scheduleViewButton.addActionListener(e -> switchToScheduleView());
+		sidePanel.add(scheduleViewButton, c);
+
+		c.gridx = 0;
+		c.gridy = 1;
+
+		addTutorButton = new JButton("Schedule A Tutor");
+		addTutorButton.addActionListener(e -> switchToAddTutor());
+		sidePanel.add(addTutorButton, c);
+
+		c.gridx = 0;
+		c.gridy = 2;
+
+		addStudentButton = new JButton("Schedule A Student");
+		addStudentButton.addActionListener(e -> switchToAddStudent());
+		sidePanel.add(addStudentButton, c);
+
+		c.gridx = 0;
+		c.gridy = 3;
+
+		quitButton = new JButton("Quit");
+		quitButton.addActionListener(e -> quit());
+		sidePanel.add(quitButton, c);
+		
+		
+		frame.add(sidePanel, BorderLayout.WEST);
+	}	
 
 	/**
 	 * Initailizes the schedule view of the program.
