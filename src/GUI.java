@@ -27,11 +27,13 @@ public class GUI{
 
 	//Schedule View
 	private JPanel scheduleView;
+	private GridBagLayout scheduleViewLayout;
 	private JLabel[][] scheduleLabels;
 
 	//Scheduling panel
 	private JPanel sidePanel;
 	private GridBagLayout sidePanelLayout;
+
 	private JButton scheduleViewButton;
 	private JButton addTutorButton;
 	private JButton addStudentButton;
@@ -308,8 +310,8 @@ public class GUI{
 	private void makeScheduleView()
 	{
 		scheduleView = new JPanel();
-		scheduleView.setLayout(new GridLayout(0,6));
-		//scheduleView.setLayout(new FlowLayout());
+		scheduleViewLayout = new GridBagLayout();
+		scheduleView.setLayout(scheduleViewLayout);
 
 		
 		initializeScheduleView();
@@ -324,12 +326,20 @@ public class GUI{
 	 */
 	private void updateSchedule()
 	{
+		GridBagConstraints c = new GridBagConstraints();
+		c.fill = GridBagConstraints.BOTH;
+		c.weightx = 1.0;
+		c.weighty = 1.0;
+
 		scheduleView.removeAll();
 		for(int i = 0; i < 33; i ++)
 		{
 			for(int j = 0; j < 6; j++)
 			{
-				scheduleView.add(scheduleLabels[j][i]);
+				c.gridx = j;
+				c.gridy = i;
+
+				scheduleView.add(scheduleLabels[j][i], c);
 			}
 		}
 	}
