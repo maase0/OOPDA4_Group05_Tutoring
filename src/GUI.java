@@ -10,7 +10,8 @@ public class GUI{
 
 	//Frame components
 	private JFrame frame;
-	private BorderLayout layout;
+	private GridBagLayout layout;	
+	//private BorderLayout layout;
 
 	//Menu Components
 	private JMenuBar menuBar;
@@ -26,8 +27,8 @@ public class GUI{
 	private JMenuItem helpItem;
 
 	//Schedule View
-	private JPanel scheduleView;
-	private GridBagLayout scheduleViewLayout;
+	//private JPanel scheduleView;
+	//private GridBagLayout scheduleViewLayout;
 	private PairLabel[][] scheduleLabels;
 
 	//Scheduling panel
@@ -72,10 +73,8 @@ public class GUI{
 		//General frame setup
 		frame = new JFrame("Group 5 Tutoring Scheduler - " + fileName);
 
-		layout = new BorderLayout();
+		layout = new GridBagLayout();
 		frame.setLayout(layout);
-
-		addTutorPanel = new AddTutorPanel(scheduler, tutors);
 
 		makeMenu();	
 
@@ -234,16 +233,10 @@ public class GUI{
 	 */
 	private void makeScheduleView()
 	{
-		scheduleView = new JPanel();
-		scheduleViewLayout = new GridBagLayout();
-		scheduleView.setLayout(scheduleViewLayout);
-
 		scheduleLabels = new PairLabel[5][32];
 		
 		initializeScheduleView();
 		updateSchedule();
-
-		frame.add(scheduleView, BorderLayout.CENTER);
 	}
 
 	/**
@@ -270,8 +263,8 @@ public class GUI{
 					for(int j = 0; j < 8; j++)
 					{
 						scheduleLabels[x][i * 8 + j].setBackground(Color.WHITE); 
-						scheduleLabels[x][i * 8 + j].setTutor(""); // Reset tutors
-						scheduleLabels[x][i * 8 + j].setStudent(""); //Reset students
+						scheduleLabels[x][i * 8 + j].setTutor(""); // Clear tutors
+						scheduleLabels[x][i * 8 + j].setStudent(""); //Clear students
 					}
 					scheduleLabels[x][i * 8].setTutor("NONE");
 				}
@@ -337,7 +330,7 @@ public class GUI{
 			for(int j = 0; j < 60; j += 15, count++)
 			{
 				c.gridy = count;
-				scheduleView.add(new JLabel(i + ":" + (j == 0 ? "00" : j + "  ")), c);
+				frame.add(new JLabel(i + ":" + (j == 0 ? "00" : j + "  ")), c);
 			}
 		}
 
@@ -345,19 +338,19 @@ public class GUI{
 
 		c.gridy = 0;
 		c.gridx = 1;
-		scheduleView.add(new JLabel("MONDAY", SwingConstants.CENTER), c);
+		frame.add(new JLabel("MONDAY", SwingConstants.CENTER), c);
 
 		c.gridx = 2;
-		scheduleView.add(new JLabel("TUESDAY", SwingConstants.CENTER), c);
+		frame.add(new JLabel("TUESDAY", SwingConstants.CENTER), c);
 
 		c.gridx = 3;
-		scheduleView.add(new JLabel("WEDNESDAY", SwingConstants.CENTER), c);
+		frame.add(new JLabel("WEDNESDAY", SwingConstants.CENTER), c);
 
 		c.gridx = 4;
-		scheduleView.add(new JLabel("THURSDAY", SwingConstants.CENTER), c);
+		frame.add(new JLabel("THURSDAY", SwingConstants.CENTER), c);
 
 		c.gridx = 5;
-		scheduleView.add(new JLabel("FRIDAY", SwingConstants.CENTER), c);
+		frame.add(new JLabel("FRIDAY", SwingConstants.CENTER), c);
 
 
 
@@ -369,7 +362,7 @@ public class GUI{
 				c.gridy = y+1;
 				scheduleLabels[x][y] = new PairLabel();
 				scheduleLabels[x][y].setOpaque(true);
-				scheduleView.add(scheduleLabels[x][y], c);
+				frame.add(scheduleLabels[x][y], c);
 			}
 		}
 	}
