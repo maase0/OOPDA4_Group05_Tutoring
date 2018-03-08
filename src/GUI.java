@@ -27,11 +27,13 @@ public class GUI{
 
 	//Schedule View
 	private JPanel scheduleView;
-	private JLabel[][] scheduleLabels;
+	private GridBagLayout scheduleViewLayout;
+	private PairLabel[][] scheduleLabels;
 
 	//Scheduling panel
 	private JPanel sidePanel;
 	private GridBagLayout sidePanelLayout;
+
 	private JButton scheduleViewButton;
 	private JButton addTutorButton;
 	private JButton addStudentButton;
@@ -68,7 +70,7 @@ public class GUI{
 		
 		
 		//General frame setup
-		frame = new JFrame("Group 5 Tutoring Scheduler");
+		frame = new JFrame("Group 5 Tutoring Scheduler - " + fileName);
 
 		layout = new BorderLayout();
 		frame.setLayout(layout);
@@ -138,6 +140,7 @@ public class GUI{
 
 			System.out.println("File successfully saved to " + savePath + fileName);
 			oos.close();
+			frame.setTitle("Group 5 Tutoring Scheduler - " + fileName);
 		}
 		catch(IOException e)
 		{
@@ -162,7 +165,7 @@ public class GUI{
 				"Save files", "sav");
 			chooser.setFileFilter(filter);
 
-			int returnValue = chooser.showOpenDialog(frame); //TODO: change to showSaveDialog
+			int returnValue = chooser.showSaveDialog(frame); //TODO: change to showSaveDialog
 			if(returnValue == JFileChooser.APPROVE_OPTION)
 			{
 				fileName = chooser.getSelectedFile().getName(); //Get name of file
@@ -202,14 +205,18 @@ public class GUI{
 			if(returnValue == JFileChooser.APPROVE_OPTION)
 			{
 				fileName = chooser.getSelectedFile().getName(); //Get name of file
-				savePath = chooser.getSelectedFile().getParentFile().getAbsolutePath(); //get parent directory
+				savePath = chooser.getSelectedFile().getParentFile().getAbsolutePath() + "/"; //get parent directory
+				System.out.println(savePath + fileName);
 				File file = new File(savePath + fileName);
 
-				ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fileName));
+				ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));
 				scheduler = (Scheduler) ois.readObject();
 
 
 				System.out.println("Successfully opened " + savePath + fileName);
+
+				updateSchedule();
+				frame.setTitle("Group 5 Tutoring Scheduler - " + fileName);
 			}
 			else
 			{
@@ -308,9 +315,10 @@ public class GUI{
 	private void makeScheduleView()
 	{
 		scheduleView = new JPanel();
-		scheduleView.setLayout(new GridLayout(0,6));
-		//scheduleView.setLayout(new FlowLayout());
+		scheduleViewLayout = new GridBagLayout();
+		scheduleView.setLayout(scheduleViewLayout);
 
+		scheduleLabels = new PairLabel[5][32];
 		
 		initializeScheduleView();
 		updateSchedule();
@@ -324,12 +332,68 @@ public class GUI{
 	 */
 	private void updateSchedule()
 	{
-		scheduleView.removeAll();
-		for(int i = 0; i < 33; i ++)
+		Pair[][] schedule = scheduler.getSchedule();
+
+		GridBagConstraints c = new GridBagConstraints();
+		c.fill = GridBagConstraints.BOTH;
+		c.weightx = 1.0;
+		c.weighty = 1.0;
+
+		for(int x = 0; x < 5; x++) //5 days in a week
 		{
-			for(int j = 0; j < 6; j++)
+
+			for(int i = 0; i < 4; i++) //4 2-hour tutoring blocks
 			{
-				scheduleView.add(scheduleLabels[j][i]);
+				if(schedule[x][i*8].getTutor() == null)
+				{
+
+					for(int j = 0; j < 8; j++)
+					{
+						scheduleLabels[x][i * 8 + j].setBackground(Color.WHITE); 
+						scheduleLabels[x][i * 8 + j].setTutor(""); // Reset tutors
+						scheduleLabels[x][i * 8 + j].setStudent(""); //Reset students
+					}
+					scheduleLabels[x][i * 8].setTutor("NONE");
+				}
+				else
+				{
+					scheduleLabels[x][i * 8].setTutor(schedule[x][i * 8].getTutor().getName());
+					Student s = schedule[x][i*8].getStudent();
+					if(s != null) //set first block
+					{
+						scheduleLabels[x][i * 8].setStudent(s.getName());
+						scheduleLabels[x][i * 8].setBackground(Color.RED);	
+					}
+					else
+					{
+						scheduleLabels[x][i * 8].setStudent("AVAILABLE");
+						scheduleLabels[x][i * 8].setBackground(Color.GREEN);
+					}
+
+
+					for(int j = 1; j < 8; j++) //8 15-minute blocks per each 2-hour block, skipping first block
+					{
+						if(schedule[x][i * 8 + j].getStudent() == null)
+						{
+							if(s != null)
+							{
+								scheduleLabels[x][i * 8 + j].setTutor(schedule[x][i * 8 + j].getTutor().getName());
+							}
+							scheduleLabels[x][i * 8 + j].setStudent("AVAILABLE");
+							scheduleLabels[x][i * 8 + j].setBackground(Color.GREEN);
+						}
+						else
+						{
+							if(s != schedule[x][i * 8 + j].getStudent()){
+								scheduleLabels[x][i * 8 + j].setTutor(schedule[x][i * 8 + j].getTutor().getName());
+							}
+							scheduleLabels[x][i * 8 + j].setStudent(schedule[x][i * 8 + j].getStudent().getName());
+							scheduleLabels[x][i * 8 + j].setBackground(Color.RED);	
+						}
+
+						s = schedule[x][i * 8 + j].getStudent();  
+					}
+				}
 			}
 		}
 	}
@@ -340,29 +404,54 @@ public class GUI{
 	 */
 	private void initializeScheduleView()
 	{
-		scheduleLabels = new JLabel[6][33];	
-		for(int i = 0; i < 6; i++)
+		GridBagConstraints c = new GridBagConstraints();
+		c.fill = GridBagConstraints.BOTH;
+		c.weightx = 0.0;
+		c.weighty = 1.0;
+
+		c.gridx = 0;
+		int count = 1;
+		for(int i = 10; i < 18; i++)
 		{
-			for(int j = 0; j < 33; j++)
+
+			for(int j = 0; j < 60; j += 15, count++)
 			{
-				scheduleLabels[i][j] = new JLabel(i + ", " + j);	
+				c.gridy = count;
+				scheduleView.add(new JLabel(i + ":" + (j == 0 ? "00" : j + "  ")), c);
 			}
 		}
 
-		scheduleLabels[1][0].setText("Monday");
-		scheduleLabels[2][0].setText("Tuesday");
-		scheduleLabels[3][0].setText("Wednesday");
-		scheduleLabels[4][0].setText("Thursday");
-		scheduleLabels[5][0].setText("Friday");
+		c.weightx = 1.0;
 
-		for(int i = 10, count = 1; i < 18; i+= 1)
+		c.gridy = 0;
+		c.gridx = 1;
+		scheduleView.add(new JLabel("MONDAY", SwingConstants.CENTER), c);
+
+		c.gridx = 2;
+		scheduleView.add(new JLabel("TUESDAY", SwingConstants.CENTER), c);
+
+		c.gridx = 3;
+		scheduleView.add(new JLabel("WEDNESDAY", SwingConstants.CENTER), c);
+
+		c.gridx = 4;
+		scheduleView.add(new JLabel("THURSDAY", SwingConstants.CENTER), c);
+
+		c.gridx = 5;
+		scheduleView.add(new JLabel("FRIDAY", SwingConstants.CENTER), c);
+
+
+
+		for(int x = 0; x < 5; x++)
 		{
-			for(int j = 0; j < 60; j+= 15, count++)
+			c.gridx = x+1;
+			for(int y = 0; y < 32; y++)
 			{
-				scheduleLabels[0][count].setText(i + ":" + (j == 0 ? "00" : j));
+				c.gridy = y+1;
+				scheduleLabels[x][y] = new PairLabel();
+				scheduleLabels[x][y].setOpaque(true);
+				scheduleView.add(scheduleLabels[x][y], c);
 			}
 		}
-	
 	}
 
 	/**
