@@ -164,7 +164,7 @@ public class GUI{
 				"Save files", "sav");
 			chooser.setFileFilter(filter);
 
-			int returnValue = chooser.showOpenDialog(frame); //TODO: change to showSaveDialog
+			int returnValue = chooser.showSaveDialog(frame); //TODO: change to showSaveDialog
 			if(returnValue == JFileChooser.APPROVE_OPTION)
 			{
 				fileName = chooser.getSelectedFile().getName(); //Get name of file
@@ -204,14 +204,17 @@ public class GUI{
 			if(returnValue == JFileChooser.APPROVE_OPTION)
 			{
 				fileName = chooser.getSelectedFile().getName(); //Get name of file
-				savePath = chooser.getSelectedFile().getParentFile().getAbsolutePath(); //get parent directory
+				savePath = chooser.getSelectedFile().getParentFile().getAbsolutePath() + "/"; //get parent directory
+				System.out.println(savePath + fileName);
 				File file = new File(savePath + fileName);
 
-				ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fileName));
+				ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));
 				scheduler = (Scheduler) ois.readObject();
 
 
 				System.out.println("Successfully opened " + savePath + fileName);
+
+				updateSchedule();
 			}
 			else
 			{
