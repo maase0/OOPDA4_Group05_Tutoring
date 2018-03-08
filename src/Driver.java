@@ -21,8 +21,12 @@ public class Driver {
 		scheduler.addStudent(s, 0, 1015);
 		scheduler.addStudent(s, 0, 1030);
 		scheduler.addStudent(s, 0, 1045);
-		*/	
 		
+		Student s2 = new Student("Test Student 2");
+		scheduler.addStudent(s2, 0, 1100);
+		scheduler.addStudent(s2, 0, 1115);
+		scheduler.addStudent(s2, 0, 1130);
+		*/
 
 		GUI gui = new GUI(scheduler);
 
