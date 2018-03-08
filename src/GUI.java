@@ -70,7 +70,7 @@ public class GUI{
 		
 		
 		//General frame setup
-		frame = new JFrame("Group 5 Tutoring Scheduler");
+		frame = new JFrame("Group 5 Tutoring Scheduler - " + fileName);
 
 		layout = new BorderLayout();
 		frame.setLayout(layout);
@@ -140,6 +140,7 @@ public class GUI{
 
 			System.out.println("File successfully saved to " + savePath + fileName);
 			oos.close();
+			frame.setTitle("Group 5 Tutoring Scheduler - " + fileName);
 		}
 		catch(IOException e)
 		{
@@ -215,6 +216,7 @@ public class GUI{
 				System.out.println("Successfully opened " + savePath + fileName);
 
 				updateSchedule();
+				frame.setTitle("Group 5 Tutoring Scheduler - " + fileName);
 			}
 			else
 			{
