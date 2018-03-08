@@ -88,6 +88,17 @@ public class GUI{
 	}	
 
 
+	//private void showScheduleMenu(int x, int y, int day, int time)
+	private void showScheduleMenu(PairLabel label, int x, int y)
+	{
+		JPopupMenu menu = new JPopupMenu("Menu");	
+		menu.add("a");
+		menu.add("b");
+		System.out.println(menu.getWidth());
+		menu.show(label, x - 20, y);
+		System.out.println(menu.getWidth());
+	}
+
 	/**
 	 * Disposes the main frame, exiting the program.
 	 */
@@ -362,6 +373,18 @@ public class GUI{
 				c.gridy = y+1;
 				scheduleLabels[x][y] = new PairLabel();
 				scheduleLabels[x][y].setOpaque(true);
+
+				final PairLabel pairLabel = scheduleLabels[x][y]; //need this for some reason
+																  //  https://stackoverflow.com/questions/
+																  //  13920649/access-local-variable-from-inner-class
+
+				scheduleLabels[x][y].addMouseListener(new MouseAdapter() {
+					public void mouseClicked(MouseEvent e)
+					{
+						showScheduleMenu(pairLabel, e.getX(), e.getY());
+					}
+				});
+
 				frame.add(scheduleLabels[x][y], c);
 			}
 		}
