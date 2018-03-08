@@ -344,28 +344,52 @@ public class GUI{
 			{
 				if(schedule[x][i*8].getTutor() == null)
 				{
-					scheduleLabels[x][i * 8].setTutor("NONE");
 
 					for(int j = 0; j < 8; j++)
 					{
 						scheduleLabels[x][i * 8 + j].setBackground(Color.WHITE); 
+						scheduleLabels[x][i * 8 + j].setTutor(""); // Reset tutors
+						scheduleLabels[x][i * 8 + j].setStudent(""); //Reset students
 					}
+					scheduleLabels[x][i * 8].setTutor("NONE");
 				}
 				else
 				{
 					scheduleLabels[x][i * 8].setTutor(schedule[x][i * 8].getTutor().getName());
-					for(int j = 0; j < 8; j++) //8 15-minute blocks per each 2-hour blockk
+					Student s = schedule[x][i*8].getStudent();
+					if(s != null) //set first block
+					{
+						scheduleLabels[x][i * 8].setStudent(s.getName());
+						scheduleLabels[x][i * 8].setBackground(Color.RED);	
+					}
+					else
+					{
+						scheduleLabels[x][i * 8].setStudent("AVAILABLE");
+						scheduleLabels[x][i * 8].setBackground(Color.GREEN);
+					}
+
+
+					for(int j = 1; j < 8; j++) //8 15-minute blocks per each 2-hour block, skipping first block
 					{
 						if(schedule[x][i * 8 + j].getStudent() == null)
 						{
+							if(s != null)
+							{
+								scheduleLabels[x][i * 8 + j].setTutor(schedule[x][i * 8 + j].getTutor().getName());
+							}
 							scheduleLabels[x][i * 8 + j].setStudent("AVAILABLE");
 							scheduleLabels[x][i * 8 + j].setBackground(Color.GREEN);
 						}
 						else
 						{
+							if(s != schedule[x][i * 8 + j].getStudent()){
+								scheduleLabels[x][i * 8 + j].setTutor(schedule[x][i * 8 + j].getTutor().getName());
+							}
 							scheduleLabels[x][i * 8 + j].setStudent(schedule[x][i * 8 + j].getStudent().getName());
 							scheduleLabels[x][i * 8 + j].setBackground(Color.RED);	
 						}
+
+						s = schedule[x][i * 8 + j].getStudent();  
 					}
 				}
 			}
