@@ -331,7 +331,6 @@ public class GUI{
 	{
 		Pair[][] schedule = scheduler.getSchedule();
 
-
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH;
 		c.weightx = 1.0;
@@ -339,7 +338,6 @@ public class GUI{
 
 		for(int x = 0; x < 5; x++)
 		{
-			//c.gridx = x;
 
 			for(int i = 0; i < 4; i++) //4 2-hour blocks
 			{
@@ -349,8 +347,8 @@ public class GUI{
 
 					for(int j = 0; j < 8; j++)
 					{
-						scheduleLabels[x][i * 8 + j].setBackground(Color.WHITE); //TODO: Refactor to remove
-					}															 //      these redundant loops
+						scheduleLabels[x][i * 8 + j].setBackground(Color.WHITE); 
+					}
 				}
 				else
 				{
@@ -368,9 +366,7 @@ public class GUI{
 					}
 				}
 			}
-
 		}
-			
 	}
 
 	/**
