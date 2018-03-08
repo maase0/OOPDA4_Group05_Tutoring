@@ -7,10 +7,11 @@ public class PairLabel extends JPanel
 	private JLabel student;
 	private JLabel tutor;
 	private BorderLayout layout;
+	private String offset;
 
 	public PairLabel()
 	{
-		//layout = new BorderLayout();
+		offset = "    ";
 		setLayout(new BorderLayout());
 
 		student = new JLabel();
@@ -26,11 +27,11 @@ public class PairLabel extends JPanel
 
 	public void setStudent(String studentName)
 	{
-		student.setText(studentName);
+		student.setText(studentName + offset);
 	}
 
 	public void setTutor(String tutorName)
 	{
-		student.setText(tutorName);	
+		tutor.setText(offset + tutorName);	
 	}
 }

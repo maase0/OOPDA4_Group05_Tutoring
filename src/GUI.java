@@ -28,7 +28,7 @@ public class GUI{
 	//Schedule View
 	private JPanel scheduleView;
 	private GridBagLayout scheduleViewLayout;
-	private JLabel[][] scheduleLabels;
+	private PairLabel[][] scheduleLabels;
 
 	//Scheduling panel
 	private JPanel sidePanel;
@@ -316,6 +316,7 @@ public class GUI{
 		scheduleViewLayout = new GridBagLayout();
 		scheduleView.setLayout(scheduleViewLayout);
 
+		scheduleLabels = new PairLabel[5][32];
 		
 		initializeScheduleView();
 		updateSchedule();
@@ -336,14 +337,14 @@ public class GUI{
 		c.weightx = 1.0;
 		c.weighty = 1.0;
 
-		for(int x = 0; x < 5; x++)
+		for(int x = 0; x < 5; x++) //5 days in a week
 		{
 
-			for(int i = 0; i < 4; i++) //4 2-hour blocks
+			for(int i = 0; i < 4; i++) //4 2-hour tutoring blocks
 			{
 				if(schedule[x][i*8].getTutor() == null)
 				{
-					scheduleLabels[x][i * 8].setText("NONE");
+					scheduleLabels[x][i * 8].setTutor("NONE");
 
 					for(int j = 0; j < 8; j++)
 					{
@@ -352,15 +353,17 @@ public class GUI{
 				}
 				else
 				{
-					scheduleLabels[x][i * 8].setText(schedule[x][i * 8].getTutor().getName());
-					for(int j = 0; j < 8; j++) //8 15-minute blocks per 1 2-hour blockk
+					scheduleLabels[x][i * 8].setTutor(schedule[x][i * 8].getTutor().getName());
+					for(int j = 0; j < 8; j++) //8 15-minute blocks per each 2-hour blockk
 					{
 						if(schedule[x][i * 8 + j].getStudent() == null)
 						{
+							scheduleLabels[x][i * 8 + j].setStudent("AVAILABLE");
 							scheduleLabels[x][i * 8 + j].setBackground(Color.GREEN);
 						}
 						else
 						{
+							scheduleLabels[x][i * 8 + j].setStudent(schedule[x][i * 8 + j].getStudent().getName());
 							scheduleLabels[x][i * 8 + j].setBackground(Color.RED);	
 						}
 					}
@@ -411,7 +414,6 @@ public class GUI{
 		scheduleView.add(new JLabel("FRIDAY", SwingConstants.CENTER), c);
 
 
-		scheduleLabels = new JLabel[5][32];
 
 		for(int x = 0; x < 5; x++)
 		{
@@ -419,8 +421,7 @@ public class GUI{
 			for(int y = 0; y < 32; y++)
 			{
 				c.gridy = y+1;
-				scheduleLabels[x][y] = new JLabel();
-				scheduleLabels[x][y].setHorizontalAlignment(SwingConstants.HORIZONTAL);
+				scheduleLabels[x][y] = new PairLabel();
 				scheduleLabels[x][y].setOpaque(true);
 				scheduleView.add(scheduleLabels[x][y], c);
 			}
