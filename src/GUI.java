@@ -79,8 +79,6 @@ public class GUI{
 
 		makeMenu();	
 
-		makeSidePanel();
-
 		makeScheduleView();
 
 
@@ -90,29 +88,6 @@ public class GUI{
 		frame.setVisible(true);
 	}	
 
-
-	private void switchToAddStudent()
-	{
-		
-	}
-
-	private void switchToAddTutor()
-	{
-		layout.removeLayoutComponent(layout.getLayoutComponent(BorderLayout.CENTER));
-		frame.add(addTutorPanel, BorderLayout.CENTER);
-		addTutorPanel.repaint();
-		frame.validate();
-	}
-	
-
-	private void switchToScheduleView()
-	{
-		layout.removeLayoutComponent(layout.getLayoutComponent(BorderLayout.CENTER));
-		updateSchedule();
-		frame.add(scheduleView, BorderLayout.CENTER);
-		scheduleView.repaint();
-		frame.validate();
-	}
 
 	/**
 	 * Disposes the main frame, exiting the program.
@@ -253,61 +228,6 @@ public class GUI{
 	{
 	
 	}
-
-	/**
-	 * Initailizes all of the components used to schedule
-	 * a student or tutor.
-	 */
-	private void makeSidePanel()
-	{
-		sidePanel = new JPanel();
-		sidePanelLayout = new GridBagLayout();
-
-		sidePanel.setLayout(sidePanelLayout);
-
-		GridBagConstraints c = new GridBagConstraints();
-
-		//c.fill = GridBagConstraints.BOTH;
-		//c.weigthx = 1.0;
-		//c.weighty = 1.0;
-		
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.weighty = 0.5;
-		c.weightx = 0.3;
-
-
-		c.gridx = 0;
-		c.gridy = 0;
-
-		scheduleViewButton = new JButton("View Schedule");
-		scheduleViewButton.addActionListener(e -> switchToScheduleView());
-		sidePanel.add(scheduleViewButton, c);
-
-		c.gridx = 0;
-		c.gridy = 1;
-
-		addTutorButton = new JButton("Schedule A Tutor");
-		addTutorButton.addActionListener(e -> switchToAddTutor());
-		sidePanel.add(addTutorButton, c);
-
-		c.gridx = 0;
-		c.gridy = 2;
-
-		addStudentButton = new JButton("Schedule A Student");
-		addStudentButton.addActionListener(e -> switchToAddStudent());
-		sidePanel.add(addStudentButton, c);
-
-		c.gridx = 0;
-		c.gridy = 3;
-
-		quitButton = new JButton("Quit");
-		quitButton.addActionListener(e -> quit());
-		sidePanel.add(quitButton, c);
-		
-		
-		frame.add(sidePanel, BorderLayout.WEST);
-	}	
-
 	/**
 	 * Initailizes the schedule view of the program.
 	 * Shows all Tutor-Student pairings
