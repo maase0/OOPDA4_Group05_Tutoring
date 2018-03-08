@@ -87,16 +87,34 @@ public class GUI{
 		frame.setVisible(true);
 	}	
 
-
-	//private void showScheduleMenu(int x, int y, int day, int time)
-	private void showScheduleMenu(PairLabel label, int x, int y)
+	// Create a popup menu to schedule or remove students or tutors.
+	// selecting one of the options would make a popup window to complete
+	// whatever task. The day and time would autofill in the popup window,
+	// but could be changed in case of a mis-click. Label, x, and y are
+	// just used to display the menu in the right location.
+	private void showScheduleMenu(PairLabel label, int x, int y, int day, int time)
 	{
+		Pair pair = scheduler.getSchedule()[day][time];
 		JPopupMenu menu = new JPopupMenu("Menu");	
-		menu.add("a");
-		menu.add("b");
-		System.out.println(menu.getWidth());
-		menu.show(label, x - 20, y);
-		System.out.println(menu.getWidth());
+		if(pair.getTutor() == null)
+		{
+			menu.add("Schedule Tutor");	
+		}
+		else
+		{
+			if(pair.getStudent() == null)
+			{
+				menu.add("Schedule Student");
+				menu.add("Remove tutor: " + pair.getTutor().getName());
+			}
+			else
+			{
+				menu.add("Remove tutor: " + pair.getTutor().getName());
+				menu.add("Remove student: " + pair.getStudent().getName());
+			}
+		}
+
+		menu.show(label, x, y);
 	}
 
 	/**
@@ -375,13 +393,13 @@ public class GUI{
 				scheduleLabels[x][y].setOpaque(true);
 
 				final PairLabel pairLabel = scheduleLabels[x][y]; //need this for some reason
-																  //  https://stackoverflow.com/questions/
-																  //  13920649/access-local-variable-from-inner-class
+				final int day = x;								  //  https://stackoverflow.com/questions/
+				final int time = y;								  //  13920649/access-local-variable-from-inner-class
 
 				scheduleLabels[x][y].addMouseListener(new MouseAdapter() {
 					public void mouseClicked(MouseEvent e)
 					{
-						showScheduleMenu(pairLabel, e.getX(), e.getY());
+						showScheduleMenu(pairLabel, e.getX(), e.getY(), day, time);
 					}
 				});
 
