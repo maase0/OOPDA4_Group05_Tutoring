@@ -7,60 +7,60 @@ import java.util.ArrayList;
 public class AddTutorPanel extends JPanel
 {
 
-	private Scheduler scheduler;
-	private ArrayList<Tutor> tutors;
+    private Scheduler scheduler;
+    private ArrayList<Tutor> tutors;
 
-	private FlowLayout layout;
+    private FlowLayout layout;
 
-	private JButton existingTutorButton;
-	private JButton newTutorButton;
+    private JButton existingTutorButton;
+    private JButton newTutorButton;
 
-	private JPanel tutorPrompt;
+    private JPanel tutorPrompt;
 
-	private JPanel newTutorPanel;
-	private JPanel existingTutorPanel;
-
-
-	public AddTutorPanel(Scheduler scheduler, ArrayList<Tutor> tutors)
-	{
-		this.scheduler = scheduler;
-		this.tutors = tutors;
-
-		layout = new FlowLayout();
-		setLayout(layout);
+    private JPanel newTutorPanel;
+    private JPanel existingTutorPanel;
 
 
-		tutorPrompt = new JPanel(new FlowLayout());
-		newTutorPanel = new JPanel();
-		existingTutorPanel = new JPanel();
+    public AddTutorPanel(Scheduler scheduler, ArrayList<Tutor> tutors)
+    {
+        this.scheduler = scheduler;
+        this.tutors = tutors;
 
-		JButton existingTutorButton = new JButton("Add an existing tutor");
-		tutorPrompt.add(existingTutorButton);
-
-
-		JButton newTutorButton = new JButton("Add a new tutor");
-		tutorPrompt.add(newTutorButton);
+        layout = new FlowLayout();
+        setLayout(layout);
 
 
-		add(tutorPrompt);
+        tutorPrompt = new JPanel(new FlowLayout());
+        newTutorPanel = new JPanel();
+        existingTutorPanel = new JPanel();
 
-	}
+        JButton existingTutorButton = new JButton("Add an existing tutor");
+        tutorPrompt.add(existingTutorButton);
 
 
-	private void switchToNewTutorPanel()
-	{
-		layout.removeLayoutComponent(tutorPrompt);
-		add(newTutorPanel);
-		newTutorPanel.repaint();
-		validate();
-	}
+        JButton newTutorButton = new JButton("Add a new tutor");
+        tutorPrompt.add(newTutorButton);
 
-	private void switchToExistingTutorPanel()
-	{
-		layout.removeLayoutComponent(tutorPrompt);
-		add(existingTutorPanel);
-		existingTutorPanel.repaint();
-		validate();
-	}
+
+        add(tutorPrompt);
+
+    }
+
+
+    private void switchToNewTutorPanel()
+    {
+        layout.removeLayoutComponent(tutorPrompt);
+        add(newTutorPanel);
+        newTutorPanel.repaint();
+        validate();
+    }
+
+    private void switchToExistingTutorPanel()
+    {
+        layout.removeLayoutComponent(tutorPrompt);
+        add(existingTutorPanel);
+        existingTutorPanel.repaint();
+        validate();
+    }
 
 }
