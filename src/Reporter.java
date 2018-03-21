@@ -1,7 +1,10 @@
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.format.DateTimeFormatter;  
+import java.time.LocalDateTime;      
 
+// Generates a report for a specified student.
 class Reporter
 {
 	Student stu;
@@ -9,27 +12,36 @@ class Reporter
 	public Reporter(Student s)
 	{
 		stu = s;
-		STUDENT_REPORT_FILE = stu.getName() + "report file.txt";
+		STUDENT_REPORT_FILE = stu.getName() + " report file.txt";
 		
 	}
-	//TODO: 
-	// Create new Student report.
 	@SuppressWarnings("unused")
 	private void toFile() throws IOException
 	{
 		PrintWriter rep = new PrintWriter(new FileWriter(STUDENT_REPORT_FILE)); 
 		
-		rep.println("Student Report: " + stu.getName()); 
-		rep.println("Date: "); //TODO: get current date and assign it to a variable
+		rep.println("Student Report: " + stu.getID());
+		rep.println("Name: " + stu.getName()); 
+		// Current date and time
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
+		String now = dtf.format(LocalDateTime.now());  
+		rep.println("Date: "+ now);
 		rep.println();
-		//rep.println("Year: " + stu.getYear()); TODO: getYear
-		//rep.println("GPA: " + stu.getGPA()); TODO: getGPA
-		rep.println("Classes: ");//TODO: get CS classes from Student and put the list here
-		rep.println("Number of Visits to Tutoring: " );//TODO: either create a student variable to this or 
-														//increment over all days and count visits before this print
-		rep.println("Tutors: ");//TODO: increment over days and get all unique tutors, list here
-		
+		rep.println("Year: " + stu.getYear());
+		rep.println("GPA: " + stu.getGPA());
+		rep.println("Classes: " + printClasses());
+		rep.println("Number of Visits to Tutoring: " );//TODO: create LOG file which tracks all scheduled 
+														//visits as well as visit data
+		rep.println("Tutors: ");//TODO: ^^^
 		rep.close();
+	}
+	// compiles string of classes being taken by the student
+	private String printClasses()
+	{
+		String classes = "";
+		for(int i=0; i<stu.getClasses().size(); i++)
+			classes += stu.getClasses().get(i) +", ";
+		return classes;
 	}
 }
 	
