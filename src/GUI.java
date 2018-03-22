@@ -89,10 +89,13 @@ public class GUI {
 
 	private void scheduleTutor()
 	{
+		ScheduleTutorFrame test = new ScheduleTutorFrame();
+
+		test.setVisible(true);
 		System.out.println("Schedule Tutor");	
 	}
 
-	private class scheduleTutorPanel extends JPanel
+	private class ScheduleTutorFrame extends JFrame
 	{
 		private JTextField name;
 		private JTextField year; //make dropdown
@@ -101,19 +104,44 @@ public class GUI {
 		private JButton submit;
 
 		private GridBagLayout layout;
+		private JPanel panel;
 		
-		scheduleTutorPanel()
+		ScheduleTutorFrame()
 		{
-			name = new JTextField();
-			year = new JTextField();
-			studentID = new JTextField();
+			name = new JTextField("Name", 20);
+			year = new JTextField("Year", 20);
+			studentID = new JTextField("Student ID", 20);
 
 			submit = new JButton("Submit");
+			submit.addActionListener(e -> schedule());
+
+			layout = new GridBagLayout();
+
+			setLayout(layout);
+
+			GridBagConstraints c = new GridBagConstraints();
+			c.fill = GridBagConstraints.BOTH;
+			c.weightx = 1.0;
+			c.weighty = 1.0;
+
+			add(name);
+			add(year);
+			add(studentID);
+
+			add(submit);
+
+			
+			pack();
 		}
 
 		private void schedule()
 		{
-			Tutor t = new Tutor("","");	
+			
+			Tutor t = new Tutor(name.getText(),year.getText());
+			scheduler.addTutor(0,1200, t);
+			updateSchedule();
+			System.out.println(t.toString());
+			dispose();
 		}
 	}
 
