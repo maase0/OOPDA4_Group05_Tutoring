@@ -87,6 +87,41 @@ public class GUI {
         frame.setVisible(true);
     }
 
+	private void scheduleTutor()
+	{
+		System.out.println("Schedule Tutor");	
+	}
+
+	private class scheduleTutorPanel extends JPanel
+	{
+		private JTextField name;
+		private JTextField year; //make dropdown
+		private JTextField studentID;
+
+		private JButton submit;
+
+		private GridBagLayout layout;
+		
+		scheduleTutorPanel()
+		{
+			name = new JTextField();
+			year = new JTextField();
+			studentID = new JTextField();
+
+			submit = new JButton("Submit");
+		}
+
+		private void schedule()
+		{
+			Tutor t = new Tutor("","");	
+		}
+	}
+
+	private void scheduleStudent()
+	{
+		System.out.println("Schedule Student");	
+	}
+
     // Create a popup menu to schedule or remove students or tutors.
     // selecting one of the options would make a popup window to complete
     // whatever task. The day and time would autofill in the popup window,
@@ -98,13 +133,17 @@ public class GUI {
         JPopupMenu menu = new JPopupMenu("Menu");
         if(pair.getTutor() == null)
         {
-            menu.add("Schedule Tutor");
+				JMenuItem t = new JMenuItem("Schedule Tutor");
+				t.addActionListener(e -> scheduleTutor());
+                menu.add(t); 
         }
         else
         {
             if(pair.getStudent() == null)
             {
-                menu.add("Schedule Student");
+				JMenuItem s = new JMenuItem("Schedule Student");
+				s.addActionListener(e -> scheduleStudent());
+                menu.add(s);
                 menu.add("Remove tutor: " + pair.getTutor().getName());
             }
             else
