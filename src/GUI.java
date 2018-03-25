@@ -87,68 +87,68 @@ public class GUI {
         frame.setVisible(true);
     }
 
-	private void scheduleTutor()
-	{
-		ScheduleTutorFrame test = new ScheduleTutorFrame();
+    private void scheduleTutor()
+    {
+        ScheduleTutorFrame test = new ScheduleTutorFrame();
 
-		test.setVisible(true);
-		System.out.println("Schedule Tutor");	
-	}
+        test.setVisible(true);
+        System.out.println("Schedule Tutor");
+    }
 
-	private class ScheduleTutorFrame extends JFrame
-	{
-		private JTextField name;
-		private JTextField year; //make dropdown
-		private JTextField studentID;
+    private class ScheduleTutorFrame extends JFrame
+    {
+        private JTextField name;
+        private JTextField year; //make dropdown
+        private JTextField studentID;
 
-		private JButton submit;
+        private JButton submit;
 
-		private GridBagLayout layout;
-		private JPanel panel;
-		
-		ScheduleTutorFrame()
-		{
-			name = new JTextField("Name", 20);
-			year = new JTextField("Year", 20);
-			studentID = new JTextField("Student ID", 20);
+        private GridBagLayout layout;
+        private JPanel panel;
 
-			submit = new JButton("Submit");
-			submit.addActionListener(e -> schedule());
+        ScheduleTutorFrame()
+        {
+            name = new JTextField("Name", 20);
+            year = new JTextField("Year", 20);
+            studentID = new JTextField("Student ID", 20);
 
-			layout = new GridBagLayout();
+            submit = new JButton("Submit");
+            submit.addActionListener(e -> schedule());
 
-			setLayout(layout);
+            layout = new GridBagLayout();
 
-			GridBagConstraints c = new GridBagConstraints();
-			c.fill = GridBagConstraints.BOTH;
-			c.weightx = 1.0;
-			c.weighty = 1.0;
+            setLayout(layout);
 
-			add(name);
-			add(year);
-			add(studentID);
+            GridBagConstraints c = new GridBagConstraints();
+            c.fill = GridBagConstraints.BOTH;
+            c.weightx = 1.0;
+            c.weighty = 1.0;
 
-			add(submit);
+            add(name);
+            add(year);
+            add(studentID);
 
-			
-			pack();
-		}
+            add(submit);
 
-		private void schedule()
-		{
-			
-			Tutor t = new Tutor(name.getText(),year.getText());
-			scheduler.addTutor(0,1200, t);
-			updateSchedule();
-			System.out.println(t.toString());
-			dispose();
-		}
-	}
 
-	private void scheduleStudent()
-	{
-		System.out.println("Schedule Student");	
-	}
+            pack();
+        }
+
+        private void schedule()
+        {
+
+            Tutor t = new Tutor(name.getText(),year.getText());
+            scheduler.addTutor(0,1200, t);
+            updateSchedule();
+            System.out.println(t.toString());
+            dispose();
+        }
+    }
+
+    private void scheduleStudent()
+    {
+        System.out.println("Schedule Student");
+    }
 
     // Create a popup menu to schedule or remove students or tutors.
     // selecting one of the options would make a popup window to complete
@@ -161,16 +161,16 @@ public class GUI {
         JPopupMenu menu = new JPopupMenu("Menu");
         if(pair.getTutor() == null)
         {
-				JMenuItem t = new JMenuItem("Schedule Tutor");
-				t.addActionListener(e -> scheduleTutor());
-                menu.add(t); 
+            JMenuItem t = new JMenuItem("Schedule Tutor");
+            t.addActionListener(e -> scheduleTutor());
+            menu.add(t);
         }
         else
         {
             if(pair.getStudent() == null)
             {
-				JMenuItem s = new JMenuItem("Schedule Student");
-				s.addActionListener(e -> scheduleStudent());
+                JMenuItem s = new JMenuItem("Schedule Student");
+                s.addActionListener(e -> scheduleStudent());
                 menu.add(s);
                 menu.add("Remove tutor: " + pair.getTutor().getName());
             }
