@@ -87,9 +87,9 @@ public class GUI {
         frame.setVisible(true);
     }
 
-    private void scheduleTutor()
+    private void scheduleTutor(int day, int time)
     {
-        ScheduleTutorFrame test = new ScheduleTutorFrame();
+        ScheduleTutorFrame test = new ScheduleTutorFrame(day, time);
 
         test.setVisible(true);
         System.out.println("Schedule Tutor");
@@ -100,17 +100,21 @@ public class GUI {
         private JTextField name;
         private JTextField year; //make dropdown
         private JTextField studentID;
+		private JTextField day;
+		private JTextField time;
 
         private JButton submit;
 
         private GridBagLayout layout;
         private JPanel panel;
 
-        ScheduleTutorFrame()
+        ScheduleTutorFrame(int day, int time)
         {
-            name = new JTextField("Name", 20);
-            year = new JTextField("Year", 20);
-            studentID = new JTextField("Student ID", 20);
+            this.name = new JTextField("Name", 20);
+            this.year = new JTextField("Year", 20);
+            this.studentID = new JTextField("Student ID", 20);
+			this.day = new JTextField(""+day, 20);
+			this.time = new JTextField(""+time, 20);
 
             submit = new JButton("Submit");
             submit.addActionListener(e -> schedule());
@@ -127,6 +131,8 @@ public class GUI {
             add(name);
             add(year);
             add(studentID);
+			add(this.day);
+			add(this.time);
 
             add(submit);
 
@@ -138,7 +144,7 @@ public class GUI {
         {
 
             Tutor t = new Tutor(name.getText(),year.getText());
-            scheduler.addTutor(0,1200, t);
+            scheduler.addTutor(Integer.parseInt(day.getText()), Integer.parseInt(time.getText()), t);
             updateSchedule();
             System.out.println(t.toString());
             dispose();
@@ -162,7 +168,7 @@ public class GUI {
         if(pair.getTutor() == null)
         {
             JMenuItem t = new JMenuItem("Schedule Tutor");
-            t.addActionListener(e -> scheduleTutor());
+            t.addActionListener(e -> scheduleTutor(day, time));
             menu.add(t);
         }
         else
@@ -459,7 +465,7 @@ public class GUI {
                 scheduleLabels[x][y] = new PairLabel();
                 scheduleLabels[x][y].setOpaque(true);
 
-                final PairLabel pairLabel = scheduleLabels[x][y]; //need this for some reason
+                final PairLabel pairLabel = scheduleLabels[x][y]; //  need final for some reason
                 final int day = x;								  //  https://stackoverflow.com/questions/
                 final int time = y;								  //  13920649/access-local-variable-from-inner-class
 
