@@ -156,10 +156,6 @@ public class Scheduler implements Serializable {
         return (((int) time / 100) - 10) * 4 + ((time % 100) / 15);
     }
 
-    private int arrayIndexToTime(int index) {
-        return 0;
-    }
-
     /**
      * Initializes the schedule to all null Maybe not needed
      */
@@ -199,5 +195,35 @@ public class Scheduler implements Serializable {
 
         return returnString;
     }
+
+	public static int arrayIndexToTime(int index)
+	{
+		return 1000 + ((index / 4) * 100) + 15 * (index % 4);	
+	}
+
+	public static int timeToBlockStart(int time)
+	{
+		if(time >= 1000 && time < 1200)
+		{
+			return 1000;	
+		}
+		else if(time < 1400)
+		{
+			return 1200;	
+		}
+		else if(time < 1600)
+		{
+			return 1400;
+		}
+		else if(time < 1800)
+		{
+			return 1600;	
+		}
+		else
+		{
+			return 0;	
+		}
+	}
+
 
 }
