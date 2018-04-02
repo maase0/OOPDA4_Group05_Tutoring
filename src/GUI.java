@@ -89,6 +89,8 @@ public class GUI {
 
     private void scheduleTutor(int day, int time)
     {
+		time = Scheduler.arrayIndexToTime(time);
+		time = Scheduler.timeToBlockStart(time);
         ScheduleTutorFrame test = new ScheduleTutorFrame(day, time);
 
         test.setVisible(true);
@@ -98,11 +100,12 @@ public class GUI {
     private class ScheduleTutorFrame extends JFrame
     {
         private JTextField name;
-        private JTextField year; //make dropdown
+        private JTextField year; 
         private JTextField studentID;
-		private JTextField day;
-		private JTextField time;
+		private JTextField day; //make dropdown
+		private JComboBox time;
 
+		private String[] times; 
         private JButton submit;
 
         private GridBagLayout layout;
@@ -114,7 +117,9 @@ public class GUI {
             this.year = new JTextField("Year", 20);
             this.studentID = new JTextField("Student ID", 20);
 			this.day = new JTextField(""+day, 20);
-			this.time = new JTextField(""+time, 20);
+
+			this.times = new String[] {"1000", "1200", "1400", "1600"};
+			this.time = new JComboBox(times);
 
             submit = new JButton("Submit");
             submit.addActionListener(e -> schedule());
@@ -144,7 +149,7 @@ public class GUI {
         {
 
             Tutor t = new Tutor(name.getText(),year.getText());
-            scheduler.addTutor(Integer.parseInt(day.getText()), Integer.parseInt(time.getText()), t);
+            scheduler.addTutor(Integer.parseInt(day.getText()), Integer.parseInt((String) time.getSelectedItem()), t);
             updateSchedule();
             System.out.println(t.toString());
             dispose();
@@ -467,7 +472,7 @@ public class GUI {
 
                 final PairLabel pairLabel = scheduleLabels[x][y]; //  need final for some reason
                 final int day = x;								  //  https://stackoverflow.com/questions/
-                final int time = y;								  //  13920649/access-local-variable-from-inner-class
+                final int time = y;	  //  13920649/access-local-variable-from-inner-class
 
                 scheduleLabels[x][y].addMouseListener(new MouseAdapter() {
                     public void mouseClicked(MouseEvent e)
