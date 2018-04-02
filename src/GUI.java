@@ -103,9 +103,10 @@ public class GUI {
         private JTextField year; 
         private JTextField studentID;
 		private JTextField day; //make dropdown
-		private JComboBox time;
+		private JComboBox<String> time;
 
-		private String[] times; 
+		private String[] displayTimes; 
+		private int[] times;
         private JButton submit;
 
         private GridBagLayout layout;
@@ -118,8 +119,12 @@ public class GUI {
             this.studentID = new JTextField("Student ID", 20);
 			this.day = new JTextField(""+day, 20);
 
-			this.times = new String[] {"1000", "1200", "1400", "1600"};
-			this.time = new JComboBox(times);
+			this.displayTimes = new String[] {"10:00", "12:00", "14:00", "16:00"};
+			this.times = new int[] {1000, 1200, 1400, 1600};
+			this.time = new JComboBox<String>(displayTimes);
+
+			int selected = time == 1000 ? 0 : time == 1200 ? 1 : time == 1400 ? 2 : 3; //lol
+			this.time.setSelectedIndex(selected);
 
             submit = new JButton("Submit");
             submit.addActionListener(e -> schedule());
@@ -149,7 +154,7 @@ public class GUI {
         {
 
             Tutor t = new Tutor(name.getText(),year.getText());
-            scheduler.addTutor(Integer.parseInt(day.getText()), Integer.parseInt((String) time.getSelectedItem()), t);
+            scheduler.addTutor(Integer.parseInt(day.getText()), times[time.getSelectedIndex()], t);
             updateSchedule();
             System.out.println(t.toString());
             dispose();
