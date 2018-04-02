@@ -3,6 +3,7 @@
 A scheduler to schedule one week's worth of appointments between tutors and students.
 
 ##Scenario
+
 The user is a third party that schedules the students or tutors.
 The user interface is a grid, Monday to Friday by 10:00 to 18:00.
 Tutors can be scheduled in open 2 hour blocks, starting at 10:00, 12:00, 14:00 or 16:00.
