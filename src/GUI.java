@@ -116,6 +116,9 @@ public class GUI {
         private GridBagLayout layout;
         private JPanel panel;
 
+		//TODO: Change to separate class, ScheduleFrame
+		//extend from innner classes to ScheduleTutorFrame
+		//and ScheduleStudentFrame
         ScheduleTutorFrame(int day, int time)
         {
             this.name = new JTextField("Name", 20);
