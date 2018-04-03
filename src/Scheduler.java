@@ -33,20 +33,19 @@ public class Scheduler implements Serializable {
      * @param duration The duration of the appointment
      * @return An array list of valid starting times
      */
-    public ArrayList<Integer> checkAvailabilityByTutor(Tutor tutor, int day, int duration) {
-        ArrayList<Integer> availableTimes = new ArrayList<Integer>();
+    public ArrayList<String> checkAvailabilityInBlock(int day, int startTime, int duration) {
+        ArrayList<String> availableTimes = new ArrayList<String>();
         int blockOffset = duration / BLOCK_LENGTH;
 
-        for (int time = 0; time < NUM_BLOCKS - blockOffset; time++) {
+        for (int time = timeToArrayIndex(startTime); time < NUM_BLOCKS - blockOffset; time++) {
             boolean available = true;
             for (int i = time; (i - time) < blockOffset && available; i++) {
-                if (!tutor.equals(schedule[day][i].getTutor())
-                        || schedule[day][i].getStudent() != null) {
+                if (schedule[day][i].getTutor() == null  || schedule[day][i].getStudent() != null) {
                     available = false;
                 }
             }
             if (available) {
-                availableTimes.add(time);
+                availableTimes.add("" + arrayIndexToTime(time));
             }
         }
 
@@ -96,6 +95,25 @@ public class Scheduler implements Serializable {
 
         return successful;
     }
+
+	public boolean scheduleStudent(Student s, int day, int startTime, int length)
+	{
+		boolean successful = true;
+		int index = timeToArrayIndex(startTime);
+		if(index <= NUM_BLOCKS - (length / 15))
+		{
+			for(int i = index; i < index + (length / 15); i++)
+			{
+				schedule[day][i].setStudent(s);	
+			}
+		}
+		else
+		{
+			successful = false;	
+		}
+
+		return successful;
+	}
 
     /**
      * Checks if any tutor available for a given time, day, and duration.

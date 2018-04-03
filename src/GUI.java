@@ -101,10 +101,28 @@ public class GUI {
 
     private class ScheduleTutorFrame extends ScheduleAddFrame
     {
-        
+
 		public ScheduleTutorFrame(int day, int time)
 		{
 			super(day, time);	
+
+
+			this.displayTimes = new String[] {"10:00", "12:00", "14:00", "16:00"};
+			this.times = new int[] {1000, 1200, 1400, 1600};
+			this.time = new JComboBox<String>(displayTimes);
+
+			int selected = time == 1200 ? 1 : time == 1400 ? 2 : time == 1600 ? 3 : 0; //lol
+			this.time.setSelectedIndex(selected);
+
+
+			c.gridx = 0;
+			c.gridy = 2;
+			c.weightx = 0.333;
+			c.gridwidth = 1;
+
+			add(this.time, c);
+
+			pack();
 		}
 
         protected void schedule()
@@ -118,6 +136,16 @@ public class GUI {
         }
     }
 
+	private void scheduleStudent(int day, int time)
+    {
+        time = Scheduler.arrayIndexToTime(time);
+        time = Scheduler.timeToBlockStart(time);
+        ScheduleStudentFrame studentFrame = new ScheduleStudentFrame(day, time);
+
+        studentFrame.setVisible(true);
+		System.out.println("Schedule Student");
+    }
+
 	private class ScheduleStudentFrame extends ScheduleAddFrame
 	{
 		JComboBox<String> length;
@@ -128,12 +156,24 @@ public class GUI {
 		{
 			super(day, time);
 
+			setTitle("Schedule A Student For Tutoring");
+
+			ArrayList<String> availableTimes = scheduler.checkAvailabilityInBlock(day, time, 30);
+			this.time = new JComboBox<String>(availableTimes.toArray(new String[availableTimes.size()]));
+
+			c.gridx = 1;
+			c.gridy = 2;
+			c.weightx = 0.333;
+
+			add(this.time, c);
+
+
 			lengthDisplay = new String[] {"30 minutes", "45 minutes", "60 minutes"};
 			lengthNums = new int[] {30, 45, 60};
 
 			length = new JComboBox<String>(lengthDisplay);
 			
-			c.gridy = 2;
+			c.gridy = 3;
 			c.gridx = 0;
 
 			c.gridwidth = 1;
@@ -141,18 +181,48 @@ public class GUI {
 
 			add(length, c);
 
+
+			revalidate();
+			repaint();
+			pack();
+
 		}
 
 		protected void schedule()
 		{
-			//Student s = new Student(name.getText(), year.getText());
+			Student s = new Student(name.getText());
+			//int t = times[time.getSelectedIndex()];
+			int t = Integer.parseInt((String) time.getSelectedItem());//fix
+			int d = day.getSelectedIndex();
+			int l = lengthNums[length.getSelectedIndex()];
+
+			if(scheduler.checkAvailability(d, t, l))
+			{
+				scheduler.scheduleStudent(s, d, t, l);	
+			}
+			else
+			{
+				System.out.println("error, student scheduled"); //handle this	
+			}
+			
+			updateSchedule();
+			dispose();
+		}
+
+		private void genTimes(int time)
+		{
+			//this.displayTimes = new String[] {"10:00", "12:00", "14:00", "16:00"};
+			//this.displayTimes = new St
+
+
+			//this.times = new int[] {1000, 1200, 1400, 1600};
+
+			//int selected = time == 1200 ? 1 : time == 1400 ? 2 : time == 1600 ? 3 : 0; //lol
+			//this.time.setSelectedIndex(selected);
 		}
 	}
 
-    private void scheduleStudent()
-    {
-        System.out.println("Schedule Student");
-    }
+    
 
     // Create a popup menu to schedule or remove students or tutors.
     // selecting one of the options would make a popup window to complete
@@ -175,7 +245,7 @@ public class GUI {
             if(pair.getStudent() == null)
             {
                 JMenuItem s = new JMenuItem("Schedule Student");
-                s.addActionListener(e -> scheduleStudent());
+                s.addActionListener(e -> scheduleStudent(day, time));
                 menu.add(s);
                 menu.add("Remove tutor: " + pair.getTutor().getName());
             }

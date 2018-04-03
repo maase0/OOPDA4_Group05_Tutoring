@@ -31,12 +31,12 @@ public abstract class ScheduleAddFrame extends JFrame
         this.year = new JTextField("Year", 20);
         this.studentID = new JTextField("Student ID", 20);
 
-        this.displayTimes = new String[] {"10:00", "12:00", "14:00", "16:00"};
-        this.times = new int[] {1000, 1200, 1400, 1600};
-        this.time = new JComboBox<String>(displayTimes);
+        //this.displayTimes = new String[] {"10:00", "12:00", "14:00", "16:00"};
+        //this.times = new int[] {1000, 1200, 1400, 1600};
+        //this.time = new JComboBox<String>(displayTimes);
 
-        int selected = time == 1200 ? 1 : time == 1400 ? 2 : time == 1600 ? 3 : 0; //lol
-        this.time.setSelectedIndex(selected);
+        //int selected = time == 1200 ? 1 : time == 1400 ? 2 : time == 1600 ? 3 : 0; //lol
+        //this.time.setSelectedIndex(selected);
 
         this.displayDays = new String[] {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday"};
         this.day = new JComboBox<String>(displayDays);
@@ -76,8 +76,8 @@ public abstract class ScheduleAddFrame extends JFrame
         c.weightx = .333;
         add(this.day, c);
 
-        c.gridx = 2;
-        add(this.time, c);
+        //c.gridx = 2;
+        //add(this.time, c);
 
 
 
@@ -88,7 +88,6 @@ public abstract class ScheduleAddFrame extends JFrame
 
 
         setPreferredSize(new Dimension(300,300));
-        pack();
     }
 
 	abstract protected void schedule();
