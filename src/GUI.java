@@ -102,11 +102,15 @@ public class GUI {
         private JTextField name;
         private JTextField year; 
         private JTextField studentID;
-		private JTextField day; //make dropdown
-		private JComboBox<String> time;
 
+		private JComboBox<String> time;
 		private String[] displayTimes; 
 		private int[] times;
+
+		private JComboBox<String> day;
+		private String[] displayDays;
+		private int[] days;
+
         private JButton submit;
 
         private GridBagLayout layout;
@@ -117,34 +121,66 @@ public class GUI {
             this.name = new JTextField("Name", 20);
             this.year = new JTextField("Year", 20);
             this.studentID = new JTextField("Student ID", 20);
-			this.day = new JTextField(""+day, 20);
 
 			this.displayTimes = new String[] {"10:00", "12:00", "14:00", "16:00"};
 			this.times = new int[] {1000, 1200, 1400, 1600};
 			this.time = new JComboBox<String>(displayTimes);
 
-			int selected = time == 1000 ? 0 : time == 1200 ? 1 : time == 1400 ? 2 : 3; //lol
+			int selected = time == 1200 ? 1 : time == 1400 ? 2 : time == 1600 ? 3 : 0; //lol
 			this.time.setSelectedIndex(selected);
+
+			this.displayDays = new String[] {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday"};
+			this.day = new JComboBox<String>(displayDays);
+			this.day.setSelectedIndex(day);	
 
             submit = new JButton("Submit");
             submit.addActionListener(e -> schedule());
 
             layout = new GridBagLayout();
 
+
             setLayout(layout);
 
             GridBagConstraints c = new GridBagConstraints();
             c.fill = GridBagConstraints.BOTH;
-            c.weightx = 1.0;
+
+            c.weightx = 0.5;
             c.weighty = 1.0;
 
-            add(name);
-            add(year);
-            add(studentID);
-			add(this.day);
-			add(this.time);
+			c.gridx = 0;
+			c.gridy = 0;
 
-            add(submit);
+            add(name, c);
+
+			c.weightx = 0.25;
+			c.gridx = 1;
+            add(year, c);
+
+			c.gridx = 2;
+            add(studentID, c);
+
+			c.gridy = 1;
+			c.gridx = 0;
+			c.weightx = .333;
+			add(this.day, c);
+
+			c.gridx = 2;
+			add(this.time, c);
+
+			c.gridy = 2;
+			c.gridx = 0;
+			add(javax.swing.Box.createGlue(), c);
+
+
+			c.gridy = 3;
+			c.gridx = 0;
+			add(javax.swing.Box.createGlue(), c);
+
+
+			c.gridy = 4;
+			c.gridx = 3;
+			c.weightx = 0.25;
+            add(submit, c);
 
 
             pack();
@@ -154,7 +190,7 @@ public class GUI {
         {
 
             Tutor t = new Tutor(name.getText(),year.getText());
-            scheduler.addTutor(Integer.parseInt(day.getText()), times[time.getSelectedIndex()], t);
+            scheduler.addTutor(day.getSelectedIndex(), times[time.getSelectedIndex()], t);
             updateSchedule();
             System.out.println(t.toString());
             dispose();
