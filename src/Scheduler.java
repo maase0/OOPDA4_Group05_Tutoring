@@ -164,15 +164,7 @@ public class Scheduler implements Serializable {
         schedule[day][timeToArrayIndex(time)].setStudent(student);
     }
 
-    /**
-     * Converts the time from 24 hour HHMM format to a value from 0 to 31
-     *
-     * @param time The time to convert
-     * @return An array index for the schedule array
-     */
-    private int timeToArrayIndex(int time) {
-        return (((int) time / 100) - 10) * 4 + ((time % 100) / 15);
-    }
+    
 
     /**
      * Initializes the schedule to all null Maybe not needed
@@ -213,6 +205,17 @@ public class Scheduler implements Serializable {
 
         return returnString;
     }
+	
+	/**
+     * Converts the time from 24 hour HHMM format to a value from 0 to 31
+     *
+     * @param time The time to convert
+     * @return An array index for the schedule array
+     */
+    public static int timeToArrayIndex(int time) {
+        return (((int) time / 100) - 10) * 4 + ((time % 100) / 15);
+    }
+
 
     public static int arrayIndexToTime(int index)
     {

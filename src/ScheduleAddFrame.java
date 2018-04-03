@@ -2,7 +2,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public abstract class ScheduleAddFrame extends JFrame
+public abstract class ScheduleAddFrame extends JFrame implements KeyListener
 {
     protected JTextField name;
     protected JTextField year;
@@ -27,16 +27,14 @@ public abstract class ScheduleAddFrame extends JFrame
     //and ScheduleStudentFrame
     public ScheduleAddFrame(int day, int time)
     {
+
+		addKeyListener(this);
+		setFocusable(true);
+        setFocusTraversalKeysEnabled(false);
+
         this.name = new JTextField("Name", 20);
-        this.year = new JTextField("Year", 20);
-        this.studentID = new JTextField("Student ID", 20);
-
-        //this.displayTimes = new String[] {"10:00", "12:00", "14:00", "16:00"};
-        //this.times = new int[] {1000, 1200, 1400, 1600};
-        //this.time = new JComboBox<String>(displayTimes);
-
-        //int selected = time == 1200 ? 1 : time == 1400 ? 2 : time == 1600 ? 3 : 0; //lol
-        //this.time.setSelectedIndex(selected);
+        this.year = new JTextField("Year", 10);
+        this.studentID = new JTextField("Student ID", 10);
 
         this.displayDays = new String[] {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday"};
         this.day = new JComboBox<String>(displayDays);
@@ -60,13 +58,12 @@ public abstract class ScheduleAddFrame extends JFrame
 
         add(name, c);
 
-        c.weightx = 0.5;
         c.gridx = 0;
         c.gridy = 1;
         c.gridwidth = 2;
         add(year, c);
 
-        c.gridx = 1;
+        c.gridx = 2;
         add(studentID, c);
 
         c.gridwidth = 1;
@@ -76,19 +73,35 @@ public abstract class ScheduleAddFrame extends JFrame
         c.weightx = .333;
         add(this.day, c);
 
-        //c.gridx = 2;
-        //add(this.time, c);
-
-
+        
 
         c.gridy = 4;
-        c.gridx = 3;
+        c.gridx = 4;
         c.weightx = 0.25;
         add(submit, c);
 
 
-        setPreferredSize(new Dimension(300,300));
+        setPreferredSize(new Dimension(400,300));
     }
+
+	public void keyTyped(KeyEvent e)
+	{
+	}
+
+	public void keyReleased(KeyEvent e)
+	{
+		System.out.println(e);
+		System.out.println(e.getKeyCode() + " typed");
+
+		if(e.getKeyCode()== KeyEvent.VK_ESCAPE)	
+		{
+			dispose();	
+		}
+	}
+
+	public void keyPressed(KeyEvent e)
+	{
+	}
 
 	abstract protected void schedule();
 

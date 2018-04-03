@@ -115,7 +115,7 @@ public class GUI {
 			this.time.setSelectedIndex(selected);
 
 
-			c.gridx = 0;
+			c.gridx = 1;
 			c.gridy = 2;
 			c.weightx = 0.333;
 			c.gridwidth = 1;
@@ -128,7 +128,8 @@ public class GUI {
         protected void schedule()
         {
 
-            Tutor t = new Tutor(name.getText(),year.getText());
+            Tutor t = new Tutor(name.getText(),year.getText()); 
+			//TODO: add tutor to list of tutors if not already
             scheduler.scheduleTutor(t, day.getSelectedIndex(), times[time.getSelectedIndex()]);
             updateSchedule();
             System.out.println(t.toString());
@@ -156,7 +157,7 @@ public class GUI {
 		{
 			super(day, time);
 
-			setTitle("Schedule A Student For Tutoring");
+			setTitle("Schedule Student for " + scheduler.getSchedule()[day][Scheduler.timeToArrayIndex(time)].getTutor());
 
 			ArrayList<String> availableTimes = scheduler.checkAvailabilityInBlock(day, time, 30);
 			this.time = new JComboBox<String>(availableTimes.toArray(new String[availableTimes.size()]));
@@ -209,17 +210,6 @@ public class GUI {
 			dispose();
 		}
 
-		private void genTimes(int time)
-		{
-			//this.displayTimes = new String[] {"10:00", "12:00", "14:00", "16:00"};
-			//this.displayTimes = new St
-
-
-			//this.times = new int[] {1000, 1200, 1400, 1600};
-
-			//int selected = time == 1200 ? 1 : time == 1400 ? 2 : time == 1600 ? 3 : 0; //lol
-			//this.time.setSelectedIndex(selected);
-		}
 	}
 
     
@@ -398,9 +388,9 @@ public class GUI {
     {
 
     }
+
     /**
      * Initailizes the schedule view of the program.
-     * Shows all Tutor-Student pairings
      */
     private void makeScheduleView()
     {
@@ -414,7 +404,7 @@ public class GUI {
      * Updates the schedule view to the current
      * information in the scheduler
      */
-    private void updateSchedule()
+    private void updateSchedule() //could probably be redone to be less bad
     {
         Pair[][] schedule = scheduler.getSchedule();
 
