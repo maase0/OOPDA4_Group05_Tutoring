@@ -83,6 +83,8 @@ public class GUI {
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+		frame.setPreferredSize(new Dimension(1200,800));
+
         frame.pack();
         frame.setVisible(true);
     }
@@ -141,13 +143,13 @@ public class GUI {
 
             layout = new GridBagLayout();
 
-
             setLayout(layout);
 
             GridBagConstraints c = new GridBagConstraints();
-            c.fill = GridBagConstraints.BOTH;
+            //c.fill = GridBagConstraints.BOTH;
+			c.fill = GridBagConstraints.HORIZONTAL;
 
-            c.weightx = 0.5;
+            c.weightx = 1;
             c.weighty = 1.0;
 
 			c.gridx = 0;
@@ -155,14 +157,18 @@ public class GUI {
 
             add(name, c);
 
-			c.weightx = 0.25;
-			c.gridx = 1;
+			c.weightx = 0.5;
+			c.gridx = 0;
+			c.gridy = 1;
+			c.gridwidth = 2;
             add(year, c);
 
-			c.gridx = 2;
+			c.gridx = 1;
             add(studentID, c);
 
-			c.gridy = 1;
+			c.gridwidth = 1;
+
+			c.gridy = 2;
 			c.gridx = 0;
 			c.weightx = .333;
 			add(this.day, c);
@@ -170,9 +176,6 @@ public class GUI {
 			c.gridx = 2;
 			add(this.time, c);
 
-			c.gridy = 2;
-			c.gridx = 0;
-			add(javax.swing.Box.createGlue(), c);
 
 
 			c.gridy = 3;
@@ -186,6 +189,7 @@ public class GUI {
             add(submit, c);
 
 
+			setPreferredSize(new Dimension(300,300));
             pack();
         }
 
