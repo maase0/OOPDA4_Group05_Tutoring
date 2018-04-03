@@ -111,12 +111,43 @@ public class GUI {
         {
 
             Tutor t = new Tutor(name.getText(),year.getText());
-            scheduler.addTutor(day.getSelectedIndex(), times[time.getSelectedIndex()], t);
+            scheduler.scheduleTutor(t, day.getSelectedIndex(), times[time.getSelectedIndex()]);
             updateSchedule();
             System.out.println(t.toString());
             dispose();
         }
     }
+
+	private class ScheduleStudentFrame extends ScheduleAddFrame
+	{
+		JComboBox<String> length;
+		String[] lengthDisplay;
+		int[] lengthNums;
+
+		public ScheduleStudentFrame(int day, int time)
+		{
+			super(day, time);
+
+			lengthDisplay = new String[] {"30 minutes", "45 minutes", "60 minutes"};
+			lengthNums = new int[] {30, 45, 60};
+
+			length = new JComboBox<String>(lengthDisplay);
+			
+			c.gridy = 2;
+			c.gridx = 0;
+
+			c.gridwidth = 1;
+			c.weightx = 1;
+
+			add(length, c);
+
+		}
+
+		protected void schedule()
+		{
+			//Student s = new Student(name.getText(), year.getText());
+		}
+	}
 
     private void scheduleStudent()
     {
@@ -132,6 +163,7 @@ public class GUI {
     {
         Pair pair = scheduler.getSchedule()[day][time];
         JPopupMenu menu = new JPopupMenu("Menu");
+
         if(pair.getTutor() == null)
         {
             JMenuItem t = new JMenuItem("Schedule Tutor");

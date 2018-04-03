@@ -19,6 +19,7 @@ public abstract class ScheduleAddFrame extends JFrame
     protected JButton submit;
 
     protected GridBagLayout layout;
+	protected GridBagConstraints c;
     protected JPanel panel;
 
     //TODO: Change to separate class, ScheduleFrame
@@ -48,8 +49,7 @@ public abstract class ScheduleAddFrame extends JFrame
 
         setLayout(layout);
 
-        GridBagConstraints c = new GridBagConstraints();
-        //c.fill = GridBagConstraints.BOTH;
+        c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
 
         c.weightx = 1;
@@ -79,11 +79,6 @@ public abstract class ScheduleAddFrame extends JFrame
         c.gridx = 2;
         add(this.time, c);
 
-
-
-        c.gridy = 3;
-        c.gridx = 0;
-        add(javax.swing.Box.createGlue(), c);
 
 
         c.gridy = 4;
