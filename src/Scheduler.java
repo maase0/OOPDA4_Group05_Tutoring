@@ -33,20 +33,19 @@ public class Scheduler implements Serializable {
      * @param duration The duration of the appointment
      * @return An array list of valid starting times
      */
-    public ArrayList<Integer> checkAvailabilityByTutor(Tutor tutor, int day, int duration) {
-        ArrayList<Integer> availableTimes = new ArrayList<Integer>();
+    public ArrayList<String> checkAvailabilityInBlock(int day, int startTime, int duration) {
+        ArrayList<String> availableTimes = new ArrayList<String>();
         int blockOffset = duration / BLOCK_LENGTH;
 
-        for (int time = 0; time < NUM_BLOCKS - blockOffset; time++) {
+        for (int time = timeToArrayIndex(startTime); time < NUM_BLOCKS - blockOffset; time++) {
             boolean available = true;
             for (int i = time; (i - time) < blockOffset && available; i++) {
-                if (!tutor.equals(schedule[day][i].getTutor())
-                        || schedule[day][i].getStudent() != null) {
+                if (schedule[day][i].getTutor() == null  || schedule[day][i].getStudent() != null) {
                     available = false;
                 }
             }
             if (available) {
-                availableTimes.add(time);
+                availableTimes.add("" + arrayIndexToTime(time));
             }
         }
 
@@ -97,6 +96,25 @@ public class Scheduler implements Serializable {
         return successful;
     }
 
+	public boolean scheduleStudent(Student s, int day, int startTime, int length)
+	{
+		boolean successful = true;
+		int index = timeToArrayIndex(startTime);
+		if(index <= NUM_BLOCKS - (length / 15))
+		{
+			for(int i = index; i < index + (length / 15); i++)
+			{
+				schedule[day][i].setStudent(s);	
+			}
+		}
+		else
+		{
+			successful = false;	
+		}
+
+		return successful;
+	}
+
     /**
      * Checks if any tutor available for a given time, day, and duration.
      *
@@ -146,15 +164,7 @@ public class Scheduler implements Serializable {
         schedule[day][timeToArrayIndex(time)].setStudent(student);
     }
 
-    /**
-     * Converts the time from 24 hour HHMM format to a value from 0 to 31
-     *
-     * @param time The time to convert
-     * @return An array index for the schedule array
-     */
-    private int timeToArrayIndex(int time) {
-        return (((int) time / 100) - 10) * 4 + ((time % 100) / 15);
-    }
+    
 
     /**
      * Initializes the schedule to all null Maybe not needed
@@ -195,35 +205,46 @@ public class Scheduler implements Serializable {
 
         return returnString;
     }
+	
+	/**
+     * Converts the time from 24 hour HHMM format to a value from 0 to 31
+     *
+     * @param time The time to convert
+     * @return An array index for the schedule array
+     */
+    public static int timeToArrayIndex(int time) {
+        return (((int) time / 100) - 10) * 4 + ((time % 100) / 15);
+    }
 
-	public static int arrayIndexToTime(int index)
-	{
-		return 1000 + ((index / 4) * 100) + 15 * (index % 4);	
-	}
 
-	public static int timeToBlockStart(int time)
-	{
-		if(time >= 1000 && time < 1200)
-		{
-			return 1000;	
-		}
-		else if(time < 1400)
-		{
-			return 1200;	
-		}
-		else if(time < 1600)
-		{
-			return 1400;
-		}
-		else if(time < 1800)
-		{
-			return 1600;	
-		}
-		else
-		{
-			return 0;	
-		}
-	}
+    public static int arrayIndexToTime(int index)
+    {
+        return 1000 + ((index / 4) * 100) + 15 * (index % 4);
+    }
+
+    public static int timeToBlockStart(int time)
+    {
+        if(time >= 1000 && time < 1200)
+        {
+            return 1000;
+        }
+        else if(time < 1400)
+        {
+            return 1200;
+        }
+        else if(time < 1600)
+        {
+            return 1400;
+        }
+        else if(time < 1800)
+        {
+            return 1600;
+        }
+        else
+        {
+            return 0;
+        }
+    }
 
 
 }

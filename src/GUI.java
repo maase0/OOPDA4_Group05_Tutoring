@@ -83,7 +83,7 @@ public class GUI {
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		frame.setPreferredSize(new Dimension(1200,800));
+        frame.setPreferredSize(new Dimension(1200,800));
 
         frame.pack();
         frame.setVisible(true);
@@ -91,41 +91,21 @@ public class GUI {
 
     private void scheduleTutor(int day, int time)
     {
-		time = Scheduler.arrayIndexToTime(time);
-		time = Scheduler.timeToBlockStart(time);
+        time = Scheduler.arrayIndexToTime(time);
+        time = Scheduler.timeToBlockStart(time);
         ScheduleTutorFrame test = new ScheduleTutorFrame(day, time);
 
         test.setVisible(true);
         System.out.println("Schedule Tutor");
     }
 
-    private class ScheduleTutorFrame extends JFrame
+    private class ScheduleTutorFrame extends ScheduleAddFrame
     {
-        private JTextField name;
-        private JTextField year; 
-        private JTextField studentID;
 
-		private JComboBox<String> time;
-		private String[] displayTimes; 
-		private int[] times;
+		public ScheduleTutorFrame(int day, int time)
+		{
+			super(day, time);	
 
-		private JComboBox<String> day;
-		private String[] displayDays;
-		private int[] days;
-
-        private JButton submit;
-
-        private GridBagLayout layout;
-        private JPanel panel;
-
-		//TODO: Change to separate class, ScheduleFrame
-		//extend from innner classes to ScheduleTutorFrame
-		//and ScheduleStudentFrame
-        ScheduleTutorFrame(int day, int time)
-        {
-            this.name = new JTextField("Name", 20);
-            this.year = new JTextField("Year", 20);
-            this.studentID = new JTextField("Student ID", 20);
 
 			this.displayTimes = new String[] {"10:00", "12:00", "14:00", "16:00"};
 			this.times = new int[] {1000, 1200, 1400, 1600};
@@ -134,80 +114,105 @@ public class GUI {
 			int selected = time == 1200 ? 1 : time == 1400 ? 2 : time == 1600 ? 3 : 0; //lol
 			this.time.setSelectedIndex(selected);
 
-			this.displayDays = new String[] {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday"};
-			this.day = new JComboBox<String>(displayDays);
-			this.day.setSelectedIndex(day);	
-
-            submit = new JButton("Submit");
-            submit.addActionListener(e -> schedule());
-
-            layout = new GridBagLayout();
-
-            setLayout(layout);
-
-            GridBagConstraints c = new GridBagConstraints();
-            //c.fill = GridBagConstraints.BOTH;
-			c.fill = GridBagConstraints.HORIZONTAL;
-
-            c.weightx = 1;
-            c.weighty = 1.0;
-
-			c.gridx = 0;
-			c.gridy = 0;
-
-            add(name, c);
-
-			c.weightx = 0.5;
-			c.gridx = 0;
-			c.gridy = 1;
-			c.gridwidth = 2;
-            add(year, c);
 
 			c.gridx = 1;
-            add(studentID, c);
-
+			c.gridy = 2;
+			c.weightx = 0.333;
 			c.gridwidth = 1;
 
-			c.gridy = 2;
-			c.gridx = 0;
-			c.weightx = .333;
-			add(this.day, c);
-
-			c.gridx = 2;
 			add(this.time, c);
 
+			pack();
+		}
 
-
-			c.gridy = 3;
-			c.gridx = 0;
-			add(javax.swing.Box.createGlue(), c);
-
-
-			c.gridy = 4;
-			c.gridx = 3;
-			c.weightx = 0.25;
-            add(submit, c);
-
-
-			setPreferredSize(new Dimension(300,300));
-            pack();
-        }
-
-        private void schedule()
+        protected void schedule()
         {
 
-            Tutor t = new Tutor(name.getText(),year.getText());
-            scheduler.addTutor(day.getSelectedIndex(), times[time.getSelectedIndex()], t);
+            Tutor t = new Tutor(name.getText(),year.getText()); 
+			//TODO: add tutor to list of tutors if not already
+            scheduler.scheduleTutor(t, day.getSelectedIndex(), times[time.getSelectedIndex()]);
             updateSchedule();
             System.out.println(t.toString());
             dispose();
         }
     }
 
-    private void scheduleStudent()
+	private void scheduleStudent(int day, int time)
     {
-        System.out.println("Schedule Student");
+        time = Scheduler.arrayIndexToTime(time);
+        time = Scheduler.timeToBlockStart(time);
+        ScheduleStudentFrame studentFrame = new ScheduleStudentFrame(day, time);
+
+        studentFrame.setVisible(true);
+		System.out.println("Schedule Student");
     }
+
+	private class ScheduleStudentFrame extends ScheduleAddFrame
+	{
+		JComboBox<String> length;
+		String[] lengthDisplay;
+		int[] lengthNums;
+
+		public ScheduleStudentFrame(int day, int time)
+		{
+			super(day, time);
+
+			setTitle("Schedule Student for " + scheduler.getSchedule()[day][Scheduler.timeToArrayIndex(time)].getTutor());
+
+			ArrayList<String> availableTimes = scheduler.checkAvailabilityInBlock(day, time, 30);
+			this.time = new JComboBox<String>(availableTimes.toArray(new String[availableTimes.size()]));
+
+			c.gridx = 1;
+			c.gridy = 2;
+			c.weightx = 0.333;
+
+			add(this.time, c);
+
+
+			lengthDisplay = new String[] {"30 minutes", "45 minutes", "60 minutes"};
+			lengthNums = new int[] {30, 45, 60};
+
+			length = new JComboBox<String>(lengthDisplay);
+			
+			c.gridy = 3;
+			c.gridx = 0;
+
+			c.gridwidth = 1;
+			c.weightx = 1;
+
+			add(length, c);
+
+
+			revalidate();
+			repaint();
+			pack();
+
+		}
+
+		protected void schedule()
+		{
+			Student s = new Student(name.getText());
+			//int t = times[time.getSelectedIndex()];
+			int t = Integer.parseInt((String) time.getSelectedItem());//fix
+			int d = day.getSelectedIndex();
+			int l = lengthNums[length.getSelectedIndex()];
+
+			if(scheduler.checkAvailability(d, t, l))
+			{
+				scheduler.scheduleStudent(s, d, t, l);	
+			}
+			else
+			{
+				System.out.println("error, student scheduled"); //handle this	
+			}
+			
+			updateSchedule();
+			dispose();
+		}
+
+	}
+
+    
 
     // Create a popup menu to schedule or remove students or tutors.
     // selecting one of the options would make a popup window to complete
@@ -218,6 +223,7 @@ public class GUI {
     {
         Pair pair = scheduler.getSchedule()[day][time];
         JPopupMenu menu = new JPopupMenu("Menu");
+
         if(pair.getTutor() == null)
         {
             JMenuItem t = new JMenuItem("Schedule Tutor");
@@ -229,7 +235,7 @@ public class GUI {
             if(pair.getStudent() == null)
             {
                 JMenuItem s = new JMenuItem("Schedule Student");
-                s.addActionListener(e -> scheduleStudent());
+                s.addActionListener(e -> scheduleStudent(day, time));
                 menu.add(s);
                 menu.add("Remove tutor: " + pair.getTutor().getName());
             }
@@ -382,9 +388,9 @@ public class GUI {
     {
 
     }
+
     /**
      * Initailizes the schedule view of the program.
-     * Shows all Tutor-Student pairings
      */
     private void makeScheduleView()
     {
@@ -398,7 +404,7 @@ public class GUI {
      * Updates the schedule view to the current
      * information in the scheduler
      */
-    private void updateSchedule()
+    private void updateSchedule() //could probably be redone to be less bad
     {
         Pair[][] schedule = scheduler.getSchedule();
 
