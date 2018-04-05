@@ -28,7 +28,9 @@ public class Driver {
         scheduler.addStudent(s2, 0, 1130);
         */
 
-        GUI gui = new GUI(scheduler);
+        //GUI gui = new GUI(scheduler);
+
+		GUI.getInstance();
 
     }
 }

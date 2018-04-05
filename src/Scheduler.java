@@ -247,4 +247,18 @@ public class Scheduler implements Serializable {
     }
 
 
+
+
+	private static Scheduler instance;
+
+	public static Scheduler getInstance()
+	{
+		if(instance == null)
+		{
+			instance = new Scheduler();
+		}
+
+		return instance;
+	}
+
 }

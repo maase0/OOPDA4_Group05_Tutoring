@@ -59,7 +59,7 @@ public class GUI {
      *
      * @input scheduler The scheduler to create a gui for
      */
-    public GUI(Scheduler scheduler) {
+    private GUI(Scheduler scheduler) {
 
 
         this.scheduler = scheduler;
@@ -610,4 +610,20 @@ public class GUI {
             System.out.println(e);
         }
     }
+
+
+
+	private static GUI instance;
+	
+	public static GUI getInstance()
+	{
+		if(instance == null)
+		{
+			instance = new GUI(Scheduler.getInstance());	
+		}
+
+		return instance;
+	}
+
+
 }
