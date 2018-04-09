@@ -4,10 +4,12 @@ public class Tutor implements Serializable {
 	
 	private String name;
 	private String year;
+	private String ID;
 	
-	public Tutor(String name, String year) {
+	public Tutor(String name, String year, String ID) {
 		this.name = name;
 		this.year = year;
+		this.ID = ID;
 	}
 	
 	public String getName() {
@@ -17,9 +19,12 @@ public class Tutor implements Serializable {
 	public String getYear() {
 		return year;
 	}
+	public String getID() {
+		return ID;
+	}
 	
 	public String toString() {
-		return name;
+		return ID + " " + name + " " + year;
 	}
 
 }
