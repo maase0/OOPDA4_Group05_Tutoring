@@ -43,8 +43,8 @@ public class Scheduler implements Serializable {
      * Returns an array list of starting times a given tutor is available for an
      * appointment of a given length on a given day
      *
-     * @param tutor The tutor to check
      * @param day The day of the appointment
+	 * @param startTime The starting time of the appointment
      * @param duration The duration of the appointment
      * @return An array list of valid starting times
      */
