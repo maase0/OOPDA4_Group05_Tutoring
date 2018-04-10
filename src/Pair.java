@@ -2,8 +2,8 @@ import java.io.Serializable;
 
 public class Pair implements Serializable {
 
-	private static Tutor tutor;
-	private static Student student;
+	private Tutor tutor;
+	private Student student;
 	
 	public Pair() {
 		this.tutor = null;
@@ -18,11 +18,11 @@ public class Pair implements Serializable {
 		this.student = student;
 	}
 	
-	public static Tutor getTutor() {
+	public Tutor getTutor() {
 		return tutor;
 	}
 	
-	public static Student getStudent() {
+	public Student getStudent() {
 		return student;
 	}
 	

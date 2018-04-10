@@ -15,10 +15,10 @@ public class ScheduleLogger
 	 * @param p
 	 * @throws IOException 
 	 */
-	ScheduleLogger(Pair p, String course) throws IOException
+	ScheduleLogger(Student s, Tutor t, String course) throws IOException
 	{
-		s = Pair.getStudent();
-		t = Pair.getTutor();
+		this.s = s;
+		this.t = t;
 		c = course;
 		if (t.getYear() == "senior")
 			l = "30 min";
