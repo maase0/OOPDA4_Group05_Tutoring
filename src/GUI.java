@@ -40,7 +40,6 @@ public class GUI {
     private JButton addStudentButton;
     private JButton quitButton;
 
-    private AddTutorPanel addTutorPanel;
 
     //Scheduler, students, and tutors
     private Scheduler scheduler;

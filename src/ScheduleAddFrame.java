@@ -81,7 +81,7 @@ public abstract class ScheduleAddFrame extends JFrame implements KeyListener
         add(submit, c);
 
 
-        setPreferredSize(new Dimension(400,300));
+        setPreferredSize(new Dimension(500,500));
     }
 
 	public void keyTyped(KeyEvent e)
@@ -90,9 +90,6 @@ public abstract class ScheduleAddFrame extends JFrame implements KeyListener
 
 	public void keyReleased(KeyEvent e)
 	{
-		System.out.println(e);
-		System.out.println(e.getKeyCode() + " typed");
-
 		if(e.getKeyCode()== KeyEvent.VK_ESCAPE)	
 		{
 			dispose();	
