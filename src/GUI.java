@@ -1,3 +1,6 @@
+/**
+ * @author Erich Maas
+ */
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -8,12 +11,15 @@ import java.util.ArrayList;
 
 public class GUI {
 
-    //Frame components
+	/**
+	 * Main components of the top level of the GUI
+	 */
     private JFrame frame;
     private GridBagLayout layout;
-    //private BorderLayout layout;
 
-    //Menu Components
+	/**
+	 * Components for the top menuBar
+	 */
     private JMenuBar menuBar;
 
     private JMenu fileMenu;
@@ -26,12 +32,9 @@ public class GUI {
     private JMenuItem aboutItem;
     private JMenuItem helpItem;
 
-    //Schedule View
-    //private JPanel scheduleView;
-    //private GridBagLayout scheduleViewLayout;
-    private PairLabel[][] scheduleLabels;
-
-    //Scheduling panel
+	/**
+	 * Components for displaying and interacting with the scheduler
+	 */
     private JPanel sidePanel;
     private GridBagLayout sidePanelLayout;
 
@@ -40,14 +43,20 @@ public class GUI {
     private JButton addStudentButton;
     private JButton quitButton;
 
+    private PairLabel[][] scheduleLabels;
 
-    //Scheduler, students, and tutors
+
+	/**
+	 * Stores the scheudeler and added tutors and students
+	 */
     private Scheduler scheduler;
     private ArrayList<Student> students; //Maybe use hashmap
     private ArrayList<Tutor> tutors;     //Lookup by student id
 
 
-    //File name and path
+	/**
+	 * File path information
+	 */
     private String fileName;
     private String savePath;
 
@@ -56,7 +65,7 @@ public class GUI {
     /**
      * Creates a new scheduler GUI.
      *
-     * @input scheduler The scheduler to create a gui for
+     * @param scheduler The scheduler to create a gui for
      */
     private GUI(Scheduler scheduler) {
 
@@ -88,6 +97,12 @@ public class GUI {
         frame.setVisible(true);
     }
 
+	/**
+	 * Creates a new ScheduleTutorFrame to schedule a new tutor
+	 *
+	 * @param day The initial day to schedule the tutor
+	 * @param time The initial time to schedule the tutor
+	 */
     private void scheduleTutor(int day, int time)
     {
         time = Scheduler.arrayIndexToTime(time);
@@ -98,9 +113,18 @@ public class GUI {
         System.out.println("Schedule Tutor");
     }
 
+	/**
+	 * An extension of ScheduleAddFrame to add a tutor
+	 */
     private class ScheduleTutorFrame extends ScheduleAddFrame
     {
 
+		/**
+		 * Creates a new ScheduleTutorFrame
+		 *
+		 * @param day The initial day to schedule the tutor
+		 * @param time The initial time to schedule the tutor
+		 */
 		public ScheduleTutorFrame(int day, int time)
 		{
 			super(day, time);	
@@ -124,6 +148,9 @@ public class GUI {
 			pack();
 		}
 
+		/**
+		 * Creates and schedules the tutor based on the information from the input boxes
+		 */
         protected void schedule()
         {
 
@@ -136,6 +163,12 @@ public class GUI {
         }
     }
 
+	/**
+	 * Creates a ScheduleStudentFrame to schedule a new student
+	 *
+	 * @param day The initial day to schedule the student
+	 * @param time The initial time to schedule the student
+	 */
 	private void scheduleStudent(int day, int time)
     {
         time = Scheduler.arrayIndexToTime(time);
@@ -146,12 +179,21 @@ public class GUI {
 		System.out.println("Schedule Student");
     }
 
+	/**
+	 * An extension of ScheduleAddFrame to schedule a student
+	 */
 	private class ScheduleStudentFrame extends ScheduleAddFrame
 	{
 		JComboBox<String> length;
 		String[] lengthDisplay;
 		int[] lengthNums;
 
+		/**
+		 * Creates a new ScheduleStudentFrame to schedule a new student
+		 *
+		 * @param day The initial day to schedule the student
+		 * @param time The initial time to schedule the student
+		 */
 		public ScheduleStudentFrame(int day, int time)
 		{
 			super(day, time);
@@ -188,6 +230,9 @@ public class GUI {
 
 		}
 
+		/**
+		 * Creates and schedules a student based on information in the input boxes
+		 */
 		protected void schedule()
 		{
 			Student s = new Student(name.getText());
@@ -218,6 +263,15 @@ public class GUI {
     // whatever task. The day and time would autofill in the popup window,
     // but could be changed in case of a mis-click. Label, x, and y are
     // just used to display the menu in the right location.
+	/**
+	 * Creates a popup menu to interact with the scheduler
+	 *
+	 * @param label The label to center the popup menu around
+	 * @param x The x value of the given label
+	 * @param y The y value of the given label
+	 * @param day The initial day to schedule the person on
+	 * @param time The initial time to schedule person on
+	 */
     private void showScheduleMenu(PairLabel label, int x, int y, int day, int time)
     {
         Pair pair = scheduler.getSchedule()[day][time];
@@ -612,8 +666,16 @@ public class GUI {
 
 
 
+	/**
+	 * Singleton instance
+	 */
 	private static GUI instance;
 	
+	/**
+	 * Gets the singleton intance of the GUI
+	 *
+	 * @return The singleton GUI instance
+	 */ 
 	public static GUI getInstance()
 	{
 		if(instance == null)
