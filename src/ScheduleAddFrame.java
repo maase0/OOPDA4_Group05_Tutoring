@@ -1,3 +1,8 @@
+package TutoringScheduler;
+
+/**
+ * @author Erich Maas
+ */
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -22,9 +27,12 @@ public abstract class ScheduleAddFrame extends JFrame implements KeyListener
 	protected GridBagConstraints c;
     protected JPanel panel;
 
-    //TODO: Change to separate class, ScheduleFrame
-    //extend from innner classes to ScheduleTutorFrame
-    //and ScheduleStudentFrame
+	/**
+	 * Creates a new ScheduleAddFrame to add students or tutors
+	 *
+	 * @param day The initial day to schedule the person
+	 * @param time The initial time to schedule the person
+	 */
     public ScheduleAddFrame(int day, int time)
     {
 
@@ -81,28 +89,37 @@ public abstract class ScheduleAddFrame extends JFrame implements KeyListener
         add(submit, c);
 
 
-        setPreferredSize(new Dimension(400,300));
+        setPreferredSize(new Dimension(500,500));
     }
 
+	/**
+	 * Performs no action when a key is typed
+	 */
 	public void keyTyped(KeyEvent e)
 	{
 	}
 
+	/**
+	 * Closes the frame if escape is released
+	 */
 	public void keyReleased(KeyEvent e)
 	{
-		System.out.println(e);
-		System.out.println(e.getKeyCode() + " typed");
-
 		if(e.getKeyCode()== KeyEvent.VK_ESCAPE)	
 		{
 			dispose();	
 		}
 	}
 
+	/**
+	 * Performs no action when key is pressed
+	 */
 	public void keyPressed(KeyEvent e)
 	{
 	}
 
+	/**
+	 * Schedules the tutor or student. Must be extended and overloaded.
+	 */
 	abstract protected void schedule();
 
 }

@@ -1,15 +1,30 @@
+package TutoringScheduler;
+
+/**
+ * @author Erich Maas
+ */
+
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.io.Serializable;
 
 public class Scheduler implements Serializable {
 
+	/**
+	 * Properties of the scheduler
+	 */
     public static final int DAYS = 5;
     public static final int BLOCK_LENGTH = 15;
     public static final int NUM_BLOCKS = 32; // 1000 to 1800: 8 hours * 4 fifteen min blocks per hour
 
     private Pair[][] schedule;
 
+	/**
+	 * Creates a new scheduler object.
+	 *
+	 * Creates an array of size DAYS by NUM_BLOCKS
+	 * and initializes it
+	 */
     public Scheduler() {
         schedule = new Pair[DAYS][NUM_BLOCKS];
         initializeSchedule();
@@ -28,8 +43,8 @@ public class Scheduler implements Serializable {
      * Returns an array list of starting times a given tutor is available for an
      * appointment of a given length on a given day
      *
-     * @param tutor The tutor to check
      * @param day The day of the appointment
+	 * @param startTime The starting time of the appointment
      * @param duration The duration of the appointment
      * @return An array list of valid starting times
      */
@@ -96,6 +111,16 @@ public class Scheduler implements Serializable {
         return successful;
     }
 
+	/**
+	 * Schedules a student on a given time and day for a given appointment length
+	 *
+	 * @param s The student object to schedule
+	 * @param day The day to schedule the student
+	 * @param startTime The beginning of the appointment
+	 * @param length How long the appointment will last
+	 *
+	 * @return True if the student was successfully scheduled
+	 */
 	public boolean scheduleStudent(Student s, int day, int startTime, int length)
 	{
 		boolean successful = true;
@@ -217,11 +242,25 @@ public class Scheduler implements Serializable {
     }
 
 
+	/**
+	 * Converts a valid array index to its corresponding time in the schedule
+	 *
+	 * @param index The index of the time slot
+	 *
+	 * @return The time represented by the index
+	 */
     public static int arrayIndexToTime(int index)
     {
         return 1000 + ((index / 4) * 100) + 15 * (index % 4);
     }
 
+	/**
+	 * Converts a valid DDHH time to its corresponding tutoring block in the schedule
+	 *
+	 * @param time The time to convert
+	 *
+	 * @return The beginning of the tutoring block containing the given time
+	 */
     public static int timeToBlockStart(int time)
     {
         if(time >= 1000 && time < 1200)
@@ -246,5 +285,23 @@ public class Scheduler implements Serializable {
         }
     }
 
+
+	/**
+	 * Singleton object
+	 */
+	private static Scheduler instance;
+
+	/**
+	 * @return The instance of the singleton Scheduler object
+	 */
+	public static Scheduler getInstance()
+	{
+		if(instance == null)
+		{
+			instance = new Scheduler();
+		}
+
+		return instance;
+	}
 
 }
