@@ -1,3 +1,6 @@
+/**
+ * @author Erich Maas
+ */
 import javax.swing.*;
 import java.awt.*;
 
@@ -9,6 +12,9 @@ public class PairLabel extends JPanel
     private BorderLayout layout;
     private String offset;
 
+	/**
+	 * Creates a new PairLabel object to display a student-tutor pair
+	 */
     public PairLabel()
     {
         offset = "    ";
@@ -25,11 +31,17 @@ public class PairLabel extends JPanel
     }
 
 
+	/**
+	 * Sets the name of the student in the PairLabel
+	 */
     public void setStudent(String studentName)
     {
         student.setText(studentName + offset);
     }
 
+	/**
+	 * Sets the name of the tutor in the PairLabel
+	 */
     public void setTutor(String tutorName)
     {
         tutor.setText(offset + tutorName);
