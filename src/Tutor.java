@@ -1,3 +1,6 @@
+/**
+ * @author Erich Maas
+ */
 import java.io.Serializable;
 
 public class Tutor implements Serializable {
