@@ -27,7 +27,7 @@ public class Student implements Serializable {
 	/**
 	 * Returns a string representation of the student
 	 */
-	public String toString
+	public String toString()
 	{
 		return name;
 	}
