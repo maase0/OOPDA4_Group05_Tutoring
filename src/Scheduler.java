@@ -1,3 +1,5 @@
+package TutoringScheduler;
+
 /**
  * @author Erich Maas
  */
