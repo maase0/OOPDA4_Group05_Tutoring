@@ -18,17 +18,17 @@ public class Driver {
         scheduler.scheduleTutor(new Tutor("Tutor Test", "Sophomore"), 2, 1200);
         scheduler.scheduleTutor(new Tutor("Somebody", "Senior"), 4, 1400);
         scheduler.scheduleTutor(new Tutor("TTUUTTOORR", "Junior"), 1, 1600);
-
-        Student s = new Student("Test Student");
+*/
+        Student s = new Student("Test Student", "1");
         scheduler.addStudent(s, 0, 1015);
         scheduler.addStudent(s, 0, 1030);
         scheduler.addStudent(s, 0, 1045);
 
-        Student s2 = new Student("Test Student 2");
+        Student s2 = new Student("Test Student 2", "2");
         scheduler.addStudent(s2, 0, 1100);
         scheduler.addStudent(s2, 0, 1115);
         scheduler.addStudent(s2, 0, 1130);
-        */
+        
 
         //GUI gui = new GUI(scheduler);
 
