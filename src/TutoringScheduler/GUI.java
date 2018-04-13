@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.io.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.util.ArrayList;
+import java.util.Optional;
 
 
 public class GUI {
@@ -44,10 +45,14 @@ public class GUI {
     private JButton addTutorButton;
     private JButton addStudentButton;
     private JButton quitButton;
+    private JButton reportButton;
 
     private PairLabel[][] scheduleLabels;
 
-
+    /**
+     * Logs scheduled event.
+     */
+    private ScheduleLogger log;
 	/**
 	 * Stores the scheudeler and added tutors and students
 	 */
@@ -73,6 +78,7 @@ public class GUI {
 
 
         this.scheduler = scheduler;
+		this.log = new ScheduleLogger();
 
         //Default filename and save path
         fileName = "schedule.sav";
@@ -156,7 +162,7 @@ public class GUI {
         protected void schedule()
         {
 
-            Tutor t = new Tutor(name.getText(),year.getText()); 
+            Tutor t = new Tutor(name.getText(),year.getText(),studentID.getText()); 
 			//TODO: add tutor to list of tutors if not already
             scheduler.scheduleTutor(t, day.getSelectedIndex(), times[time.getSelectedIndex()]);
             updateSchedule();
@@ -179,6 +185,7 @@ public class GUI {
 
         studentFrame.setVisible(true);
 		System.out.println("Schedule Student");
+		
     }
 
 	/**
@@ -237,7 +244,7 @@ public class GUI {
 		 */
 		protected void schedule()
 		{
-			Student s = new Student(name.getText());
+			Student s = new Student(name.getText(),studentID.getText());
 			//int t = times[time.getSelectedIndex()];
 			int t = Integer.parseInt((String) time.getSelectedItem());//fix
 			int d = day.getSelectedIndex();
@@ -254,6 +261,8 @@ public class GUI {
 			
 			updateSchedule();
 			dispose();
+			
+			log.log(s,scheduler.getSchedule()[d][t].getTutor(),"course"); // TODO: Add option to select a course from student's course list
 		}
 
 	}
@@ -640,6 +649,33 @@ public class GUI {
 
 
         frame.setJMenuBar(menuBar);
+    }
+    /**
+     * Prompts user for student ID.
+     * TODO: need to code button to call this method.
+     */
+    private void getStudentID()
+    {
+    	String studentID = "";
+    	//TODO: set studentID to user input. Get user input from text area?
+    	Optional<Student> S = students.stream()
+    		.filter(student -> student.getID() == studentID)
+    		.findFirst();
+    	if(S.isPresent())
+    		generateReport(S.get());
+    }
+    
+    /**
+     * Generates report on student s
+     */
+    private void generateReport(Student s)
+    {
+    	try {
+			Reporter r = new Reporter(s);
+			// TODO: send generated report text file to text area from getStudentID? Set to uneditable.
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
     }
 
     /**
