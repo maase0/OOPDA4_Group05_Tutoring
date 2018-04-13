@@ -1,6 +1,7 @@
 package TutoringScheduler;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -14,10 +15,14 @@ public class ScheduleLogger
 	String c;
 	/**
 	 * Acquires Student and Tutor from scheduled pair.
-	 * @param p
-	 * @throws IOException 
 	 */
-	ScheduleLogger(Student s, Tutor t, String course) throws IOException
+	public ScheduleLogger()
+	{
+		File f = new File("ScheduleLog.txt");
+		try{f.createNewFile();}
+		catch (IOException e){System.err.println("Error: " + e.getMessage());}
+	}
+	public void log(Student s, Tutor t, String course)
 	{
 		this.s = s;
 		this.t = t;
@@ -34,7 +39,7 @@ public class ScheduleLogger
 	 * Compiles Log file of given student with information of the session compiled and logged.
 	 * @throws IOException 
 	 */
-	private void Compile() throws IOException
+	private void Compile()
 	{
 		BufferedWriter out = null;
 		try
@@ -54,7 +59,12 @@ public class ScheduleLogger
 		finally // close output stream
 		{
 		    if(out != null) {
-		        out.close();
+		        try {
+					out.close();
+				} catch (IOException e) 
+		        {
+					System.err.println("Error: " + e.getMessage());
+				}
 		    }
 		}
 	}

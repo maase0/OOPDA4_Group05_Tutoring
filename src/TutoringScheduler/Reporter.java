@@ -6,7 +6,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.time.format.DateTimeFormatter;  
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.time.LocalDateTime;      
 
 /**
@@ -21,11 +22,13 @@ class Reporter
 	/**
 	 * Initialize
 	 * @param s
+	 * @throws IOException 
 	 */
-	public Reporter(Student s)
+	public Reporter(Student s) throws IOException
 	{
 		stu = s;
 		STUDENT_REPORT_FILE = stu.getName() + " report file.txt";
+		toFile();
 	}
 	@SuppressWarnings("unused")
 	/**
@@ -45,7 +48,7 @@ class Reporter
 		rep.println();
 		rep.println("Year: " + stu.getYear());
 		rep.println("GPA: " + stu.getGPA());
-		rep.println("Classes: " + printClasses());
+		rep.println("Classes: " + getClasses());
 		rep.println("Visits to Tutoring: ");
 		BufferedReader reader = null;
 
@@ -80,11 +83,13 @@ class Reporter
 		rep.close();
 	}
 	// compiles string of classes being taken by the student
-	private String printClasses()
+	private String getClasses()
 	{
-		String classes = "";
-		for(int i=0; i<stu.getClasses().size(); i++)
-			classes += stu.getClasses().get(i) +", ";
-		return classes;
+		ArrayList<String> classes = stu.getClasses();
+		
+		/*for(int i=0; i<stu.getClasses().size(); i++)
+			classes += stu.getClasses().get(i) +", ";*/
+		return classes.stream()
+				.reduce("", (total,single) -> total + single + ", ");
 	}
 }

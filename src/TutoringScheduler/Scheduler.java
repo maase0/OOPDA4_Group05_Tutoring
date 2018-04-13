@@ -286,7 +286,6 @@ public class Scheduler implements Serializable {
         }
     }
 
-
 	/**
 	 * Singleton object
 	 */
@@ -304,5 +303,4 @@ public class Scheduler implements Serializable {
 
 		return instance;
 	}
-
 }

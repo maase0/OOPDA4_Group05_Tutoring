@@ -15,12 +15,11 @@ public class Student implements Serializable
 	private String ID;
 	private ArrayList<String> classes;
 	
-	public Student(String name, String ID)
+	public Student(String name, String ID) // TODO: delete this constructor, want student to always be filled out completely
 	{
 		this.name = name;
 		this.ID = ID;
 		year = "Freshmen";
-		// TODO: get error handling
 	}
 	
 	public Student(String name,String year,String GPA,String ID,ArrayList<String> classes) {

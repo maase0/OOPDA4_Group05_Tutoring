@@ -49,7 +49,10 @@ public class GUI {
 
     private PairLabel[][] scheduleLabels;
 
-
+    /**
+     * Logs scheduled event.
+     */
+    private ScheduleLogger log;
 	/**
 	 * Stores the scheudeler and added tutors and students
 	 */
@@ -75,6 +78,7 @@ public class GUI {
 
 
         this.scheduler = scheduler;
+		this.log = new ScheduleLogger();
 
         //Default filename and save path
         fileName = "schedule.sav";
@@ -155,7 +159,6 @@ public class GUI {
 		/**
 		 * Creates and schedules the tutor based on the information from the input boxes
 		 */
-		// TODO: I want to combine scheduleTutor and ScheduleStudent into one method. -Tyler
         protected void schedule()
         {
 
@@ -165,7 +168,6 @@ public class GUI {
             updateSchedule();
             System.out.println(t.toString());
             dispose();
-            //TODO: ScheduleLogger(s,t,course); // Logs the event to the schedule log text file. Needs a student to work.
         }
     }
 
@@ -183,6 +185,7 @@ public class GUI {
 
         studentFrame.setVisible(true);
 		System.out.println("Schedule Student");
+		
     }
 
 	/**
@@ -258,6 +261,8 @@ public class GUI {
 			
 			updateSchedule();
 			dispose();
+			
+			log.log(s,scheduler.getSchedule()[d][t].getTutor(),"course"); // TODO: Add option to select a course from student's course list
 		}
 
 	}
@@ -665,8 +670,12 @@ public class GUI {
      */
     private void generateReport(Student s)
     {
-    	Reporter r = new Reporter(s);
-    	// TODO: send generated report text file to text area from getStudentID? Set to uneditable.
+    	try {
+			Reporter r = new Reporter(s);
+			// TODO: send generated report text file to text area from getStudentID? Set to uneditable.
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
     }
 
     /**
