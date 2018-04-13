@@ -262,7 +262,7 @@ public class GUI {
 			updateSchedule();
 			dispose();
 			
-			log.log(s,scheduler.getSchedule()[d][t].getTutor(),"course"); // TODO: Add option to select a course from student's course list
+			log.log(s,scheduler.getSchedule()[d][Scheduler.timeToArrayIndex(t)].getTutor(),"course"); // TODO: Add option to select a course from student's course list
 		}
 
 	}
