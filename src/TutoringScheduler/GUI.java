@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.io.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.util.ArrayList;
+import java.util.Optional;
 
 
 public class GUI {
@@ -44,6 +45,7 @@ public class GUI {
     private JButton addTutorButton;
     private JButton addStudentButton;
     private JButton quitButton;
+    private JButton reportButton;
 
     private PairLabel[][] scheduleLabels;
 
@@ -153,15 +155,17 @@ public class GUI {
 		/**
 		 * Creates and schedules the tutor based on the information from the input boxes
 		 */
+		// TODO: I want to combine scheduleTutor and ScheduleStudent into one method. -Tyler
         protected void schedule()
         {
 
-            Tutor t = new Tutor(name.getText(),year.getText()); 
+            Tutor t = new Tutor(name.getText(),year.getText(),studentID.getText()); 
 			//TODO: add tutor to list of tutors if not already
             scheduler.scheduleTutor(t, day.getSelectedIndex(), times[time.getSelectedIndex()]);
             updateSchedule();
             System.out.println(t.toString());
             dispose();
+            //TODO: ScheduleLogger(s,t,course); // Logs the event to the schedule log text file. Needs a student to work.
         }
     }
 
@@ -237,7 +241,7 @@ public class GUI {
 		 */
 		protected void schedule()
 		{
-			Student s = new Student(name.getText());
+			Student s = new Student(name.getText(),studentID.getText());
 			//int t = times[time.getSelectedIndex()];
 			int t = Integer.parseInt((String) time.getSelectedItem());//fix
 			int d = day.getSelectedIndex();
@@ -640,6 +644,29 @@ public class GUI {
 
 
         frame.setJMenuBar(menuBar);
+    }
+    /**
+     * Prompts user for student ID.
+     * TODO: need to code button to call this method.
+     */
+    private void getStudentID()
+    {
+    	String studentID = "";
+    	//TODO: set studentID to user input. Get user input from text area?
+    	Optional<Student> S = students.stream()
+    		.filter(student -> student.getID() == studentID)
+    		.findFirst();
+    	if(S.isPresent())
+    		generateReport(S.get());
+    }
+    
+    /**
+     * Generates report on student s
+     */
+    private void generateReport(Student s)
+    {
+    	Reporter r = new Reporter(s);
+    	// TODO: send generated report text file to text area from getStudentID? Set to uneditable.
     }
 
     /**

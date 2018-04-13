@@ -97,6 +97,7 @@ public class Scheduler implements Serializable {
      * @param startTime The beginning of the tutors scheduled block
      * @return true if the tutor was successfully scheduled
      */
+    
     public boolean scheduleTutor(Tutor t,int day, int startTime) {
         boolean successful = true;
         int index = timeToArrayIndex(startTime);
