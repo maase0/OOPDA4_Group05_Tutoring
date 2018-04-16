@@ -80,6 +80,9 @@ public class GUI {
      */
     private GUI(Scheduler scheduler) {
 
+		students = new ArrayList<Student>();
+		tutors = new ArrayList<Tutor>();
+		//students.add(new Student("Test Student", "1")); //test can delete
 
         this.scheduler = scheduler;
 		this.log = new ScheduleLogger();
@@ -168,6 +171,7 @@ public class GUI {
 
             Tutor t = new Tutor(name.getText(),year.getText(),studentID.getText()); 
 			//TODO: add tutor to list of tutors if not already
+			tutors.add(t);
             scheduler.scheduleTutor(t, day.getSelectedIndex(), times[time.getSelectedIndex()]);
             updateSchedule();
             System.out.println(t.toString());
@@ -249,6 +253,7 @@ public class GUI {
 		protected void schedule()
 		{
 			Student s = new Student(name.getText(),studentID.getText());
+			students.add(s);
 			//int t = times[time.getSelectedIndex()];
 			int t = Integer.parseInt((String) time.getSelectedItem());//fix
 			int d = day.getSelectedIndex();
@@ -266,7 +271,7 @@ public class GUI {
 			updateSchedule();
 			dispose();
 			
-			log.log(s,scheduler.getSchedule()[d][Scheduler.timeToArrayIndex(t)].getTutor(),"course"); // TODO: Add option to select a course from student's course list
+			log.log(s,scheduler.getSchedule()[d][Scheduler.timeToArrayIndex(t)].getTutor(),"course",time,day); // TODO: Add option to select a course from student's course list
 		}
 
 	}
@@ -660,8 +665,7 @@ public class GUI {
         frame.setJMenuBar(menuBar);
     }
     /**
-     * Prompts user for student ID.
-     * TODO: need to code button to call this method.
+     * Prompts user for student ID. Called via a menu item.
      */
     private void getStudentID()
     {
@@ -679,18 +683,27 @@ public class GUI {
     }
     private void searchStudents(String s)
     {
+    	System.out.println(students.get(0).getID());
 		Optional<Student> S = students.stream()
         		.filter(student -> student.getID().equals(s))
         		.findFirst();
         	if(S.isPresent())
-        	{
+        	{   
         		generateReport(S.get());
         		String path = Paths.get("").toAbsolutePath().toString();
-        		System.out.println("Report Generated at " + path + "/" + S.get().getName() + " report file.txt");
+        		JFrame confirmedFrame = new JFrame("Confirmation");
+        		JLabel msg = new JLabel("Report Generated at " + path + "\\" + S.get().getName() + " report file.txt", JLabel.CENTER);
+        		confirmedFrame.add(msg,BorderLayout.CENTER);
+        		confirmedFrame.pack();
+        		confirmedFrame.setVisible(true);
         	}
         	else
         	{
-        		System.out.println("Invalid ID");
+        		JFrame confirmedFrame = new JFrame("Error");
+        		JLabel msg = new JLabel("Invalid ID. Student Report not generated", JLabel.CENTER);
+        		confirmedFrame.add(msg,BorderLayout.CENTER);
+        		confirmedFrame.pack();
+        		confirmedFrame.setVisible(true);
         	}
     }
     
