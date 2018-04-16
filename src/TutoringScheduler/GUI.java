@@ -76,6 +76,9 @@ public class GUI {
      */
     private GUI(Scheduler scheduler) {
 
+		students = new ArrayList<Student>();
+		tutors = new ArrayList<Tutor>();
+
 
         this.scheduler = scheduler;
 		this.log = new ScheduleLogger();
@@ -164,6 +167,7 @@ public class GUI {
 
             Tutor t = new Tutor(name.getText(),year.getText(),studentID.getText()); 
 			//TODO: add tutor to list of tutors if not already
+			tutors.add(t);
             scheduler.scheduleTutor(t, day.getSelectedIndex(), times[time.getSelectedIndex()]);
             updateSchedule();
             System.out.println(t.toString());
@@ -245,6 +249,7 @@ public class GUI {
 		protected void schedule()
 		{
 			Student s = new Student(name.getText(),studentID.getText());
+			students.add(s);
 			//int t = times[time.getSelectedIndex()];
 			int t = Integer.parseInt((String) time.getSelectedItem());//fix
 			int d = day.getSelectedIndex();
