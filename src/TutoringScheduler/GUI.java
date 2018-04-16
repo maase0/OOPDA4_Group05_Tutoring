@@ -266,7 +266,7 @@ public class GUI {
 			updateSchedule();
 			dispose();
 			
-			log.log(s,scheduler.getSchedule()[d][Scheduler.timeToArrayIndex(t)].getTutor(),"course"); // TODO: Add option to select a course from student's course list
+			log.log(s,scheduler.getSchedule()[d][Scheduler.timeToArrayIndex(t)].getTutor(),"course",time,day); // TODO: Add option to select a course from student's course list
 		}
 
 	}
@@ -660,8 +660,7 @@ public class GUI {
         frame.setJMenuBar(menuBar);
     }
     /**
-     * Prompts user for student ID.
-     * TODO: need to code button to call this method.
+     * Prompts user for student ID. Called via a menu item.
      */
     private void getStudentID()
     {
@@ -683,14 +682,22 @@ public class GUI {
         		.filter(student -> student.getID().equals(s))
         		.findFirst();
         	if(S.isPresent())
-        	{
+        	{   
         		generateReport(S.get());
         		String path = Paths.get("").toAbsolutePath().toString();
-        		System.out.println("Report Generated at " + path + "/" + S.get().getName() + " report file.txt");
+        		JFrame confirmedFrame = new JFrame("Confirmation");
+        		JLabel msg = new JLabel("Report Generated at " + path + "/" + S.get().getName() + " report file.txt", JLabel.CENTER);
+        		confirmedFrame.add(msg,BorderLayout.CENTER);
+        		reportFrame.pack();
+            	reportFrame.setVisible(true);
         	}
         	else
         	{
-        		System.out.println("Invalid ID");
+        		JFrame confirmedFrame = new JFrame("Error");
+        		JLabel msg = new JLabel("Invalid ID. Student Report not generated", JLabel.CENTER);
+        		confirmedFrame.add(msg,BorderLayout.CENTER);
+        		reportFrame.pack();
+            	reportFrame.setVisible(true);
         	}
     }
     
