@@ -20,6 +20,8 @@ public class Student implements Serializable
 		this.name = name;
 		this.ID = ID;
 		year = "Freshmen";
+		this.GPA = "";
+		this.classes = new ArrayList<String>();
 	}
 	
 	public Student(String name,String year,String GPA,String ID,ArrayList<String> classes) {

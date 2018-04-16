@@ -86,9 +86,6 @@ class Reporter
 	private String getClasses()
 	{
 		ArrayList<String> classes = stu.getClasses();
-		
-		/*for(int i=0; i<stu.getClasses().size(); i++)
-			classes += stu.getClasses().get(i) +", ";*/
 		return classes.stream()
 				.reduce("", (total,single) -> total + single + ", ");
 	}

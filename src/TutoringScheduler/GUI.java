@@ -82,7 +82,7 @@ public class GUI {
 
 		students = new ArrayList<Student>();
 		tutors = new ArrayList<Tutor>();
-
+		//students.add(new Student("Test Student", "1")); //test can delete
 
         this.scheduler = scheduler;
 		this.log = new ScheduleLogger();
@@ -692,7 +692,7 @@ public class GUI {
         		generateReport(S.get());
         		String path = Paths.get("").toAbsolutePath().toString();
         		JFrame confirmedFrame = new JFrame("Confirmation");
-        		JLabel msg = new JLabel("Report Generated at " + path + "/" + S.get().getName() + " report file.txt", JLabel.CENTER);
+        		JLabel msg = new JLabel("Report Generated at " + path + "\\" + S.get().getName() + " report file.txt", JLabel.CENTER);
         		confirmedFrame.add(msg,BorderLayout.CENTER);
         		confirmedFrame.pack();
         		confirmedFrame.setVisible(true);
