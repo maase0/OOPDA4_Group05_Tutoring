@@ -7,14 +7,18 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import javax.swing.JComboBox;
+
 public class ScheduleLogger 
 {
 	Student s;
 	Tutor t;
 	String l;
 	String c;
+	JComboBox<String> time;
+	JComboBox<String> day;
 	/**
-	 * Acquires Student and Tutor from scheduled pair.
+	 * Creates new empty log file.
 	 */
 	public ScheduleLogger()
 	{
@@ -22,10 +26,12 @@ public class ScheduleLogger
 		try{f.createNewFile();}
 		catch (IOException e){System.err.println("Error: " + e.getMessage());}
 	}
-	public void log(Student s, Tutor t, String course)
+	public void log(Student s, Tutor t, String course, JComboBox<String> time, JComboBox<String> day)
 	{
 		this.s = s;
 		this.t = t;
+		this.time = time;
+		this.day = day;
 		c = course;
 		if (t.getYear() == "senior")
 			l = "30 min";
@@ -36,7 +42,7 @@ public class ScheduleLogger
 		Compile();
 	}
 	/**
-	 * Compiles Log file of given student with information of the session compiled and logged.
+	 * Updates log file with new scheduled session information.
 	 * @throws IOException 
 	 */
 	private void Compile()
@@ -46,11 +52,10 @@ public class ScheduleLogger
 		{
 			FileWriter fstream = new FileWriter("ScheduleLog.txt", true);
 			out = new BufferedWriter(fstream);
-			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-			String now = dtf.format(LocalDateTime.now());  
+			String appointmentTime = day + " " + time; 
 			// Each line in the log contains all necessary information for each scheduled visit in the following format:
 			// [STUDENT_ID] : [TUTOR_ID] : [COURSE_HELPED] : [DATE_AND_TIME_OF_APPOINTMENT] : [LENGTH_OF_APPOINTMENT]
-		    out.write(s.getID() + " : " + t.getID() + " : " + c + ": " + now + " : " + l + "\n");
+		    out.write(s.getID() + " : " + t.getID() + " : " + c + ": " + appointmentTime + " : " + l + "\n");
 		}
 		catch (IOException e)
 		{

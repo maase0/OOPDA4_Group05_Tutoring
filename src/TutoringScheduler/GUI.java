@@ -7,6 +7,8 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.io.*;
+import java.nio.file.Paths;
+
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -18,6 +20,7 @@ public class GUI {
 	 * Main components of the top level of the GUI
 	 */
     private JFrame frame;
+    JFrame reportFrame;
     private GridBagLayout layout;
 
 	/**
@@ -30,6 +33,8 @@ public class GUI {
     private JMenuItem saveItem;
     private JMenuItem saveAsItem;
     private JMenuItem quitItem;
+    private JMenuItem reportItem;
+
 
     private JMenu helpMenu;
     private JMenuItem aboutItem;
@@ -45,7 +50,6 @@ public class GUI {
     private JButton addTutorButton;
     private JButton addStudentButton;
     private JButton quitButton;
-    private JButton reportButton;
 
     private PairLabel[][] scheduleLabels;
 
@@ -267,7 +271,7 @@ public class GUI {
 			updateSchedule();
 			dispose();
 			
-			log.log(s,scheduler.getSchedule()[d][Scheduler.timeToArrayIndex(t)].getTutor(),"course"); // TODO: Add option to select a course from student's course list
+			log.log(s,scheduler.getSchedule()[d][Scheduler.timeToArrayIndex(t)].getTutor(),"course",time,day); // TODO: Add option to select a course from student's course list
 		}
 
 	}
@@ -632,9 +636,14 @@ public class GUI {
         saveAsItem.addActionListener(e -> saveAs());
         fileMenu.add(saveAsItem);
 
+        reportItem = new JMenuItem("Generate Student Report");
+        reportItem.addActionListener(e -> getStudentID());
+        fileMenu.add(reportItem);
+        
         quitItem = new JMenuItem("Quit");
         quitItem.addActionListener(e -> quit());
         fileMenu.add(quitItem);
+        
 
         //help menu
         helpMenu = new JMenu("Help");
@@ -656,18 +665,45 @@ public class GUI {
         frame.setJMenuBar(menuBar);
     }
     /**
-     * Prompts user for student ID.
-     * TODO: need to code button to call this method.
+     * Prompts user for student ID. Called via a menu item.
      */
     private void getStudentID()
     {
-    	String studentID = "";
-    	//TODO: set studentID to user input. Get user input from text area?
-    	Optional<Student> S = students.stream()
-    		.filter(student -> student.getID() == studentID)
-    		.findFirst();
-    	if(S.isPresent())
-    		generateReport(S.get());
+    	reportFrame = new JFrame("Enter Student ID.");
+    	
+    	JTextField reportField = new JTextField(50);
+    	reportField.setEditable(true);
+    	JButton reportButton = new JButton("Submit");
+    	reportButton.addActionListener(e -> searchStudents(reportField.getText()));
+    	
+    	reportFrame.add(reportField,BorderLayout.NORTH);
+    	reportFrame.add(reportButton,BorderLayout.SOUTH);
+    	reportFrame.pack();
+    	reportFrame.setVisible(true);
+    }
+    private void searchStudents(String s)
+    {
+		Optional<Student> S = students.stream()
+        		.filter(student -> student.getID().equals(s))
+        		.findFirst();
+        	if(S.isPresent())
+        	{   
+        		generateReport(S.get());
+        		String path = Paths.get("").toAbsolutePath().toString();
+        		JFrame confirmedFrame = new JFrame("Confirmation");
+        		JLabel msg = new JLabel("Report Generated at " + path + "/" + S.get().getName() + " report file.txt", JLabel.CENTER);
+        		confirmedFrame.add(msg,BorderLayout.CENTER);
+        		reportFrame.pack();
+            	reportFrame.setVisible(true);
+        	}
+        	else
+        	{
+        		JFrame confirmedFrame = new JFrame("Error");
+        		JLabel msg = new JLabel("Invalid ID. Student Report not generated", JLabel.CENTER);
+        		confirmedFrame.add(msg,BorderLayout.CENTER);
+        		reportFrame.pack();
+            	reportFrame.setVisible(true);
+        	}
     }
     
     /**
@@ -677,7 +713,7 @@ public class GUI {
     {
     	try {
 			Reporter r = new Reporter(s);
-			// TODO: send generated report text file to text area from getStudentID? Set to uneditable.
+			System.out.print("Student File generated at: " + System.getProperty("user.dir") + s.getName() + " report file.txt");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
