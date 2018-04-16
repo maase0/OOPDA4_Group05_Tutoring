@@ -683,6 +683,7 @@ public class GUI {
     }
     private void searchStudents(String s)
     {
+    	System.out.println(students.get(0).getID());
 		Optional<Student> S = students.stream()
         		.filter(student -> student.getID().equals(s))
         		.findFirst();
@@ -693,16 +694,16 @@ public class GUI {
         		JFrame confirmedFrame = new JFrame("Confirmation");
         		JLabel msg = new JLabel("Report Generated at " + path + "/" + S.get().getName() + " report file.txt", JLabel.CENTER);
         		confirmedFrame.add(msg,BorderLayout.CENTER);
-        		reportFrame.pack();
-            	reportFrame.setVisible(true);
+        		confirmedFrame.pack();
+        		confirmedFrame.setVisible(true);
         	}
         	else
         	{
         		JFrame confirmedFrame = new JFrame("Error");
         		JLabel msg = new JLabel("Invalid ID. Student Report not generated", JLabel.CENTER);
         		confirmedFrame.add(msg,BorderLayout.CENTER);
-        		reportFrame.pack();
-            	reportFrame.setVisible(true);
+        		confirmedFrame.pack();
+        		confirmedFrame.setVisible(true);
         	}
     }
     
