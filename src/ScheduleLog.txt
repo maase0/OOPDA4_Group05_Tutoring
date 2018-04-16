@@ -1,0 +1,3 @@
+12345678 : Student ID : course: 2018/04/13 12:19:08 : 60 min
+123456789 : Student ID : course: javax.swing.JComboBox[,1,217,197x24,invalid,layout=javax.swing.plaf.metal.MetalComboBoxUI$MetalComboBoxLayoutManager,alignmentX=0.0,alignmentY=0.0,border=,flags=328,maximumSize=,minimumSize=,preferredSize=,isEditable=false,lightWeightPopupEnabled=true,maximumRowCount=8,selectedItemReminder=Wednesday] javax.swing.JComboBox[,198,217,90x24,invalid,layout=javax.swing.plaf.metal.MetalComboBoxUI$MetalComboBoxLayoutManager,alignmentX=0.0,alignmentY=0.0,border=,flags=328,maximumSize=,minimumSize=,preferredSize=,isEditable=false,lightWeightPopupEnabled=true,maximumRowCount=8,selectedItemReminder=1230] : 60 min
+Student ID : Student ID : course: 2018/04/16 16:30:39 : 60 min
